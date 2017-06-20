@@ -19,6 +19,8 @@ void Player::set_up(){
 	keyPress["S"]=false;
 	keyPress["A"]=false;
 	keyPress["D"]=false;
+	keyPress["LSHIFT"]=false;
+	keyPress["LCONTROL"]=false;
 	
 }
 
@@ -36,6 +38,12 @@ void Player::check_keys(sf::Event e){
 		if(e.key.code==sf::Keyboard::S){
 			keyPress["S"]=true;
 		}
+		if(e.key.code==sf::Keyboard::LShift){
+			keyPress["LSHIFT"]=true;
+		}
+		if(e.key.code==sf::Keyboard::LControl){
+			keyPress["LCONTROL"]=true;
+		}
 	}
 	else if(e.type==sf::Event::KeyReleased){
 		if(e.key.code==sf::Keyboard::A){
@@ -50,21 +58,37 @@ void Player::check_keys(sf::Event e){
 		if(e.key.code==sf::Keyboard::S){
 			keyPress["S"]=false;
 		}
+		if(e.key.code==sf::Keyboard::LShift){
+			keyPress["LSHIFT"]=false;
+		}
+		if(e.key.code==sf::Keyboard::LControl){
+			keyPress["LCONTROL"]=false;
+		}
 	}
 }
 
 void Player::tick(){
+	float mult=1;
+	if(keyPress["LCONTROL"]){
+		mult=0.5;
+	}
+	else if(keyPress["LSHIFT"]){
+		mult=2;
+	}
+	
+	
+	
 	if(player.keyPress["A"]){
-		x=x-0.1;
+		x=x-(0.1*mult);
 	}
 	if(player.keyPress["D"]){
-		x=x+0.1;
+		x=x+(0.1*mult);
 	}
 	if(player.keyPress["W"]){
-		y=y-0.1;
+		y=y-(0.1*mult);
 	}
 	if(player.keyPress["S"]){
-		y=y+0.1;
+		y=y+(0.1*mult);
 	}
 	
 	
