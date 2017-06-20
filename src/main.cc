@@ -36,8 +36,6 @@ Player player;
 int main(int argc, char *argv[]) {
 	
 	RenderWindow window(VideoMode(800, 800), "Hello World!");
-	CircleShape shape(200.f);
-	shape.setFillColor(Color::Green);
 	
 	player.set_up();
 	
@@ -51,23 +49,14 @@ int main(int argc, char *argv[]) {
 			}
 			player.check_keys(event);
 		}
-		if(player.keyPress["A"]){
-			player.x=player.x-1;
-		}
-		if(player.keyPress["D"]){
-			player.x=player.x+1;
-		}
-		if(player.keyPress["W"]){
-			player.y=player.y-1;
-		}
-		if(player.keyPress["S"]){
-			player.y=player.y+1;
-		}
 		
 		
-		cout<<player.x<<" "<<player.y<<endl;
+		player.tick();
+		
+		
+		//cout<<player.x<<" "<<player.y<<endl;
 		window.clear();
-		window.draw(shape);
+		window.draw(player.sprite);
 		window.display();
 	}
 

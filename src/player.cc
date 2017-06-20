@@ -1,5 +1,6 @@
 #include "player.hpp"
 #include "gameObject.hpp"
+#include "global.hpp"
 
 Player::Player() : GameObject() {}
 
@@ -10,6 +11,8 @@ void Player::set_up(){
 	
 	id=0;
 	
+	sprite=sf::CircleShape(10.f);
+	sprite.setFillColor(sf::Color::Green);
 	
 	
 	keyPress["W"]=false;
@@ -49,3 +52,39 @@ void Player::check_keys(sf::Event e){
 		}
 	}
 }
+
+void Player::tick(){
+	if(player.keyPress["A"]){
+		x=x-0.1;
+	}
+	if(player.keyPress["D"]){
+		x=x+0.1;
+	}
+	if(player.keyPress["W"]){
+		y=y-0.1;
+	}
+	if(player.keyPress["S"]){
+		y=y+0.1;
+	}
+	
+	
+	sprite.setPosition(x,y);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
