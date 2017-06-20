@@ -36,6 +36,8 @@ Player player=Player(15.f);
 vector<Enemy*> dudes;
 
 inline float getDis(GameObject* src,GameObject* dest);
+inline float getDis(GameObject* src,int x2,int y2);
+inline float getDis(int x1,int y1,int x2,int y2);
 
 int main(int argc, char *argv[]) {
 	
@@ -63,7 +65,7 @@ int main(int argc, char *argv[]) {
 		player.tick();
 		for(unsigned int i=0;i<dudes.size();i++){
 			dudes[i]->tick();
-			if(getDis(&player,dudes[i])<75){
+			if(getDis(dudes[i],player.x+400,player.y+400)<75){
 				dudes[i]->change=true;
 				dudes[i]->interact=true;
 			}
@@ -87,7 +89,12 @@ int main(int argc, char *argv[]) {
 inline float getDis(GameObject* src,GameObject* dest){
 	return sqrt(pow((src->x-dest->x),2)+pow((src->y-dest->y),2));
 }
-
+inline float getDis(GameObject* src,int x2,int y2){
+	return sqrt(pow((src->x-x2),2)+pow((src->y-y2),2));
+}
+inline float getDis(int x1,int y1,int x2,int y2){
+	return sqrt(pow((x1-x2),2)+pow((y1-y2),2));
+}
 
 
 

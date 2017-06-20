@@ -92,8 +92,8 @@ void Player::tick(){
 	}
 	
 	
-	sprite.setPosition(x,y);
-	
+	//sprite.setPosition(x,y);
+	sprite.setPosition(400,400);		//set this to centre of screen
 	
 	
 	

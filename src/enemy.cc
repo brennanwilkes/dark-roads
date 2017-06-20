@@ -23,7 +23,7 @@ void Enemy::set_up(int xx,int yy,int idd){
 
 void Enemy::tick(){
 	
-	sprite.setPosition(x,y);
+	sprite.setPosition(x-player.x,y-player.y);
 	
 	if(change){
 		if(interact){
@@ -51,8 +51,7 @@ void Enemy::tick(){
 		}	
 	}
 	float ran = rand()/(float)RAND_MAX;
-	if(ran>0.9999){
-		std::cout<<ran<<std::endl;
+	if(ran>0.9999){									//LOL THIS IS SO BAD
 		if (((ran*10000.0)-9999)>0.75){
 			rand_mov_dir=1;
 		}
