@@ -23,6 +23,7 @@ DARK ROADS
 //User Includes
 #include "player.hpp"
 #include "gameObject.hpp"
+#include "enemy.hpp"
 #include "global.hpp"
 
 
@@ -31,7 +32,10 @@ using namespace sf;
 
 
 int scene;	//Just an example on how to do a global
-Player player;
+Player player=Player(15.f);
+vector<Enemy*> dudes;
+
+float getDis(GameObject* src,GameObject* dest);
 
 int main(int argc, char *argv[]) {
 	
@@ -39,7 +43,10 @@ int main(int argc, char *argv[]) {
 	
 	player.set_up();
 	
-
+	Enemy romar(10.f);
+	romar.set_up(250,125,10);
+	dudes.push_back(&romar);
+	
 	while (window.isOpen()){
 		Event event;
 		while (window.pollEvent(event))
@@ -52,13 +59,42 @@ int main(int argc, char *argv[]) {
 		
 		
 		player.tick();
+		for(unsigned int i=0;i<dudes.size();i++){
+			dudes[i]->tick();
+			if(getDis(&player,dudes[i])<75){
+				dudes[i]->change=true;
+				dudes[i]->interact=true;
+			}
+			else if(dudes[i]->interact){
+				dudes[i]->change=true;
+				dudes[i]->interact=false;
+			}
+			
+		}
 		
 		
 		//cout<<player.x<<" "<<player.y<<endl;
 		window.clear();
 		window.draw(player.sprite);
+		window.draw(romar.sprite);
 		window.display();
 	}
 
 	return 0;
 }
+
+
+float getDis(GameObject* src,GameObject* dest){
+	return sqrt(pow((src->x-dest->x),2)+pow((src->y-dest->y),2));
+}
+
+
+
+
+
+
+
+
+
+
+

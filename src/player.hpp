@@ -8,14 +8,12 @@
 
 class Player : public GameObject{
 public:
-	Player();
+	Player(float rad);
 	void set_up();
 	
 	std::map<std::string,bool> keyPress;
 	
 	void check_keys(sf::Event e);
-	
-	sf::CircleShape sprite;		//EVENTUALLY CHANGE THIS TO SPRITES
 	
 	void tick();
 	

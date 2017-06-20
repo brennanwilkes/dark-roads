@@ -2,7 +2,7 @@
 #include "gameObject.hpp"
 #include "global.hpp"
 
-Player::Player() : GameObject() {}
+Player::Player(float rad) : GameObject(rad) {}
 
 void Player::set_up(){
 	
@@ -11,7 +11,7 @@ void Player::set_up(){
 	
 	id=0;
 	
-	sprite=sf::CircleShape(10.f);
+	
 	sprite.setFillColor(sf::Color::Green);
 	
 	
@@ -93,6 +93,11 @@ void Player::tick(){
 	
 	
 	sprite.setPosition(x,y);
+	
+	
+	
+	
+	
 }
 
 

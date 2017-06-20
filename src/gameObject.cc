@@ -1,5 +1,5 @@
 #include "gameObject.hpp"
 
-GameObject::GameObject(){
-	
-	}
+GameObject::GameObject(float rad){
+	sprite=sf::CircleShape(rad);
+}
