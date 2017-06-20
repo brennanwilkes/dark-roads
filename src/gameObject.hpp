@@ -6,6 +6,14 @@ class GameObject{
 public:
 	GameObject();
 	//virtual ~GameObject();
+	
+	float x;
+	float y;
+	
+	int id;
+	
+	
+	
 };
 
 #endif
