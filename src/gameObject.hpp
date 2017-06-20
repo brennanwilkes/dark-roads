@@ -5,7 +5,7 @@
 class GameObject{
 public:
 	GameObject();
-	virtual ~GameObject();
-}
+	//virtual ~GameObject();
+};
 
 #endif
