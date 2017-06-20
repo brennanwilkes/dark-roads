@@ -13,6 +13,7 @@ public:
 	float y;
 	float r;
 	int id;
+	int health;
 	
 	sf::CircleShape sprite;		//EVENTUALLY CHANGE THIS TO SPRITES
 	

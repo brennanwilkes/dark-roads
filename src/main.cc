@@ -59,6 +59,18 @@ int main(int argc, char *argv[]) {
 				window.close();
 			}
 			player.check_keys(event);
+			
+			if(event.type==Event::KeyPressed){
+				if(event.key.code==Keyboard::Return ){
+					for(unsigned int j=0;j<dudes.size();j++){//Do interact stuff
+						if(dudes[j]->hostile && dudes[j]->combat && dudes[j]->interact){
+							dudes[j]->health=dudes[j]->health-3;
+							//cout<<dudes[i]->health<<endl;
+						}
+					}
+					
+				}
+			}
 		}
 		
 		
@@ -68,12 +80,17 @@ int main(int argc, char *argv[]) {
 			if(getDis(dudes[i],player.x+400,player.y+400)<75){
 				dudes[i]->change=true;
 				dudes[i]->interact=true;
+
+				
+				
 			}
 			else if(dudes[i]->interact){
 				dudes[i]->change=true;
 				dudes[i]->interact=false;
 			}
-			window.draw(dudes[i]->sprite);
+			if(!dudes[i]->dead){
+				window.draw(dudes[i]->sprite);
+			}
 		}
 		
 		

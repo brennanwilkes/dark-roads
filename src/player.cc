@@ -11,6 +11,7 @@ void Player::set_up(){
 	
 	id=0;
 	
+	health=100;
 	
 	sprite.setFillColor(sf::Color::Green);
 	

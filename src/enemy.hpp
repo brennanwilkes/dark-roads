@@ -20,5 +20,10 @@ public:
 	int rand_mov_left;
 	int rand_mov_dir;
 	
+	bool hostile;
+	bool combat;
+	
+	bool dead;	//EVENTUALLY this should be replaced with a deconstructor
+	
 };
 #endif
