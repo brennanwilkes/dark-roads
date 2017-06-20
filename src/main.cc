@@ -35,7 +35,7 @@ int scene;	//Just an example on how to do a global
 Player player=Player(15.f);
 vector<Enemy*> dudes;
 
-float getDis(GameObject* src,GameObject* dest);
+inline float getDis(GameObject* src,GameObject* dest);
 
 int main(int argc, char *argv[]) {
 	
@@ -48,6 +48,8 @@ int main(int argc, char *argv[]) {
 	dudes.push_back(&romar);
 	
 	while (window.isOpen()){
+		window.clear();
+		
 		Event event;
 		while (window.pollEvent(event))
 		{
@@ -69,14 +71,12 @@ int main(int argc, char *argv[]) {
 				dudes[i]->change=true;
 				dudes[i]->interact=false;
 			}
-			
+			window.draw(dudes[i]->sprite);
 		}
 		
 		
-		//cout<<player.x<<" "<<player.y<<endl;
-		window.clear();
+		
 		window.draw(player.sprite);
-		window.draw(romar.sprite);
 		window.display();
 	}
 
@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
 }
 
 
-float getDis(GameObject* src,GameObject* dest){
+inline float getDis(GameObject* src,GameObject* dest){
 	return sqrt(pow((src->x-dest->x),2)+pow((src->y-dest->y),2));
 }
 

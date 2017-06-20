@@ -18,7 +18,7 @@ main: $(OBJECTS)
 
 obj/%.o:src/%.cc $(HEADERS)
 	@echo "Compiling\033[91m $<... \033[0m"
-	@g++ -o $@ -c $<
+	@g++ -std=c++11 -o $@ -c $<
 
 clean:
 	@echo KABOOM

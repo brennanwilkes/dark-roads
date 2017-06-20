@@ -17,5 +17,8 @@ public:
 	bool interact;
 	bool change;
 	
+	int rand_mov_left;
+	int rand_mov_dir;
+	
 };
 #endif

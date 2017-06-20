@@ -79,16 +79,16 @@ void Player::tick(){
 	
 	
 	if(player.keyPress["A"]){
-		x=x-(0.1*mult);
+		x=x-(0.08*mult);
 	}
 	if(player.keyPress["D"]){
-		x=x+(0.1*mult);
+		x=x+(0.08*mult);
 	}
 	if(player.keyPress["W"]){
-		y=y-(0.1*mult);
+		y=y-(0.08*mult);
 	}
 	if(player.keyPress["S"]){
-		y=y+(0.1*mult);
+		y=y+(0.08*mult);
 	}
 	
 	

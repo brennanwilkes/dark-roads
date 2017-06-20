@@ -2,6 +2,7 @@
 #define GLOBAL_H
 
 #include <vector>
+#include <iostream>
 
 #include "player.hpp"
 #include "enemy.hpp"

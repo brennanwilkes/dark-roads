@@ -11,7 +11,7 @@ public:
 	//virtual void set_up();
 	float x;
 	float y;
-	
+	float r;
 	int id;
 	
 	sf::CircleShape sprite;		//EVENTUALLY CHANGE THIS TO SPRITES
