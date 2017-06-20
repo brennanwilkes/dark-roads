@@ -1,6 +1,8 @@
 #ifndef GAME_OBJ_H
 #define GAME_OBJ_H
 
+#include <map>
+
 
 class GameObject{
 public:
