@@ -36,6 +36,7 @@ Player player=Player(15.f);
 vector<Enemy*> dudes;
 
 inline float getDis(GameObject* src,GameObject* dest);
+inline float getDis(GameObject* src);
 inline float getDis(GameObject* src,int x2,int y2);
 inline float getDis(int x1,int y1,int x2,int y2);
 
@@ -61,11 +62,12 @@ int main(int argc, char *argv[]) {
 			player.check_keys(event);
 			
 			if(event.type==Event::KeyPressed){
-				if(event.key.code==Keyboard::Return ){
+				if(event.key.code==Keyboard::Return){
+					
 					for(unsigned int j=0;j<dudes.size();j++){//Do interact stuff
-						if(dudes[j]->hostile && dudes[j]->combat && dudes[j]->interact){
-							dudes[j]->health=dudes[j]->health-3;
-							//cout<<dudes[i]->health<<endl;
+						if(dudes[j]->hostile && dudes[j]->interact){
+							dudes[j]->health=dudes[j]->health-(25.0/getDis(dudes[j]));
+							dudes[j]->combat=true;
 						}
 					}
 					
@@ -77,7 +79,7 @@ int main(int argc, char *argv[]) {
 		player.tick();
 		for(unsigned int i=0;i<dudes.size();i++){
 			dudes[i]->tick();
-			if(getDis(dudes[i],player.x+400,player.y+400)<75){
+			if(getDis(dudes[i])<75){
 				dudes[i]->change=true;
 				dudes[i]->interact=true;
 
@@ -106,16 +108,15 @@ int main(int argc, char *argv[]) {
 inline float getDis(GameObject* src,GameObject* dest){
 	return sqrt(pow((src->x-dest->x),2)+pow((src->y-dest->y),2));
 }
+inline float getDis(GameObject* src){
+	return sqrt(pow((src->x-(player.x+400)),2)+pow((src->y-(player.y+400)),2));
+}
 inline float getDis(GameObject* src,int x2,int y2){
 	return sqrt(pow((src->x-x2),2)+pow((src->y-y2),2));
 }
 inline float getDis(int x1,int y1,int x2,int y2){
 	return sqrt(pow((x1-x2),2)+pow((y1-y2),2));
 }
-
-
-
-
 
 
 
