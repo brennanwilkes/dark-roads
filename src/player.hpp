@@ -3,6 +3,7 @@
 
 #include "gameObject.hpp"
 #include <map>
+#include <vector>
 #include <string>
 #include <SFML/Graphics.hpp>
 
@@ -16,6 +17,7 @@ public:
 	void check_keys(sf::Event e);
 	
 	void tick();
+	
 	
 };
 #endif

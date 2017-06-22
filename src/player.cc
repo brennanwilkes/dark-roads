@@ -12,7 +12,7 @@ void Player::set_up(){
 	id=0;
 	
 	health=100;
-	
+	sprite.setPosition(400,400);
 	sprite.setFillColor(sf::Color::Green);
 	
 	
@@ -76,25 +76,29 @@ void Player::tick(){
 	else if(keyPress["LSHIFT"]){
 		mult=2;
 	}
-	
+	bool move=false;
 	
 	
 	if(player.keyPress["A"]){
 		x=x-(0.08*mult);
+		move=true;
 	}
 	if(player.keyPress["D"]){
 		x=x+(0.08*mult);
+		move=true;
 	}
 	if(player.keyPress["W"]){
 		y=y-(0.08*mult);
+		move=true;
 	}
 	if(player.keyPress["S"]){
 		y=y+(0.08*mult);
+		move=true;
 	}
 	
 	
 	//sprite.setPosition(x,y);
-	sprite.setPosition(400,400);		//set this to centre of screen
+	//sprite.setPosition(400,400);		//set this to centre of screen
 	
 	
 	

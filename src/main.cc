@@ -73,6 +73,15 @@ int main(int argc, char *argv[]) {
 					
 				}
 			}
+			
+			if (Mouse::isButtonPressed(Mouse::Left)){
+				Vector2i m_pos = sf::Mouse::getPosition();
+				
+				cout<<m_pos.x<<" "<<m_pos.y<<endl;	
+				
+			}
+				
+			
 		}
 		
 		
