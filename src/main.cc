@@ -51,19 +51,22 @@ int main(int argc, char *argv[]) {
 	romar.set_up(250,125,10);
 	dudes.push_back(&romar);
 	
-	cout << "uh oh" << endl;
 	Terrain poland = Terrain(100,100,1337);
 	Texture cartograph;
 	cartograph.create(100,100);
 	Uint8 pixels[100*100*4];
 	Sprite lemonLimeDrink;
 	
-	cout << "wait what?" << endl;
+	float highest = poland.raw_map[0][0];
+	for(unsigned int i = 0; i < 100*100; i++)//find highest
+		if(highest < poland.raw_map[i%100][i/100]) highest = poland.raw_map[i%100][i/100];
+	
 	for(unsigned int i = 0; i < 100*100; i++){
-		pixels[i*4] = int(poland.raw_map[i%100][i/100]*255);
-		pixels[i*4+1] = int(poland.raw_map[i%100][i/100]*255);
-		pixels[i*4+2] = int(poland.raw_map[i%100][i/100]*255);
+		pixels[i*4] = int(poland.raw_map[i%100][i/100]*255/highest);
+		pixels[i*4+1] = int(poland.raw_map[i%100][i/100]*255/highest);
+		pixels[i*4+2] = int(poland.raw_map[i%100][i/100]*255/highest);
 		pixels[i*4+3] = 255;
+		//cout <<  poland.raw_map[i%100][i/100] << '\n';
 	}
 	cartograph.update(pixels);
 	lemonLimeDrink.setTexture(cartograph);

@@ -1,7 +1,6 @@
 #include <iostream>
 #include "terrain.hpp"
 
-//TODO: should I change octave vectors away from unit vectors?
 //TODO: only interpolate necessary points for intermediate octaves?
 
 Terrain::Terrain(int w, int l, int s){
@@ -12,7 +11,7 @@ Terrain::Terrain(int w, int l, int s){
 	raw_map.resize(width, std::vector<float>(length) );
 	
 	srand(seed);
-	gen_map(1);	//use 2 octaves for now
+	gen_map(1);	//TODO: make it so that this doesn't kill itself when a division greater than the number of pixels is used :)
 }
 
 void Terrain::gen_map(int num_octaves){
@@ -20,7 +19,7 @@ void Terrain::gen_map(int num_octaves){
 	std::cout << "gen_map running!" << std::endl;
 	float persistence = 0.5;//float(rand())/RAND_MAX;	//how smooth the curve is (lower is more smooth)
 	float range = persistence;	//the range (+/-) possible to generate. 
-	int freq = 10;	//the size of the first octave to generate. Higher gives more tumultuous terrain
+	int freq = 4;	//the number of steps in the first octave.
 	std::vector<std::vector<float> > prev_octave;
 	
 	for(unsigned int i = 0; i < num_octaves; i++){
@@ -47,7 +46,6 @@ std::vector<std::vector<float> > Terrain::octave(float range, int freq){
 	std::vector<std::vector<float> > octave_x(freq, std::vector<float>(freq)), 
 			octave_y(freq, std::vector<float>(freq)), 
 			intered(width, std::vector<float>(length));
-	std::cout << "defs done!" << std::endl;
 	//generate the octave
 	for(unsigned int i = 0; i < freq; i++){
 		for(unsigned int j = 0; j < freq; j++){
@@ -55,9 +53,7 @@ std::vector<std::vector<float> > Terrain::octave(float range, int freq){
 			octave_y[i][j] = range * float(rand())/RAND_MAX;
 		}
 	}
-		for(unsigned int i = 0; i < 10*10; i++){
-		std::cout << i%10 << ", " << i/10 << "\t:\t" << octave_x[i%10][i/10] << "\t:\t" << octave_y[i%10][i/10] << std::endl;
-	}
+
 	std::cout << "octave generated!" << std::endl;
 	std::cout << "width: " << width << "\nheight: " << length << "\nfreq: " << freq << "\nrange: " << range << "\nx_step: " << x_step << "\ny_step: " << y_step <<std::endl;
 	//interpolate
@@ -70,6 +66,5 @@ std::vector<std::vector<float> > Terrain::octave(float range, int freq){
 		}
 	}
 	
-	std::cout << "I shouldn't exist" << std::endl;
 	return intered;
 }
