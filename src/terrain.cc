@@ -1,7 +1,8 @@
 #include <iostream>
 #include "terrain.hpp"
 
-//TODO: only interpolate necessary points for intermediate octaves?
+//TODO: switch to float-based coordinate system (allows for 'infinite' precision)
+//this is all terrible. redo everything!
 
 Terrain::Terrain(int w, int l, int s){
 	//width, length, seed
@@ -39,7 +40,7 @@ void Terrain::gen_map(int num_octaves){
 
 std::vector<std::vector<float> > Terrain::octave(float range, int freq){
 	std::cout << "running octave" << std::endl;
-	//generate a single octave and interpolates it
+	//generates a single octave and interpolates it
 	
 	const unsigned int x_step(width/freq), y_step(length/freq);		//width and length of a 'unit square', in pixels
 	
@@ -59,10 +60,8 @@ std::vector<std::vector<float> > Terrain::octave(float range, int freq){
 	//interpolate
 	for(unsigned int x = 0; x < width; x++){
 		for(unsigned int y = 0; y < length; y++){
-			intered[x][y] = octave_x[x/x_step][y/y_step] * (x%x_step) + 
-							octave_x[(x/x_step+1)%freq][(y/y_step+1)%freq] * (x_step-x%x_step) + 
-							octave_y[x/x_step][y/y_step] * (y%y_step) + 
-							octave_y[(x/x_step+1)%freq][(y/y_step+1)%freq] * (y_step-y%y_step);
+			intered[x][y] = octave_x[x/x_step][y/y_step] * (x_step - x%x_step) + octave_x[(x/x_step + 1)%freq][y/y_step] * (x%x_step) + 
+							octave_y[x/x_step][y/y_step] * (y_step - y%y_step) + octave_y[x/x_step][(y/y_step + 1)%freq] * (y%y_step);
 		}
 	}
 	
