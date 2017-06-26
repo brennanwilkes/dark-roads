@@ -24,6 +24,7 @@ DARK ROADS
 #include "player.hpp"
 #include "gameObject.hpp"
 #include "enemy.hpp"
+#include "terrain.hpp"
 #include "global.hpp"
 
 
@@ -50,9 +51,33 @@ int main(int argc, char *argv[]) {
 	romar.set_up(250,125,10);
 	dudes.push_back(&romar);
 	
+	cout << "uh oh" << endl;
+	Terrain poland = Terrain(100,100,1337);
+	Texture cartograph;
+	cartograph.create(100,100);
+	Uint8 pixels[100*100*4];
+	Sprite lemonLimeDrink;
+	
+	for(unsigned int i = 0; i < 100*100; i++){
+		cout << i%100 << ", " << i/100 << "\t:\t" << poland.raw_map[i%100][i/100] << endl;
+	}
+	
+	cout << "wait what?" << endl;
+	for(unsigned int i = 0; i < 100*100; i++){
+		pixels[i*4] = int(poland.raw_map[i%100][i/100]*255);
+		pixels[i*4+1] = int(poland.raw_map[i%100][i/100]*255);
+		pixels[i*4+2] = int(poland.raw_map[i%100][i/100]*255);
+		pixels[i*4+3] = 255;
+	}
+	cartograph.update(pixels);
+	lemonLimeDrink.setTexture(cartograph);
+	lemonLimeDrink.setScale(4,4);
+	lemonLimeDrink.setPosition(100,100);
+	
 	while (window.isOpen()){
-		window.clear();
 		
+		window.clear();
+		/*
 		Event event;
 		while (window.pollEvent(event))
 		{
@@ -107,6 +132,10 @@ int main(int argc, char *argv[]) {
 		
 		
 		window.draw(player.sprite);
+*/
+		window.draw(lemonLimeDrink);
+
+
 		window.display();
 	}
 
