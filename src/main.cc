@@ -58,10 +58,6 @@ int main(int argc, char *argv[]) {
 	Uint8 pixels[100*100*4];
 	Sprite lemonLimeDrink;
 	
-	for(unsigned int i = 0; i < 100*100; i++){
-		cout << i%100 << ", " << i/100 << "\t:\t" << poland.raw_map[i%100][i/100] << endl;
-	}
-	
 	cout << "wait what?" << endl;
 	for(unsigned int i = 0; i < 100*100; i++){
 		pixels[i*4] = int(poland.raw_map[i%100][i/100]*255);
@@ -71,13 +67,15 @@ int main(int argc, char *argv[]) {
 	}
 	cartograph.update(pixels);
 	lemonLimeDrink.setTexture(cartograph);
-	lemonLimeDrink.setScale(4,4);
-	lemonLimeDrink.setPosition(100,100);
+	lemonLimeDrink.setScale(8,8);
+	lemonLimeDrink.setPosition(0,0);
 	
 	while (window.isOpen()){
 		
 		window.clear();
-		/*
+
+		window.draw(lemonLimeDrink);
+
 		Event event;
 		while (window.pollEvent(event))
 		{
@@ -132,9 +130,6 @@ int main(int argc, char *argv[]) {
 		
 		
 		window.draw(player.sprite);
-*/
-		window.draw(lemonLimeDrink);
-
 
 		window.display();
 	}

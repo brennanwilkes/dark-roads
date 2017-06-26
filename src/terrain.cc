@@ -55,16 +55,18 @@ std::vector<std::vector<float> > Terrain::octave(float range, int freq){
 			octave_y[i][j] = range * float(rand())/RAND_MAX;
 		}
 	}
-	
+		for(unsigned int i = 0; i < 10*10; i++){
+		std::cout << i%10 << ", " << i/10 << "\t:\t" << octave_x[i%10][i/10] << "\t:\t" << octave_y[i%10][i/10] << std::endl;
+	}
 	std::cout << "octave generated!" << std::endl;
-	std::cout << "width: " << width << "\nheight: " << length << "\nfreq: " << freq << "\nrange: " << range << std::endl;
+	std::cout << "width: " << width << "\nheight: " << length << "\nfreq: " << freq << "\nrange: " << range << "\nx_step: " << x_step << "\ny_step: " << y_step <<std::endl;
 	//interpolate
 	for(unsigned int x = 0; x < width; x++){
 		for(unsigned int y = 0; y < length; y++){
-			intered[x][y] = octave_x[x/x_step][y/y_step] * (x-(x/x_step)) + 
-							octave_x[(x/x_step+1)%freq][(y/y_step+1)%freq] * ((x/x_step+1)-x) + 
-							octave_y[x/x_step][y/y_step] * (y-(y/y_step)) + 
-							octave_y[(x/x_step+1)%freq][(y/y_step+1)%freq] * ((y/y_step+1)-y);
+			intered[x][y] = octave_x[x/x_step][y/y_step] * (x%x_step) + 
+							octave_x[(x/x_step+1)%freq][(y/y_step+1)%freq] * (x_step-x%x_step) + 
+							octave_y[x/x_step][y/y_step] * (y%y_step) + 
+							octave_y[(x/x_step+1)%freq][(y/y_step+1)%freq] * (y_step-y%y_step);
 		}
 	}
 	
