@@ -51,33 +51,36 @@ int main(int argc, char *argv[]) {
 	romar.set_up(250,125,10);
 	dudes.push_back(&romar);
 	
-	Terrain poland = Terrain(100,100,1337);
-	Texture cartograph;
-	cartograph.create(100,100);
-	Uint8 pixels[100*100*4];
-	Sprite lemonLimeDrink;
+	cout << "seed?" << endl;
+	int seed;
+	cin >> seed;
+	const int terrain_width(100), terrain_height(100);
+	Terrain terrain = Terrain(terrain_width,terrain_height,seed);
+	Texture heightmap_tex;
+	heightmap_tex.create(terrain_width,terrain_height);
+	Uint8 pixels[terrain_height*terrain_height*4];
+	Sprite terrain_sprite;
 	
-	float highest = poland.raw_map[0][0];
-	for(unsigned int i = 0; i < 100*100; i++)//find highest
-		if(highest < poland.raw_map[i%100][i/100]) highest = poland.raw_map[i%100][i/100];
+	float highest = terrain.raw_map[0][0];
+	for(unsigned int i = 0; i < terrain_width*terrain_height; i++)//find highest
+		if(highest < terrain.raw_map[i%terrain_width][i/terrain_height]) highest = terrain.raw_map[i%terrain_width][i/terrain_height];
 	
-	for(unsigned int i = 0; i < 100*100; i++){
-		pixels[i*4] = int(poland.raw_map[i%100][i/100]*255/highest);
-		pixels[i*4+1] = int(poland.raw_map[i%100][i/100]*255/highest);
-		pixels[i*4+2] = int(poland.raw_map[i%100][i/100]*255/highest);
-		pixels[i*4+3] = 255;
-		//cout <<  poland.raw_map[i%100][i/100] << '\n';
+	for(unsigned int i = 0; i < terrain_width*terrain_height; i++){
+		pixels[i*4] = 255;
+		pixels[i*4+1] = 255;
+		pixels[i*4+2] = 255;
+		pixels[i*4+3] = int(terrain.raw_map[i%terrain_width][i/terrain_height]*255/highest);
 	}
-	cartograph.update(pixels);
-	lemonLimeDrink.setTexture(cartograph);
-	lemonLimeDrink.setScale(8,8);
-	lemonLimeDrink.setPosition(0,0);
+	heightmap_tex.update(pixels);
+	terrain_sprite.setTexture(heightmap_tex);
+	terrain_sprite.setScale(800.0/terrain_width, 800.0/terrain_height);
+	terrain_sprite.setPosition(0,0);
 	
 	while (window.isOpen()){
 		
 		window.clear();
 
-		window.draw(lemonLimeDrink);
+		window.draw(terrain_sprite);
 
 		Event event;
 		while (window.pollEvent(event))
