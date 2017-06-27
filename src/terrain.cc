@@ -11,20 +11,20 @@ Terrain::Terrain(int w, int l, int s){
 	
 	srand(seed);
 	
+	gen_map();
+}
+
+void Terrain::gen_map(int num_octaves){
+	//generate heightmap for terrain	(if num_octaves is -1, will loop until it cant anymore)
+
 	//populate rand_array with floats between 0 and 1.
 	rand_array.resize(width*height, 0);
 	for(auto elem = rand_array.begin(); elem != rand_array.end(); elem++){
 		*elem = float(rand())/RAND_MAX;
 	}
 	
-	gen_map();
-}
-
-void Terrain::gen_map(int num_octaves){
-	//generate heightmap for terrain	(if num_octaves is -1, will loop until it cant anymore)
-	std::cout << "gen_map running!" << std::endl;
 	float persistence = float(rand())/RAND_MAX;	//how smooth the curve is (lower is more smooth)
-	float range = persistence;	//the range (+/-) possible to generate. 
+	float range = 1;	//the maximum height change possible to generate. 
 	int freq = 4;	//the number of steps in the first octave.
 	std::vector<std::vector<float> > octave;
 	
