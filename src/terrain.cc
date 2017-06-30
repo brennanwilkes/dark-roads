@@ -38,7 +38,7 @@ void Terrain::gen_map(int num_octaves){
 	//generate heightmap for terrain	(if num_octaves is -1, will loop until it cant anymore)
 
 	//populate rand_array with floats between 0 and 1.
-	rand_array.resize(width*height, 0);
+	rand_array.resize((width+2)*(height+2));
 	
 	for(auto elem = rand_array.begin(); elem != rand_array.end(); elem++){
 		*elem = float(rand())/RAND_MAX;
@@ -102,14 +102,14 @@ std::vector<std::vector<float> > Terrain::gen_octave(float range, int freq){
 			if(intered[x][y]>100 || intered[x][y]<-100){
 				//THERE IS A PROBLEM HERE SOMETIMES THIS IS TRIGGERED AND CAUSES BLACK PIXELS
 				
-				std::cout<<x<<" "<<y<<" "<<intered[x][y]<<std::endl;
+				//std::cout<<x<<" "<<y<<" "<<intered[x][y]<<std::endl;
 				//std::cout<<rand_array[(x/x_step)*x_step + (y/y_step)*y_step*width]<<std::endl;
 				//std::cout<<rand_array[(x/x_step)*x_step + x_step + (y/y_step)*y_step*width]<<std::endl;
-				std::cout<<(x/x_step)*x_step + ((y/y_step)*y_step + y_step)*width<<" "<<rand_array[(x/x_step)*x_step + ((y/y_step)*y_step + y_step)*width]<<std::endl;
-				std::cout<<(x/x_step)*x_step + x_step + ((y/y_step)*y_step + y_step)*width<<" "<<rand_array[(x/x_step)*x_step + x_step + ((y/y_step)*y_step + y_step)*width]<<std::endl;
+				//std::cout<<(x/x_step)*x_step + ((y/y_step)*y_step + y_step)*width<<" "<<rand_array[(x/x_step)*x_step + ((y/y_step)*y_step + y_step)*width]<<std::endl;
+				//std::cout<<(x/x_step)*x_step + x_step + ((y/y_step)*y_step + y_step)*width<<" "<<rand_array[(x/x_step)*x_step + x_step + ((y/y_step)*y_step + y_step)*width]<<std::endl;
 				//std::cout<<float(x%x_step)/x_step<<std::endl;
 				//std::cout<<float(y%y_step)/y_step<<std::endl;
-				std::cout<<std::endl;
+				//std::cout<<std::endl;
 				
 			}
 		}
@@ -149,7 +149,7 @@ void Terrain::colourize(){
 	map_tex->create(width,height);
 	highest = raw_map[0][0];
 	for(unsigned int i = 0; i < width*height; i++)//find highest
-		if(highest > raw_map[i%width][i/height]) highest = raw_map[i%width][i/height];
+		if(highest < raw_map[i%width][i/height]) highest = raw_map[i%width][i/height];
 		
 	
 	
