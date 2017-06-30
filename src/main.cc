@@ -54,8 +54,8 @@ int main(int argc, char *argv[]) {
 	cout << "seed?" << endl;
 	int seed;
 	cin >> seed;
-	const int terrain_width(256), terrain_height(256);
-	Terrain terrain = Terrain(terrain_width,terrain_height,seed, true);
+	const int terrain_width(1024), terrain_height(1024);
+	Terrain terrain = Terrain(terrain_width,terrain_height,seed);
 	
 	
 	while (window.isOpen()){

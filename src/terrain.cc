@@ -2,10 +2,7 @@
 #include "terrain.hpp"
 
 //TODO: switch to float-based coordinate system (allows for 'infinite' precision)
-Terrain::Terrain(int w, int l, int s,bool spammy){
-	
-	spam=spammy;
-	
+Terrain::Terrain(int w, int l, int s){	
 	
 	//width, height, seed
 	width = w;
@@ -52,7 +49,7 @@ void Terrain::gen_map(int num_octaves){
 		}
 	}*/
 	
-	float persistence = float(rand())/RAND_MAX;		//how smooth the curve is (lower is more smooth)
+	float persistence = 0.5;//float(rand())/RAND_MAX;		//how smooth the curve is (lower is more smooth)
 	float range = 1;								//the maximum height change possible to generate. 
 	int freq = 4;									//the number of steps in the first octave.
 	std::vector<std::vector<float> > octave;
@@ -77,15 +74,11 @@ void Terrain::gen_map(int num_octaves){
 }
 
 std::vector<std::vector<float> > Terrain::gen_octave(float range, int freq){
-	if(spam)	std::cout << "running octave" << std::endl;
 	//generates a single octave and interpolates it
 	
 	const unsigned int x_step(width/freq), y_step(height/freq);		//width and height of a 'unit square', in pixels
 	std::vector<std::vector<float> > octave(freq, std::vector<float>(freq)), 
 									 intered(width, std::vector<float>(height));
-	
-	if(spam)	std::cout << "octave generated!" << std::endl;
-	if(spam)	std::cout << "width: " << width << "\nheight: " << height << "\nfreq: " << freq << "\nrange: " << range << "\nx_step: " << x_step << "\ny_step: " << y_step <<std::endl;
 	//interpolate
 	for(unsigned int x = 0; x < width; x++){
 		for(unsigned int y = 0; y < height; y++){

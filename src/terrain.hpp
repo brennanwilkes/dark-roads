@@ -15,7 +15,7 @@ public:
 	
 	std::vector<std::vector<float> > raw_map;	//raw heightmap of terrain
 	
-	Terrain(int,int,int,bool=false);
+	Terrain(int,int,int);
 	
 	sf::Sprite* sprite;
 	
