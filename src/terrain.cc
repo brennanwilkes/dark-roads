@@ -6,6 +6,7 @@ Terrain::Terrain(int w, int l, int s,bool spammy){
 	
 	spam=spammy;
 	
+	
 	//width, height, seed
 	width = w;
 	height = l;
@@ -15,6 +16,7 @@ Terrain::Terrain(int w, int l, int s,bool spammy){
 	srand(seed);
 	
 	water_level=rand()%255;
+	//std::cout<<"water "<<water_level<<" "<<rand()<<std::endl;
 	
 	gen_map();
 	
@@ -39,7 +41,11 @@ void Terrain::gen_map(int num_octaves){
 	rand_array.resize(width*height, 0);
 	for(auto elem = rand_array.begin(); elem != rand_array.end(); elem++){
 		*elem = float(rand())/RAND_MAX;
+		
 	}
+	
+	
+
 	
 	float persistence = float(rand())/RAND_MAX;		//how smooth the curve is (lower is more smooth)
 	float range = 1;								//the maximum height change possible to generate. 
@@ -88,12 +94,26 @@ std::vector<std::vector<float> > Terrain::gen_octave(float range, int freq){
 									rand_array[(x/x_step)*x_step + x_step + ((y/y_step)*y_step + y_step)*width], 
 									float(x%x_step)/x_step), 
 								float(y%y_step)/y_step);
+			if(intered[x][y]>100 || intered[x][y]<-100){
+				//THERE IS A PROBLEM HERE SOMETIMES THIS IS TRIGGERED AND CAUSES BLACK PIXELS
+				
+				std::cout<<x<<" "<<y<<std::endl;
+				
+				
+			}
 		}
 	}
 	
 	return intered;
 }
 float Terrain::interpolate(float q1, float q2, float pos){
+	/*if(q1>100000||q1<-100000){
+		std::cout<<"q1"<<std::endl;
+	}
+	
+	if(q2>100000||q2<-100000){
+		std::cout<<"q2"<<std::endl;
+	}*/
 	return q1 * (1-pos) + pos * q2;
 }
 
