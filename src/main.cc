@@ -54,8 +54,8 @@ int main(int argc, char *argv[]) {
 	cout << "seed?" << endl;
 	int seed;
 	cin >> seed;
-	const int terrain_width(256), terrain_height(256);
-	Terrain terrain = Terrain(terrain_width,terrain_height,seed, true);
+	const int terrain_width(1024), terrain_height(1024);
+	Terrain terrain = Terrain(terrain_width,terrain_height,seed);
 	
 	
 	while (window.isOpen()){
@@ -82,21 +82,7 @@ int main(int argc, char *argv[]) {
 				if(event.key.code==Keyboard::R){
 					seed++;
 					terrain = Terrain(terrain_width,terrain_height,seed);
-					//terrain = Terrain(250,250,seed);
 					cout<<seed<<endl;
-					
-					for (unsigned int ii=0;ii<terrain.raw_map.size();ii++){
-						for (unsigned int jj=0;jj<terrain.raw_map.size();jj++){
-							
-							if(terrain.raw_map[ii][jj]>100 || terrain.raw_map[ii][jj]<-100){
-								//cout<<terrain.raw_map[ii][jj]<<endl;
-							}
-							
-							//cout<<terrain.raw_map[ii][jj]<<" ";
-						}
-						//cout<<endl;
-					}
-					//cout<<endl<<endl;
 				}
 			}
 			if (Mouse::isButtonPressed(Mouse::Left)){
