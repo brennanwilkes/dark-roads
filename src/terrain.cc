@@ -149,7 +149,7 @@ void Terrain::colourize(){
 	map_tex->create(width,height);
 	highest = raw_map[0][0];
 	for(unsigned int i = 0; i < width*height; i++)//find highest
-		if(highest < raw_map[i%width][i/height]) highest = raw_map[i%width][i/height];
+		if(highest > raw_map[i%width][i/height]) highest = raw_map[i%width][i/height];
 		
 	
 	
