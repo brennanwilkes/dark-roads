@@ -55,15 +55,14 @@ int main(int argc, char *argv[]) {
 	int seed;
 	cin >> seed;
 	const int terrain_width(250), terrain_height(250);
-	Terrain* terrain = new Terrain(terrain_width,terrain_height,seed);
+	Terrain terrain = Terrain(terrain_width,terrain_height,seed);
 	
 	
 	
 	while (window.isOpen()){
 		
 		window.clear();
-		terrain->sprite->setPosition(-player.x,-player.y);
-		window.draw(*(terrain->sprite));
+		
 
 		Event event;
 		while (window.pollEvent(event))
@@ -72,36 +71,31 @@ int main(int argc, char *argv[]) {
 				window.close();
 			}
 			player.check_keys(event);
-			
 			if(event.type==Event::KeyPressed){
 				if(event.key.code==Keyboard::Return){
-					
 					for(unsigned int j=0;j<dudes.size();j++){//Do interact stuff
 						if(dudes[j]->hostile && dudes[j]->interact){
 							dudes[j]->health=dudes[j]->health-(25.0/getDis(dudes[j]));
 							dudes[j]->combat=true;
 						}
-					}
-					
+					}		
 				}
 				if(event.key.code==Keyboard::R){
 					seed++;
-					delete terrain;
-					terrain = new Terrain(terrain_width,terrain_height,seed);
+					terrain = Terrain(terrain_width,terrain_height,seed);
 					//terrain = Terrain(250,250,seed);
 					cout<<seed<<endl;
 				}
 			}
-			
 			if (Mouse::isButtonPressed(Mouse::Left)){
 				Vector2i m_pos = sf::Mouse::getPosition();
-				//cout<<m_pos.x<<" "<<m_pos.y<<endl;	
-				
+				//cout<<m_pos.x<<" "<<m_pos.y<<endl;		
 			}
-				
-			
 		}
 		
+		
+		terrain.sprite->setPosition(-player.x,-player.y);
+		window.draw(*terrain.sprite);
 		
 		player.tick();
 		for(unsigned int i=0;i<dudes.size();i++){

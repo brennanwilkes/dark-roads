@@ -21,8 +21,8 @@ Terrain::Terrain(int w, int l, int s,bool spammy){
 	sprite = new sf::Sprite;
 	heightmap_tex = new sf::Texture;
 	map_tex = new sf::Texture;
-	pixels = new sf::Uint8[l*l*4];
-	cpixels = new sf::Uint8[l*l*4];
+	pixels = new sf::Uint8[w*l*4];
+	cpixels = new sf::Uint8[w*l*4];
 	
 	
 	create_height_tex();
