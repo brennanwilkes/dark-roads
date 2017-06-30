@@ -39,13 +39,18 @@ void Terrain::gen_map(int num_octaves){
 
 	//populate rand_array with floats between 0 and 1.
 	rand_array.resize(width*height, 0);
+	
 	for(auto elem = rand_array.begin(); elem != rand_array.end(); elem++){
 		*elem = float(rand())/RAND_MAX;
-		
+		//std::cout<<*elem<<std::endl;
 	}
 	
 	
-
+	/*for(unsigned int a=0;a<width;a++){
+		for(unsigned int b=0;b<height;b++){
+			rand_array[(a*height)+b]=float(rand())/RAND_MAX;
+		}
+	}*/
 	
 	float persistence = float(rand())/RAND_MAX;		//how smooth the curve is (lower is more smooth)
 	float range = 1;								//the maximum height change possible to generate. 
@@ -97,8 +102,14 @@ std::vector<std::vector<float> > Terrain::gen_octave(float range, int freq){
 			if(intered[x][y]>100 || intered[x][y]<-100){
 				//THERE IS A PROBLEM HERE SOMETIMES THIS IS TRIGGERED AND CAUSES BLACK PIXELS
 				
-				std::cout<<x<<" "<<y<<std::endl;
-				
+				std::cout<<x<<" "<<y<<" "<<intered[x][y]<<std::endl;
+				//std::cout<<rand_array[(x/x_step)*x_step + (y/y_step)*y_step*width]<<std::endl;
+				//std::cout<<rand_array[(x/x_step)*x_step + x_step + (y/y_step)*y_step*width]<<std::endl;
+				std::cout<<(x/x_step)*x_step + ((y/y_step)*y_step + y_step)*width<<" "<<rand_array[(x/x_step)*x_step + ((y/y_step)*y_step + y_step)*width]<<std::endl;
+				std::cout<<(x/x_step)*x_step + x_step + ((y/y_step)*y_step + y_step)*width<<" "<<rand_array[(x/x_step)*x_step + x_step + ((y/y_step)*y_step + y_step)*width]<<std::endl;
+				//std::cout<<float(x%x_step)/x_step<<std::endl;
+				//std::cout<<float(y%y_step)/y_step<<std::endl;
+				std::cout<<std::endl;
 				
 			}
 		}

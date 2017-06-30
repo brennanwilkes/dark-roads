@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
 	cout << "seed?" << endl;
 	int seed;
 	cin >> seed;
-	const int terrain_width(50), terrain_height(50);
+	const int terrain_width(1000), terrain_height(1000);
 	Terrain terrain = Terrain(terrain_width,terrain_height,seed);
 	
 	
@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 						for (unsigned int jj=0;jj<terrain.raw_map.size();jj++){
 							
 							if(terrain.raw_map[ii][jj]>100 || terrain.raw_map[ii][jj]<-100){
-								cout<<terrain.raw_map[ii][jj]<<endl;
+								//cout<<terrain.raw_map[ii][jj]<<endl;
 							}
 							
 							//cout<<terrain.raw_map[ii][jj]<<" ";
