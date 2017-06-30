@@ -54,16 +54,16 @@ int main(int argc, char *argv[]) {
 	cout << "seed?" << endl;
 	int seed;
 	cin >> seed;
-	const int terrain_width(100), terrain_height(100);
-	Terrain terrain = Terrain(terrain_width,terrain_height,seed);
+	const int terrain_width(250), terrain_height(250);
+	Terrain* terrain = new Terrain(terrain_width,terrain_height,seed);
 	
-	terrain.sprite->setPosition(0,0);
+	
 	
 	while (window.isOpen()){
 		
 		window.clear();
-
-		window.draw(*terrain.sprite);
+		terrain->sprite->setPosition(-player.x,-player.y);
+		window.draw(*(terrain->sprite));
 
 		Event event;
 		while (window.pollEvent(event))
@@ -84,12 +84,18 @@ int main(int argc, char *argv[]) {
 					}
 					
 				}
+				if(event.key.code==Keyboard::R){
+					seed++;
+					delete terrain;
+					terrain = new Terrain(terrain_width,terrain_height,seed);
+					//terrain = Terrain(250,250,seed);
+					cout<<seed<<endl;
+				}
 			}
 			
 			if (Mouse::isButtonPressed(Mouse::Left)){
 				Vector2i m_pos = sf::Mouse::getPosition();
-				
-				cout<<m_pos.x<<" "<<m_pos.y<<endl;	
+				//cout<<m_pos.x<<" "<<m_pos.y<<endl;	
 				
 			}
 				
