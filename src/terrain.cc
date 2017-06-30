@@ -34,10 +34,16 @@ void Terrain::gen_map(int num_octaves){
 	//generate heightmap for terrain	(if num_octaves is -1, will loop until it cant anymore)
 
 	//populate rand_array with floats between 0 and 1.
-	rand_array.resize((width+2)*(height+2));
+	rand_array.resize((width+1)*(height+1));
 	
 	for(auto elem = rand_array.begin(); elem != rand_array.end(); elem++){
 		*elem = float(rand())/RAND_MAX;
+	}
+	for(unsigned int i = width; i < rand_array.size(); i+=width+1){
+		rand_array[i] = rand_array[i-width];
+	}
+	for(unsigned int i = (width+1)*height; i < rand_array.size(); i++){
+		rand_array[i] = rand_array[i-(width+1)*height];
 	}
 	
 	float persistence = 0.5;						//how smooth the curve is (lower is more smooth)
@@ -75,12 +81,12 @@ std::vector<std::vector<float> > Terrain::gen_octave(float range, int freq){
 		for(unsigned int y = 0; y < height; y++){
 			intered[x][y] = range * interpolate(
 								interpolate(
-									rand_array[(x/x_step)*x_step + (y/y_step)*y_step*width], 
-									rand_array[(x/x_step)*x_step + x_step + (y/y_step)*y_step*width], 
+									rand_array[(x/x_step)*x_step + (y/y_step)*y_step*(width + 1)], 
+									rand_array[(x/x_step)*x_step + x_step + (y/y_step)*y_step*(width + 1)], 
 									float(x%x_step)/x_step), 
 								interpolate(
-									rand_array[(x/x_step)*x_step + ((y/y_step)*y_step + y_step)*width], 
-									rand_array[(x/x_step)*x_step + x_step + ((y/y_step)*y_step + y_step)*width], 
+									rand_array[(x/x_step)*x_step + ((y/y_step)*y_step + y_step)*(width + 1)], 
+									rand_array[(x/x_step)*x_step + x_step + ((y/y_step)*y_step + y_step)*(width + 1)], 
 									float(x%x_step)/x_step), 
 								float(y%y_step)/y_step);
 		}

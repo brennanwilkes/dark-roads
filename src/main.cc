@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
 	cout << "seed?" << endl;
 	int seed;
 	cin >> seed;
-	const int terrain_width(1024), terrain_height(1024);
+	const int terrain_width(128), terrain_height(128);
 	Terrain terrain = Terrain(terrain_width,terrain_height,seed);
 	
 	
@@ -94,6 +94,14 @@ int main(int argc, char *argv[]) {
 		
 		terrain.sprite->setPosition(-player.x,-player.y);
 		window.draw(*terrain.sprite);
+		terrain.sprite->setPosition(-player.x+800,-player.y);
+		window.draw(*terrain.sprite);
+		terrain.sprite->setPosition(-player.x-800,-player.y);
+		window.draw(*terrain.sprite);
+		terrain.sprite->setPosition(-player.x,-player.y+800);
+		window.draw(*terrain.sprite);
+		terrain.sprite->setPosition(-player.x,-player.y-800);
+		window.draw(*terrain.sprite);
 		
 		player.tick();
 		for(unsigned int i=0;i<dudes.size();i++){
@@ -113,7 +121,6 @@ int main(int argc, char *argv[]) {
 				window.draw(dudes[i]->sprite);
 			}
 		}
-		
 		
 		
 		window.draw(player.sprite);
