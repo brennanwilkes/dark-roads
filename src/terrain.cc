@@ -12,6 +12,14 @@ Terrain::Terrain(int w, int l, int s){
 	srand(seed);
 	
 	gen_map();
+	
+	sprite = new sf::Sprite;
+	heightmap_tex = new sf::Texture;
+	pixels = new sf::Uint8[l*l*4];
+	
+	draw_sprite();
+	
+	
 }
 
 void Terrain::gen_map(int num_octaves){
@@ -23,9 +31,9 @@ void Terrain::gen_map(int num_octaves){
 		*elem = float(rand())/RAND_MAX;
 	}
 	
-	float persistence = float(rand())/RAND_MAX;	//how smooth the curve is (lower is more smooth)
-	float range = 1;	//the maximum height change possible to generate. 
-	int freq = 4;	//the number of steps in the first octave.
+	float persistence = float(rand())/RAND_MAX;		//how smooth the curve is (lower is more smooth)
+	float range = 1;								//the maximum height change possible to generate. 
+	int freq = 4;									//the number of steps in the first octave.
 	std::vector<std::vector<float> > octave;
 	
 	for(unsigned int i = 0; i != num_octaves; i++){
@@ -78,3 +86,23 @@ std::vector<std::vector<float> > Terrain::gen_octave(float range, int freq){
 float Terrain::interpolate(float q1, float q2, float pos){
 	return q1 * (1-pos) + pos * q2;
 }
+void Terrain::draw_sprite(){
+	heightmap_tex->create(width,height);
+	
+	
+	highest = raw_map[0][0];
+	for(unsigned int i = 0; i < width*height; i++)//find highest
+		if(highest < raw_map[i%width][i/height]) highest = raw_map[i%width][i/height];
+	
+	for(unsigned int i = 0; i < width*height; i++){
+		pixels[i*4] = 255;
+		pixels[i*4+1] = 255;
+		pixels[i*4+2] = 255;
+		pixels[i*4+3] = int(raw_map[i%width][i/height]*255/highest);
+	}
+	heightmap_tex->update(pixels);
+	sprite->setTexture(*heightmap_tex);
+	sprite->setScale(800.0/width, 800.0/height);
+}
+
+

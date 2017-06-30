@@ -56,31 +56,13 @@ int main(int argc, char *argv[]) {
 	cin >> seed;
 	const int terrain_width(100), terrain_height(100);
 	Terrain terrain = Terrain(terrain_width,terrain_height,seed);
-	Texture heightmap_tex;
-	heightmap_tex.create(terrain_width,terrain_height);
-	Uint8 pixels[terrain_height*terrain_height*4];
-	Sprite terrain_sprite;
-	
-	float highest = terrain.raw_map[0][0];
-	for(unsigned int i = 0; i < terrain_width*terrain_height; i++)//find highest
-		if(highest < terrain.raw_map[i%terrain_width][i/terrain_height]) highest = terrain.raw_map[i%terrain_width][i/terrain_height];
-	
-	for(unsigned int i = 0; i < terrain_width*terrain_height; i++){
-		pixels[i*4] = 255;
-		pixels[i*4+1] = 255;
-		pixels[i*4+2] = 255;
-		pixels[i*4+3] = int(terrain.raw_map[i%terrain_width][i/terrain_height]*255/highest);
-	}
-	heightmap_tex.update(pixels);
-	terrain_sprite.setTexture(heightmap_tex);
-	terrain_sprite.setScale(800.0/terrain_width, 800.0/terrain_height);
-	terrain_sprite.setPosition(0,0);
+	terrain.sprite->setPosition(0,0);
 	
 	while (window.isOpen()){
 		
 		window.clear();
 
-		window.draw(terrain_sprite);
+		window.draw(*terrain.sprite);
 
 		Event event;
 		while (window.pollEvent(event))
