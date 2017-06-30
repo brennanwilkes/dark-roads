@@ -29,9 +29,14 @@ private:
 	float interpolate(float, float, float);						//interpolation function
 	
 	sf::Texture* heightmap_tex;
+	sf::Texture* map_tex;
 	sf::Uint8* pixels;
+	sf::Uint8* cpixels;
 	float highest;
-	void draw_sprite();
+	
+	void create_height_tex();
+	void colourize();
+	void draw_sprite(sf::Texture*);
 	
 	bool spam;
 };

@@ -20,9 +20,14 @@ Terrain::Terrain(int w, int l, int s,bool spammy){
 	
 	sprite = new sf::Sprite;
 	heightmap_tex = new sf::Texture;
+	map_tex = new sf::Texture;
 	pixels = new sf::Uint8[l*l*4];
+	cpixels = new sf::Uint8[l*l*4];
 	
-	draw_sprite();
+	
+	create_height_tex();
+	colourize();
+	draw_sprite(map_tex);
 	
 	
 }
@@ -91,13 +96,13 @@ std::vector<std::vector<float> > Terrain::gen_octave(float range, int freq){
 float Terrain::interpolate(float q1, float q2, float pos){
 	return q1 * (1-pos) + pos * q2;
 }
-void Terrain::draw_sprite(){
+
+void Terrain::create_height_tex(){
 	heightmap_tex->create(width,height);
-	
-	
 	highest = raw_map[0][0];
 	for(unsigned int i = 0; i < width*height; i++)//find highest
 		if(highest < raw_map[i%width][i/height]) highest = raw_map[i%width][i/height];
+		
 	
 	for(unsigned int i = 0; i < width*height; i++){
 		pixels[i*4] = 255;
@@ -106,7 +111,51 @@ void Terrain::draw_sprite(){
 		pixels[i*4+3] = int(raw_map[i%width][i/height]*255/highest);
 	}
 	heightmap_tex->update(pixels);
-	sprite->setTexture(*heightmap_tex);
+	
+}
+
+void Terrain::colourize(){
+	map_tex->create(width,height);
+	highest = raw_map[0][0];
+	for(unsigned int i = 0; i < width*height; i++)//find highest
+		if(highest < raw_map[i%width][i/height]) highest = raw_map[i%width][i/height];
+		
+	
+	
+	int weight;		//I thought about spelling this wait #welcometosummer
+	for(unsigned int i = 0; i < width*height; i++){
+		weight = int(raw_map[i%width][i/height]*255/highest);
+		
+		
+		
+		if (weight<water_level){
+			cpixels[i*4] = 0;
+			cpixels[i*4+1] = 0;
+			cpixels[i*4+2] = 255;
+		}
+		else if(weight<100){
+			cpixels[i*4] = 255;
+			cpixels[i*4+1] = 205;
+			cpixels[i*4+2] = 155;
+		}
+		else if(weight<200){
+			cpixels[i*4] = 0;
+			cpixels[i*4+1] = 205;
+			cpixels[i*4+2] = 0;
+		}
+		else{
+			cpixels[i*4] = 125;
+			cpixels[i*4+1] = 125;
+			cpixels[i*4+2] = 125;
+		}
+		cpixels[i*4+3] = weight;
+	}
+	map_tex->update(cpixels);
+	
+}
+
+void Terrain::draw_sprite(sf::Texture* dis_tex){
+	sprite->setTexture(*dis_tex);
 	sprite->setScale(800.0/width, 800.0/height);
 }
 

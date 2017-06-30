@@ -56,6 +56,7 @@ int main(int argc, char *argv[]) {
 	cin >> seed;
 	const int terrain_width(100), terrain_height(100);
 	Terrain terrain = Terrain(terrain_width,terrain_height,seed);
+	
 	terrain.sprite->setPosition(0,0);
 	
 	while (window.isOpen()){
