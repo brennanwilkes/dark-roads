@@ -58,7 +58,6 @@ int main(int argc, char *argv[]) {
 	Terrain terrain = Terrain(terrain_width,terrain_height,seed);
 	
 	
-	
 	while (window.isOpen()){
 		
 		window.clear();
