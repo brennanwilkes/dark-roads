@@ -17,7 +17,8 @@ public:
 	void check_keys(sf::Event e);
 	
 	void tick();
-	
+	int cx;
+	int cy;
 	
 };
 #endif

@@ -41,6 +41,10 @@ inline float getDis(GameObject* src);
 inline float getDis(GameObject* src,int x2,int y2);
 inline float getDis(int x1,int y1,int x2,int y2);
 
+
+//std::vector<std::vector<Terrain*> > fullmap;
+std::map<std::pair<int,int>,Terrain*> fullmap;
+
 int main(int argc, char *argv[]) {
 	
 	RenderWindow window(VideoMode(800, 800), "Hello World!");
@@ -51,12 +55,18 @@ int main(int argc, char *argv[]) {
 	romar.set_up(250,125,10);
 	dudes.push_back(&romar);
 	
-	cout << "seed?" << endl;
+	//cout << "seed?" << endl;
 	int seed;
-	cin >> seed;
+	//cin >> seed;
+	seed=1;
 	const int terrain_width(128), terrain_height(128);
-	Terrain terrain = Terrain(terrain_width,terrain_height,seed);
+	//Terrain terrain = Terrain(terrain_width,terrain_height,seed);
 	
+	
+	fullmap[std::make_pair(player.cx,player.cy)] = new Terrain(terrain_width,terrain_height,seed,player.cx,player.cy);
+	
+	fullmap[std::make_pair(1,player.cy)] = new Terrain(terrain_width,terrain_height,seed,1,player.cy);
+	fullmap[std::make_pair(-1,player.cy)] = new Terrain(terrain_width,terrain_height,seed,-1,player.cy);
 	
 	while (window.isOpen()){
 		
@@ -79,11 +89,7 @@ int main(int argc, char *argv[]) {
 						}
 					}		
 				}
-				if(event.key.code==Keyboard::R){
-					seed++;
-					terrain = Terrain(terrain_width,terrain_height,seed);
-					cout<<seed<<endl;
-				}
+				
 			}
 			if (Mouse::isButtonPressed(Mouse::Left)){
 				Vector2i m_pos = sf::Mouse::getPosition();
@@ -92,9 +98,17 @@ int main(int argc, char *argv[]) {
 		}
 		
 		
-		terrain.sprite->setPosition(-player.x,-player.y);
-		window.draw(*terrain.sprite);
-		terrain.sprite->setPosition(-player.x+800,-player.y);
+		fullmap[std::make_pair(player.cx,player.cy)]->sprite->setPosition(-player.x,-player.y);
+		window.draw(*(fullmap[std::make_pair(player.cx,player.cy)]->sprite));
+		
+		fullmap[std::make_pair(player.cx+1,player.cy)]->sprite->setPosition(-player.x+800,-player.y);
+		window.draw(*(fullmap[std::make_pair(player.cx+1,player.cy)]->sprite));
+		
+		fullmap[std::make_pair(player.cx-1,player.cy)]->sprite->setPosition(-player.x-800,-player.y);
+		window.draw(*(fullmap[std::make_pair(player.cx-1,player.cy)]->sprite));
+		
+		
+		/*terrain.sprite->setPosition(-player.x+800,-player.y);
 		window.draw(*terrain.sprite);
 		terrain.sprite->setPosition(-player.x-800,-player.y);
 		window.draw(*terrain.sprite);
@@ -102,7 +116,7 @@ int main(int argc, char *argv[]) {
 		window.draw(*terrain.sprite);
 		terrain.sprite->setPosition(-player.x,-player.y-800);
 		window.draw(*terrain.sprite);
-		
+		*/
 		player.tick();
 		for(unsigned int i=0;i<dudes.size();i++){
 			dudes[i]->tick();

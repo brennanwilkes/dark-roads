@@ -1,18 +1,23 @@
 #include <iostream>
 #include "terrain.hpp"
+#include "global.hpp"
 
 //TODO: switch to float-based coordinate system (allows for 'infinite' precision)
-Terrain::Terrain(int w, int l, int s){	
+Terrain::Terrain(int w, int l, int s,int sx,int sy){	
 	
-	//width, height, seed
+	//width, height, seed, coordinates
 	width = w;
 	height = l;
-	seed = s;
+	seed = (s*1000000)+(sx*1000)+sy;
+	
+	x=sx;
+	y=sy;
+	
 	raw_map.resize(width, std::vector<float>(height));
 	
 	srand(seed);
 	
-	water_level=rand()%255;
+	water_level=40;//rand()%255;
 	
 	gen_map();
 	
@@ -39,10 +44,36 @@ void Terrain::gen_map(int num_octaves){
 	for(auto elem = rand_array.begin(); elem != rand_array.end(); elem++){
 		*elem = float(rand())/RAND_MAX;
 	}
-	for(unsigned int i = width; i < rand_array.size(); i+=width+1){
-		rand_array[i] = rand_array[i-width];
+	
+	
+	if (fullmap.count(std::make_pair(x+1,y))){		//new terrain west
+		
+		std::cout<<"west"<<std::endl;
+		
+		for(unsigned int i = width; i < rand_array.size(); i+=width+1){		
+			rand_array[i] = fullmap[std::make_pair(x+1,y)]->rand_array[i-width];
+		}
 	}
-	for(unsigned int i = (width+1)*height; i < rand_array.size(); i++){
+	else if(fullmap.count(std::make_pair(x-1,y))){	//new terrain east
+		
+		std::cout<<"east"<<std::endl;
+		
+		for(unsigned int i = width; i < rand_array.size(); i+=width+1){		
+			rand_array[i] = fullmap[std::make_pair(x-1,y)]->rand_array[i-width];
+		}
+	}
+	else{											//isolated square
+		for(unsigned int i = width; i < rand_array.size(); i+=width+1){			// 		< x > wrapping
+			rand_array[i] = rand_array[i-width];
+			//std::cout<<"i "<<i<<" - width "<<width<<" - rand_array[i] "<<rand_array[i]<<std::endl;
+		}
+	}
+	
+	
+	
+	
+	
+	for(unsigned int i = (width+1)*height; i < rand_array.size(); i++){		// 		/\ y \/ wrapping
 		rand_array[i] = rand_array[i-(width+1)*height];
 	}
 	

@@ -5,6 +5,8 @@
 Player::Player(float rad) : GameObject(rad) {}
 
 void Player::set_up(){
+	cx=0;
+	cy=0;
 	
 	x=0;
 	y=0;
@@ -96,6 +98,8 @@ void Player::tick(){
 		move=true;
 	}
 	
+	cx=(int)floor((x+400)/800.0);
+	cy=(int)floor((y+400)/800.0);
 	
 	//sprite.setPosition(x,y);
 	//sprite.setPosition(400,400);		//set this to centre of screen

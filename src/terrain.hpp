@@ -13,16 +13,21 @@ public:
 	int seed;			//seed used to generate terrain
 	int water_level;
 	
+	int x;
+	int y;
+	
 	std::vector<std::vector<float> > raw_map;	//raw heightmap of terrain
 	
-	Terrain(int,int,int);
+	Terrain(int,int,int,int,int);
 	
 	sf::Sprite* sprite;
+	
+	std::vector<float> rand_array;		//array for generating heightmap of terrain
 	
 
 private:
 	int depth;							//number of octaves used to generate. 
-	std::vector<float> rand_array;		//array for generating heightmap of terrain
+
 	void gen_map(int = -1);				//generate heightmap
 	
 	std::vector<std::vector<float> > gen_octave(float, int);	//generate one octave of terrain and interpolate it
