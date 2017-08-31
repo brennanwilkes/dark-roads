@@ -58,15 +58,13 @@ int main(int argc, char *argv[]) {
 	//cout << "seed?" << endl;
 	int seed;
 	//cin >> seed;
-	seed=1;
+	seed=2;
 	const int terrain_width(128), terrain_height(128);
 	//Terrain terrain = Terrain(terrain_width,terrain_height,seed);
 	
 	
 	fullmap[std::make_pair(player.cx,player.cy)] = new Terrain(terrain_width,terrain_height,seed,player.cx,player.cy);
 	
-	fullmap[std::make_pair(1,player.cy)] = new Terrain(terrain_width,terrain_height,seed,1,player.cy);
-	fullmap[std::make_pair(-1,player.cy)] = new Terrain(terrain_width,terrain_height,seed,-1,player.cy);
 	
 	while (window.isOpen()){
 		
@@ -98,13 +96,26 @@ int main(int argc, char *argv[]) {
 		}
 		
 		
-		fullmap[std::make_pair(player.cx,player.cy)]->sprite->setPosition(-player.x,-player.y);
+		fullmap[std::make_pair(player.cx,player.cy)]->sprite->setPosition(-player.x-std::abs(800*(player.cx)),-player.y);
 		window.draw(*(fullmap[std::make_pair(player.cx,player.cy)]->sprite));
 		
-		fullmap[std::make_pair(player.cx+1,player.cy)]->sprite->setPosition(-player.x+800,-player.y);
+		if(!fullmap.count(std::make_pair(player.cx-1,player.cy))){
+			fullmap[std::make_pair(player.cx-1,player.cy)] = new Terrain(terrain_width,terrain_height,seed,player.cx-1,player.cy);
+		}
+		if(!fullmap.count(std::make_pair(player.cx+1,player.cy))){
+			fullmap[std::make_pair(player.cx+1,player.cy)] = new Terrain(terrain_width,terrain_height,seed,player.cx+1,player.cy);
+		}
+		
+		
+		
+	
+	
+		//std::cout<<"cx "<<player.cx<<" - xpos "<<std::abs(800*(player.cx+1))<<std::endl;
+		
+		fullmap[std::make_pair(player.cx+1,player.cy)]->sprite->setPosition(-player.x+std::abs(800*(player.cx+1)),-player.y);
 		window.draw(*(fullmap[std::make_pair(player.cx+1,player.cy)]->sprite));
 		
-		fullmap[std::make_pair(player.cx-1,player.cy)]->sprite->setPosition(-player.x-800,-player.y);
+		fullmap[std::make_pair(player.cx-1,player.cy)]->sprite->setPosition(-player.x-std::abs(800*(player.cx-1)),-player.y);
 		window.draw(*(fullmap[std::make_pair(player.cx-1,player.cy)]->sprite));
 		
 		
