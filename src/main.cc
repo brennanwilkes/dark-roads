@@ -40,7 +40,7 @@ inline float getDis(GameObject* src,GameObject* dest);
 inline float getDis(GameObject* src);
 inline float getDis(GameObject* src,int x2,int y2);
 inline float getDis(int x1,int y1,int x2,int y2);
-
+vector<pair<int,int> > gc;
 
 //std::vector<std::vector<Terrain*> > fullmap;
 std::map<std::pair<int,int>,Terrain*> fullmap;
@@ -63,8 +63,8 @@ int main(int argc, char *argv[]) {
 	//Terrain terrain = Terrain(terrain_width,terrain_height,seed);
 	
 	
-	fullmap[std::make_pair(player.cx,player.cy)] = new Terrain(terrain_width,terrain_height,seed,player.cx,player.cy);
-	
+	fullmap[make_pair(0,0)] = new Terrain(terrain_width,terrain_height,seed,0,0);
+	gc.push_back(make_pair(0,0));
 	
 	while (window.isOpen()){
 		
@@ -96,28 +96,50 @@ int main(int argc, char *argv[]) {
 		}
 		
 		
-		fullmap[std::make_pair(player.cx,player.cy)]->sprite->setPosition(-player.x-std::abs(800*(player.cx)),-player.y);
-		window.draw(*(fullmap[std::make_pair(player.cx,player.cy)]->sprite));
+		//fullmap[std::make_pair(player.cx,player.cy)]->sprite->setPosition(-player.x-std::abs(800*(player.cx)),-player.y);
+		//window.draw(*(fullmap[std::make_pair(player.cx,player.cy)]->sprite));
 		
+		
+		for(int ix=-1;ix<2;ix++){
+			for(int iy=-1;iy<2;iy++){
+				if(!fullmap.count(std::make_pair(player.cx+ix,player.cy+iy))){
+					fullmap[std::make_pair(player.cx+ix,player.cy+iy)] = new Terrain(terrain_width,terrain_height,seed,player.cx+ix,player.cy+iy);
+					gc.push_back(make_pair(player.cx+ix,player.cy+iy));
+				}
+			}
+		}
+		
+		/*
 		if(!fullmap.count(std::make_pair(player.cx-1,player.cy))){
 			fullmap[std::make_pair(player.cx-1,player.cy)] = new Terrain(terrain_width,terrain_height,seed,player.cx-1,player.cy);
+			gc.push_back(make_pair(player.cx-1,player.cy));
 		}
 		if(!fullmap.count(std::make_pair(player.cx+1,player.cy))){
 			fullmap[std::make_pair(player.cx+1,player.cy)] = new Terrain(terrain_width,terrain_height,seed,player.cx+1,player.cy);
+			gc.push_back(make_pair(player.cx+1,player.cy));
 		}
-		
+		*/
 		
 		
 	
 	
 		//std::cout<<"cx "<<player.cx<<" - xpos "<<std::abs(800*(player.cx+1))<<std::endl;
 		
+		/*
 		fullmap[std::make_pair(player.cx+1,player.cy)]->sprite->setPosition(-player.x+std::abs(800*(player.cx+1)),-player.y);
 		window.draw(*(fullmap[std::make_pair(player.cx+1,player.cy)]->sprite));
 		
 		fullmap[std::make_pair(player.cx-1,player.cy)]->sprite->setPosition(-player.x-std::abs(800*(player.cx-1)),-player.y);
 		window.draw(*(fullmap[std::make_pair(player.cx-1,player.cy)]->sprite));
+		*/
 		
+		for(unsigned int k=0;k<gc.size();k++){
+			if(abs(player.cx-gc[k].first)<2 && abs(player.cy-gc[k].second)<2){
+				//fullmap[gc[k]]->sprite->setPosition(-player.x-abs(800*(gc[k].first)),-player.y);
+				fullmap[gc[k]]->sprite->setPosition(800*(gc[k].first)-player.x,800*(gc[k].second)-player.y);
+				window.draw(*(fullmap[gc[k]]->sprite));
+			}
+		}
 		
 		/*terrain.sprite->setPosition(-player.x+800,-player.y);
 		window.draw(*terrain.sprite);

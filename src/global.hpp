@@ -20,5 +20,6 @@ extern inline float getDis(int x1,int y1,int x2,int y2);
 
 //extern std::vector<std::vector<Terrain*> > fullmap;
 extern std::map<std::pair<int,int>,Terrain*> fullmap;
+extern std::vector<std::pair<int,int> > gc;
 
 #endif
