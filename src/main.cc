@@ -60,10 +60,9 @@ int main(int argc, char *argv[]) {
 	//cin >> seed;
 	seed=2;
 	const int terrain_width(128), terrain_height(128);
-	//Terrain terrain = Terrain(terrain_width,terrain_height,seed);
 	
 	
-	fullmap[make_pair(0,0)] = new Terrain(terrain_width,terrain_height,seed,0,0);
+	fullmap[make_pair(0,0)] = new Terrain(terrain_width,terrain_height,seed,0,0);	//create inital square
 	gc.push_back(make_pair(0,0));
 	
 	while (window.isOpen()){
@@ -91,16 +90,12 @@ int main(int argc, char *argv[]) {
 			}
 			if (Mouse::isButtonPressed(Mouse::Left)){
 				Vector2i m_pos = sf::Mouse::getPosition();
-				//cout<<m_pos.x<<" "<<m_pos.y<<endl;		
 			}
 		}
 		
 		
-		//fullmap[std::make_pair(player.cx,player.cy)]->sprite->setPosition(-player.x-std::abs(800*(player.cx)),-player.y);
-		//window.draw(*(fullmap[std::make_pair(player.cx,player.cy)]->sprite));
-		
-		
-		for(int ix=-1;ix<2;ix++){
+
+		for(int ix=-1;ix<2;ix++){				//scan the 3x3 around the player and generate any needed tiles
 			for(int iy=-1;iy<2;iy++){
 				if(!fullmap.count(std::make_pair(player.cx+ix,player.cy+iy))){
 					fullmap[std::make_pair(player.cx+ix,player.cy+iy)] = new Terrain(terrain_width,terrain_height,seed,player.cx+ix,player.cy+iy);
@@ -109,47 +104,15 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		
-		/*
-		if(!fullmap.count(std::make_pair(player.cx-1,player.cy))){
-			fullmap[std::make_pair(player.cx-1,player.cy)] = new Terrain(terrain_width,terrain_height,seed,player.cx-1,player.cy);
-			gc.push_back(make_pair(player.cx-1,player.cy));
-		}
-		if(!fullmap.count(std::make_pair(player.cx+1,player.cy))){
-			fullmap[std::make_pair(player.cx+1,player.cy)] = new Terrain(terrain_width,terrain_height,seed,player.cx+1,player.cy);
-			gc.push_back(make_pair(player.cx+1,player.cy));
-		}
-		*/
 		
-		
-	
-	
-		//std::cout<<"cx "<<player.cx<<" - xpos "<<std::abs(800*(player.cx+1))<<std::endl;
-		
-		/*
-		fullmap[std::make_pair(player.cx+1,player.cy)]->sprite->setPosition(-player.x+std::abs(800*(player.cx+1)),-player.y);
-		window.draw(*(fullmap[std::make_pair(player.cx+1,player.cy)]->sprite));
-		
-		fullmap[std::make_pair(player.cx-1,player.cy)]->sprite->setPosition(-player.x-std::abs(800*(player.cx-1)),-player.y);
-		window.draw(*(fullmap[std::make_pair(player.cx-1,player.cy)]->sprite));
-		*/
 		
 		for(unsigned int k=0;k<gc.size();k++){
 			if(abs(player.cx-gc[k].first)<2 && abs(player.cy-gc[k].second)<2){
-				//fullmap[gc[k]]->sprite->setPosition(-player.x-abs(800*(gc[k].first)),-player.y);
-				fullmap[gc[k]]->sprite->setPosition(800*(gc[k].first)-player.x,800*(gc[k].second)-player.y);
+				fullmap[gc[k]]->sprite->setPosition(800*(gc[k].first)-player.x,800*(gc[k].second)-player.y);	//draw the 3x3 around the player. Could be reduced to a 2x2 in the future
 				window.draw(*(fullmap[gc[k]]->sprite));
 			}
 		}
 		
-		/*terrain.sprite->setPosition(-player.x+800,-player.y);
-		window.draw(*terrain.sprite);
-		terrain.sprite->setPosition(-player.x-800,-player.y);
-		window.draw(*terrain.sprite);
-		terrain.sprite->setPosition(-player.x,-player.y+800);
-		window.draw(*terrain.sprite);
-		terrain.sprite->setPosition(-player.x,-player.y-800);
-		window.draw(*terrain.sprite);
-		*/
 		player.tick();
 		for(unsigned int i=0;i<dudes.size();i++){
 			dudes[i]->tick();
@@ -171,7 +134,6 @@ int main(int argc, char *argv[]) {
 		
 		
 		window.draw(player.sprite);
-
 		window.display();
 	}
 
