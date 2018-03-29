@@ -46,55 +46,18 @@ void Terrain::gen_map(int num_octaves){
 	}
 	
 	
-	/*if (fullmap.count(std::make_pair(x+1,y))){		//new terrain west
-		
-		std::cout<<"west"<<std::endl;
-		
-		for(unsigned int i = width; i < rand_array.size(); i+=width+1){		
-			rand_array[i] = fullmap[std::make_pair(x+1,y)]->rand_array[i-width];
-		}
-	}
-	else if(fullmap.count(std::make_pair(x-1,y))){	//new terrain east
-		
-		std::cout<<"east"<<std::endl;
-		
-		for(unsigned int i = width; i < rand_array.size(); i+=width+1){		
-			rand_array[i] = fullmap[std::make_pair(x-1,y)]->rand_array[i+width];
-		}
-	}
-	else{											//isolated square
-		for(unsigned int i = width; i < rand_array.size(); i+=width+1){			// 		< x > wrapping
-			rand_array[i] = rand_array[i-width];
-			//std::cout<<"i "<<i<<" - width "<<width<<" - rand_array[i] "<<rand_array[i]<<std::endl;
-		}
-	}*/
 	
 	
 	
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	if (fullmap.count(std::make_pair(x+1,y))){		//new terrain west
+	if (fullmap.count(std::make_pair(x+1,y))){				//new terrain west
 		
 		
 		unsigned int ti=width;
 		for(auto elem = rand_array.begin(); elem != rand_array.end(); elem++){
-
-			float temp = fullmap[std::make_pair(x+1,y)]->rand_array[ti-width]+((float(rand())/RAND_MAX)/10.0);
-
+			float temp = fullmap[std::make_pair(x+1,y)]->rand_array[ti-width]+(((float(rand())/RAND_MAX)/10.0)-0.05);
 			ti++;
 			if (temp<0){
 				temp = 0.00001;
@@ -102,17 +65,16 @@ void Terrain::gen_map(int num_octaves){
 			else if (temp>1){
 				temp = 0.99999;
 			}
-
 			*elem = temp;
 		}
 		
 	}
-	else if(fullmap.count(std::make_pair(x-1,y))){	//new terrain east
+	else if(fullmap.count(std::make_pair(x-1,y))){			//new terrain east
 		
 		
 		unsigned int ti=0;
 		for(auto elem = rand_array.begin(); elem != rand_array.end(); elem++){
-			float temp2 = fullmap[std::make_pair(x-1,y)]->rand_array[ti+width]+((float(rand())/RAND_MAX)/10.0);
+			float temp2 = fullmap[std::make_pair(x-1,y)]->rand_array[ti+width]+(((float(rand())/RAND_MAX)/10.0)-0.05);
 			ti++;
 			if (temp2<0){
 				temp2 = 0.00001;
@@ -125,7 +87,7 @@ void Terrain::gen_map(int num_octaves){
 		}
 		
 	}
-	else{											//isolated square
+	else{													//isolated leftright
 		for(auto elem = rand_array.begin(); elem != rand_array.end(); elem++){
 			*elem = float(rand())/RAND_MAX;
 		}
@@ -139,25 +101,56 @@ void Terrain::gen_map(int num_octaves){
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	for(unsigned int i = (width+1)*height; i < rand_array.size(); i++){		// 		/\ y \/ wrapping
-		rand_array[i] = rand_array[i-(width+1)*height];
+	if (fullmap.count(std::make_pair(x,y+1))){				//new terrain north
+		
+		
+		unsigned int ti=width;
+		for(auto elem = rand_array.begin(); elem != rand_array.end(); elem++){
+			float temp = fullmap[std::make_pair(x,y+1)]->rand_array[ti-width]+(((float(rand())/RAND_MAX)/10.0)-0.05);
+			ti++;
+			if (temp<0){
+				temp = 0.00001;
+			}
+			else if (temp>1){
+				temp = 0.99999;
+			}
+			*elem = temp;
+		}
+		
 	}
+	else if(fullmap.count(std::make_pair(x,y-1))){			//new terrain south
+		
+		
+		unsigned int ti=0;
+		for(auto elem = rand_array.begin(); elem != rand_array.end(); elem++){
+			float temp2 = fullmap[std::make_pair(x,y-1)]->rand_array[ti+width]+(((float(rand())/RAND_MAX)/10.0)-0.05);
+			ti++;
+			if (temp2<0){
+				temp2 = 0.00001;
+			}
+			else if (temp2>1){
+				temp2 = 0.99999;
+			}
+			
+			*elem = temp2;
+		}
+		
+	}
+	else{													//isolated updown
+		for(auto elem = rand_array.begin(); elem != rand_array.end(); elem++){
+			*elem = float(rand())/RAND_MAX;
+		}
+		for(unsigned int i = width; i < rand_array.size(); i+=width+1){			// 		< x > wrapping
+			rand_array[i] = rand_array[i-width];
+			//std::cout<<"i "<<i<<" - width "<<width<<" - rand_array[i] "<<rand_array[i]<<std::endl;
+		}
+	}
+	
+	
+	
+	//for(unsigned int i = (width+1)*height; i < rand_array.size(); i++){		// 		/\ y \/ wrapping
+	//	rand_array[i] = rand_array[i-(width+1)*height];
+	//}
 	
 	float persistence = 0.25;						//how smooth the curve is (lower is more smooth)
 	float range = 1;								//the maximum height change possible to generate. 
