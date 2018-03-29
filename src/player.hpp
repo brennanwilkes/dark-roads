@@ -5,7 +5,6 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <SFML/Graphics.hpp>
 
 class Player : public GameObject{
 public:
@@ -14,7 +13,7 @@ public:
 	
 	std::map<std::string,bool> keyPress;
 	
-	void check_keys(sf::Event e);
+	void check_keys();
 	
 	void tick();
 	int cx;

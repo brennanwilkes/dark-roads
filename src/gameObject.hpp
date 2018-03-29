@@ -2,7 +2,6 @@
 #define GAME_OBJ_H
 
 #include <map>
-#include <SFML/Graphics.hpp>
 
 class GameObject{
 public:
@@ -15,7 +14,6 @@ public:
 	int id;
 	int health;
 	
-	sf::CircleShape sprite;		//EVENTUALLY CHANGE THIS TO SPRITES
 	
 	
 	

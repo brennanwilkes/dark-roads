@@ -1,7 +1,8 @@
 #Thank you Michael Liu for blessing me with the daddy to this beautiful makefile. All credit dude.
 
-LDLIBS=-lsfml-graphics -lsfml-window -lsfml-system
-
+LDFLAGS=
+LDLIBS=-lncurses -lmenu
+CFLAGS=-Wall -g -std=c++11 -lglut -Wno-reorder -Wno-sign-compare -Wno-unused-local-typedefs $(INCLUDES) -O2
 
 SOURCES=$(wildcard src/*.cc)
 HEADERS=$(wildcard src/*.hpp)
@@ -14,12 +15,13 @@ all: main $(SOURCES)
     
 main: $(OBJECTS)
 	@echo "\033[94mLinking...\033[0m"
-	@g++ -o main $(OBJECTS) $(LDLIBS)
+	@g++ $(LDFLAGS) -o main $(OBJECTS) $(LDLIBS)
 
 obj/%.o:src/%.cc $(HEADERS)
 	@echo "Compiling\033[91m $<... \033[0m"
-	@g++ -std=c++11 -o $@ -c $<
+	@g++ $(CFLAGS) -o $@ -c $<
 
 clean:
 	@echo KABOOM
 	rm -f obj/* main
+
