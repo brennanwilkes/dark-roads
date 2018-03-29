@@ -3,7 +3,7 @@
 #include "global.hpp"
 #include <random>
 
-Enemy::Enemy(float rad) : GameObject(rad) {}
+Enemy::Enemy() : GameObject() {}
 
 void Enemy::set_up(int xx,int yy,int idd){
 	

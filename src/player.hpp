@@ -8,12 +8,9 @@
 
 class Player : public GameObject{
 public:
-	Player(float rad);
+	Player();
 	void set_up();
 	
-	std::map<std::string,bool> keyPress;
-	
-	void check_keys();
 	
 	void tick();
 	int cx;

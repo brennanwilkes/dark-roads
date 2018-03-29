@@ -2,7 +2,7 @@
 #include "gameObject.hpp"
 #include "global.hpp"
 
-Player::Player(float rad) : GameObject(rad) {}
+Player::Player() : GameObject() {}
 
 void Player::set_up(){
 	cx=0;
@@ -20,9 +20,6 @@ void Player::set_up(){
 	
 }
 
-void Player::check_keys(){
-	
-}
 
 void Player::tick(){
 	float mult=1;

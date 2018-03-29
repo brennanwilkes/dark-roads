@@ -7,7 +7,7 @@
 
 class Enemy : public GameObject{
 public:
-	Enemy(float rad);
+	Enemy();
 	
 	void set_up(int xx,int yy,int idd);
 	
