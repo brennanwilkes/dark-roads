@@ -2,6 +2,7 @@
 #define GAME_OBJ_H
 
 #include <map>
+#include <string>
 
 class GameObject{
 public:
@@ -12,6 +13,7 @@ public:
 	float y;
 	int id;
 	int health;
+	std::string img;
 	
 	
 	

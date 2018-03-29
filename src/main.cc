@@ -43,20 +43,48 @@ inline float getDis(GameObject* src,int x2,int y2);
 inline float getDis(int x1,int y1,int x2,int y2);
 void clear_screen(WINDOW*);
 
+vector<vector<string> > village(24);
 
-vector<pair<int,int> > gc;
+vector<string> sur(4);
 
-//std::vector<std::vector<Terrain*> > fullmap;
-std::map<std::pair<int,int>,Terrain*> fullmap;
+//		 0
+//		1 2
+//		 3
 
 int main(int argc, char *argv[]) {
 	scene=0;
 	
-	player.set_up();
+	for(int i=0;i<24;i++){
+		village[i].resize(80);
+		for(int j=0;j<80;j++){
+			village[i][j]=" ";	
+		}
+	}
 	
-	Enemy romar;
-	romar.set_up(250,125,10);
-	dudes.push_back(&romar);
+	
+	ifstream infile;
+	infile.open("Assets/village.txt");
+	string tmpfl;
+	int tmpl=0;
+	while (!infile.eof()) {
+		getline(infile,tmpfl);
+		for(int i=0;i<tmpfl.length();i++){
+			if(tmpfl.substr(i,1)!="\n"){
+				village[tmpl][i]=tmpfl.substr(i,1);
+			}
+		}
+		tmpl++;
+	}
+	infile.close();
+
+	
+	
+	
+	player.set_up();
+	player.x=40;
+	player.y=12;
+
+	dudes.push_back(&player);
 	
 	
 	
@@ -74,19 +102,63 @@ int main(int argc, char *argv[]) {
 	
 	while (true){
 		clear_screen(worldwin);
-		k_press = wgetch(worldwin);			//keyboard input
+		for(unsigned int i=0;i<village.size();i++){
+			for(unsigned int j=0;j<village[i].size();j++){
+				mvwprintw(worldwin,i,j,village[i][j].c_str());	
+			}
+		}
 		
+		for(unsigned int i=0;i<dudes.size();i++){
+			mvwprintw(worldwin,dudes[i]->y,dudes[i]->x,dudes[i]->img.c_str());	
+		}
+		
+		if(player.y>0){
+			sur[0]=village[player.y-1][player.x];
+		}
+		else{
+			sur[0]="N";
+		}
+		if(player.y<23){
+			sur[3]=village[player.y+1][player.x];
+		}
+		else{
+			sur[3]="N";
+		}
+		if(player.x>0){
+			sur[1]=village[player.y][player.x-1];
+		}
+		else{
+			sur[1]="N";
+		}
+		if(player.x<79){
+			sur[2]=village[player.y][player.x+1];
+		}
+		else{
+			sur[2]="N";
+		}
+		
+		
+		
+		k_press = wgetch(worldwin);			//keyboard input
 		if(k_press==KEY_UP){
-			
+			if(sur[0]==" "){
+				player.y--;
+			}
 		}
 		else if(k_press==KEY_DOWN){
-			
+			if(sur[3]==" "){
+				player.y++;
+			}
 		}
 		else if(k_press==KEY_LEFT){
-			
+			if(sur[1]==" "){
+				player.x--;
+			}
 		}
 		else if(k_press==KEY_RIGHT){
-			
+			if(sur[2]==" "){
+				player.x++;
+			}
 		}
 		else if(k_press==113){
 			break;
