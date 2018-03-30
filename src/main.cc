@@ -190,10 +190,18 @@ int main(int argc, char *argv[]) {
 				player.x=player.x+xs;
 				player.water=false;
 			}
-			if(sur[ts]=="_"){
+			else if(sur[ts]=="_"){
 				player.y=player.y+ys;
 				player.x=player.x+xs;
 				player.water=true;
+			}
+			else if(sur[ts]=="/"){
+				player.sticks=player.sticks+1;
+				village[player.y+ys][player.x+xs]=" ";
+			}
+			else if(sur[ts]=="."){
+				player.stones=player.stones+1;
+				village[player.y+ys][player.x+xs]=" ";
 			}
 		
 		}

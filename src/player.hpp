@@ -16,6 +16,8 @@ public:
 	int cx;
 	int cy;
 	bool water;
+	int sticks;
+	int stones;
 	
 };
 #endif

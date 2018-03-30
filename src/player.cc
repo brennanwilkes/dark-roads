@@ -18,6 +18,9 @@ void Player::set_up(){
 	img = "@";
 	water=false;
 	
+	sticks=0;
+	stones=0;
+	
 	
 	
 }
