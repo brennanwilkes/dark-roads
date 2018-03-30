@@ -16,6 +16,7 @@ void Player::set_up(){
 	health=100;
 	
 	img = "@";
+	water=false;
 	
 	
 	

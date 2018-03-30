@@ -45,11 +45,11 @@ void clear_screen(WINDOW*);
 
 vector<vector<string> > village(24);
 
-vector<string> sur(4);
+vector<string> sur(5);
 
 //		 0
 //		1 2
-//		 3
+//		 34
 
 int main(int argc, char *argv[]) {
 	scene=0;
@@ -100,6 +100,8 @@ int main(int argc, char *argv[]) {
 	wrefresh(worldwin);
 	keypad(worldwin, true);
 	
+	int xs,ys,ts;
+	
 	while (true){
 		clear_screen(worldwin);
 		for(unsigned int i=0;i<village.size();i++){
@@ -136,31 +138,59 @@ int main(int argc, char *argv[]) {
 		else{
 			sur[2]="N";
 		}
+		if(sur[2]=="N"||sur[3]=="N"){
+			sur[4]="N";
+		}
+		else{
+			sur[4]=village[player.y+1][player.x+1];
+		}
 		
 		
+		if(player.water){
+			xs=1;
+			ys=1;
+			ts=4;
+		}
+		else{
+			k_press = wgetch(worldwin);			//keyboard input
 		
-		k_press = wgetch(worldwin);			//keyboard input
-		if(k_press==KEY_UP){
-			if(sur[0]==" "){
-				player.y--;
+			xs=0;
+			ys=0;
+			ts=10;
+			if(k_press==KEY_UP){
+				ys=-1;
+				ts=0;
+			}
+			else if(k_press==KEY_DOWN){
+				ys=1;
+				ts=3;
+			}
+			else if(k_press==KEY_LEFT){
+				xs=-1;
+				ts=1;
+			}
+			else if(k_press==KEY_RIGHT){
+				xs=1;
+				ts=2;
 			}
 		}
-		else if(k_press==KEY_DOWN){
-			if(sur[3]==" "){
-				player.y++;
+		if(xs!=0 || ys!=0){
+			if(sur[ts]==" "){
+				player.y=player.y+ys;
+				player.x=player.x+xs;
+				player.water=false;
 			}
-		}
-		else if(k_press==KEY_LEFT){
-			if(sur[1]==" "){
-				player.x--;
+			if(sur[ts]=="_"){
+				player.y=player.y+ys;
+				player.x=player.x+xs;
+				player.water=true;
 			}
+		
 		}
-		else if(k_press==KEY_RIGHT){
-			if(sur[2]==" "){
-				player.x++;
-			}
-		}
-		else if(k_press==113){
+	
+		
+		
+		if(k_press==113){
 			break;
 		}
 		

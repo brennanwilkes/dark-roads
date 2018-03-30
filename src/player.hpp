@@ -15,6 +15,7 @@ public:
 	void tick();
 	int cx;
 	int cy;
+	bool water;
 	
 };
 #endif
