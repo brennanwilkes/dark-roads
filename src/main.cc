@@ -19,6 +19,7 @@ DARK ROADS
 
 //NCURSESSSSS Includes
 #include <ncurses.h>
+#include <unistd.h>
 
 
 //User Includes
@@ -100,6 +101,10 @@ int main(int argc, char *argv[]) {
 	wrefresh(worldwin);
 	keypad(worldwin, true);
 	
+	curs_set(0);
+
+
+	
 	int xs,ys,ts;
 	
 	while (true){
@@ -150,6 +155,11 @@ int main(int argc, char *argv[]) {
 			xs=1;
 			ys=1;
 			ts=4;
+			
+			refresh();
+			wrefresh(worldwin);
+			usleep(50000);
+			
 		}
 		else{
 			k_press = wgetch(worldwin);			//keyboard input
