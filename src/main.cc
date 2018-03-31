@@ -106,6 +106,10 @@ int main(int argc, char *argv[]) {
 	
 	curs_set(0);
 	
+	start_color();
+	init_pair(1, COLOR_WHITE, COLOR_BLACK);
+	wattron(worldwin,COLOR_PAIR(1));
+	wattron(worldwin,A_BOLD);
 	/*
 	*---*
 	| d |
@@ -120,10 +124,10 @@ int main(int argc, char *argv[]) {
 		for(unsigned int i=0;i<village.size();i++){
 			for(unsigned int j=0;j<village[i].size();j++){
 				if((village[i][j]==">"&&player.craft[0]!="")||(village[i][j]=="<"&&player.craft[1]!="")){
-					wattron(worldwin,A_BOLD);
+					wattron(worldwin,A_REVERSE);
 				}
 				mvwprintw(worldwin,i,j,village[i][j].c_str());	
-				wattroff(worldwin,A_BOLD);
+				wattroff(worldwin,A_REVERSE);
 			}
 		}
 		
