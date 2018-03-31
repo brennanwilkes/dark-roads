@@ -18,6 +18,18 @@ public:
 	bool water;
 	int sticks;
 	int stones;
+	int wood;
+	
+	int max_sticks;
+	int max_stones;
+	int max_wood;
+	
+	int handid;
+	std::vector<std::string> hand;
+	std::vector<std::string> craft;
+	
+	void remove(std::string);
+	void add(std::string);
 	
 };
 #endif

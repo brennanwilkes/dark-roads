@@ -72,6 +72,9 @@ int main(int argc, char *argv[]) {
 		for(int i=0;i<tmpfl.length();i++){
 			if(tmpfl.substr(i,1)!="\n"){
 				village[tmpl][i]=tmpfl.substr(i,1);
+				/*if(village[tmpl][i]==">"||village[tmpl][i]=="#"||village[tmpl][i]=="<"){
+					village[tmpl][i]=" ";
+				}*/
 			}
 		}
 		tmpl++;
@@ -102,8 +105,13 @@ int main(int argc, char *argv[]) {
 	keypad(worldwin, true);
 	
 	curs_set(0);
-
-
+	
+	/*
+	*---*
+	| d |
+	*---*
+		
+	*/
 	
 	int xs,ys,ts;
 	
@@ -111,13 +119,24 @@ int main(int argc, char *argv[]) {
 		clear_screen(worldwin);
 		for(unsigned int i=0;i<village.size();i++){
 			for(unsigned int j=0;j<village[i].size();j++){
+				if((village[i][j]==">"&&player.craft[0]!="")||(village[i][j]=="<"&&player.craft[1]!="")){
+					wattron(worldwin,A_BOLD);
+				}
 				mvwprintw(worldwin,i,j,village[i][j].c_str());	
+				wattroff(worldwin,A_BOLD);
 			}
 		}
 		
 		for(unsigned int i=0;i<dudes.size();i++){
 			mvwprintw(worldwin,dudes[i]->y,dudes[i]->x,dudes[i]->img.c_str());	
 		}
+		
+		
+		mvwprintw(worldwin,1,74,"*---*");
+		mvwprintw(worldwin,2,74,"|   |");
+		mvwprintw(worldwin,2,76,player.hand[player.handid].c_str());
+		mvwprintw(worldwin,3,74,"*---*");
+		
 		
 		if(player.y>0){
 			sur[0]=village[player.y-1][player.x];
@@ -183,6 +202,22 @@ int main(int argc, char *argv[]) {
 				xs=1;
 				ts=2;
 			}
+			else if(k_press==9){
+				if(player.handid+1==player.hand.size()){
+					player.handid=0;
+				}
+				else{
+					player.handid++;
+				}
+			}
+			else if(k_press==32){
+				if(player.hand[player.handid]==" "){
+					//Crafting?
+					
+				}
+				
+				
+			}
 		}
 		if(xs!=0 || ys!=0){
 			if(sur[ts]==" "){
@@ -195,14 +230,39 @@ int main(int argc, char *argv[]) {
 				player.x=player.x+xs;
 				player.water=true;
 			}
-			else if(sur[ts]=="/"){
-				player.sticks=player.sticks+1;
+			else if(sur[ts]=="/"&&player.sticks<player.max_sticks){
+				player.add("/");
 				village[player.y+ys][player.x+xs]=" ";
 			}
-			else if(sur[ts]=="."){
-				player.stones=player.stones+1;
+			else if(sur[ts]=="."&&player.stones<player.max_stones){
+				player.add(".");
 				village[player.y+ys][player.x+xs]=" ";
 			}
+			else if(sur[ts]==">"){
+				if(player.craft[0]==""&&player.hand[player.handid]!=" "){
+					player.craft[0]=player.hand[player.handid];
+					player.remove(player.hand[player.handid]);
+				}
+				else{
+					if(player.craft[0]!=""){
+						player.add(player.craft[0]);
+					}
+					player.craft[0]="";
+				}
+			}
+			else if(sur[ts]=="<"){
+				if(player.craft[1]==""&&player.hand[player.handid]!=" "){
+					player.craft[1]=player.hand[player.handid];
+					player.remove(player.hand[player.handid]);
+				}
+				else{
+					if(player.craft[1]!=""){
+						player.add(player.craft[1]);
+					}
+					player.craft[1]="";
+				}
+			}
+			
 		
 		}
 	
@@ -216,7 +276,7 @@ int main(int argc, char *argv[]) {
 	endwin();
 	
 	cout<<yMax<<" "<<xMax<<endl;
-	
+	cout<<player.craft[0]<<endl;
 	return 0;
 }
 
