@@ -120,6 +120,23 @@ int main(int argc, char *argv[]) {
 	int xs,ys,ts;
 	
 	while (true){
+		
+		if(player.craft[0]!=""&&player.craft[1]!=""){
+			//make thing
+			string t1=player.craft[0];
+			string t2=player.craft[1];
+			
+			if(t1=="."&&t2=="."){
+				player.craft[0]="";
+				player.craft[1]="";
+				village[9][20]=",";
+			}
+			
+			
+		}
+		
+		
+		
 		clear_screen(worldwin);
 		for(unsigned int i=0;i<village.size();i++){
 			for(unsigned int j=0;j<village[i].size();j++){
@@ -172,6 +189,10 @@ int main(int argc, char *argv[]) {
 		else{
 			sur[4]=village[player.y+1][player.x+1];
 		}
+		
+		
+		
+		
 		
 		
 		if(player.water){
@@ -240,6 +261,10 @@ int main(int argc, char *argv[]) {
 			}
 			else if(sur[ts]=="."&&player.stones<player.max_stones){
 				player.add(".");
+				village[player.y+ys][player.x+xs]=" ";
+			}
+			else if(sur[ts]==","&&player.sharp<player.max_sharp){
+				player.add(",");
 				village[player.y+ys][player.x+xs]=" ";
 			}
 			else if(sur[ts]==">"){

@@ -20,6 +20,7 @@ void Player::set_up(){
 	
 	sticks=0;
 	stones=0;
+	sharp=0;
 	wood=0;
 	handid=0;
 	hand = {" "};//,"/","."};
@@ -27,6 +28,7 @@ void Player::set_up(){
 	
 	max_sticks=5;
 	max_stones=5;
+	max_sharp=2;
 	max_wood=3;
 	
 }
@@ -81,8 +83,22 @@ void Player::remove(std::string chr){
 			}
 		}
 	}
-	else if(chr=="WOOD"){
-		
+	else if(chr==","){
+		player.sharp=player.sharp-1;
+		if(player.sharp==0){
+			for(unsigned int i=0;i<player.hand.size();i++){
+				if(player.hand[i]!=","){
+					tmp.push_back(player.hand[i]);
+				}
+				else{
+					tmp2=i;
+				}
+			}
+			player.hand=tmp;
+			if(player.handid>=tmp2){
+				player.handid=player.handid-1;
+			}
+		}
 	}
 	
 	
@@ -102,7 +118,12 @@ void Player::add(std::string chr){
 		}
 		player.stones=player.stones+1;
 	}
-	
+	else if(chr==","){
+		if(player.sharp==0){
+			player.hand.push_back(",");
+		}
+		player.sharp=player.sharp+1;
+	}
 	
 	
 }
