@@ -72,9 +72,9 @@ int main(int argc, char *argv[]) {
 		for(int i=0;i<tmpfl.length();i++){
 			if(tmpfl.substr(i,1)!="\n"){
 				village[tmpl][i]=tmpfl.substr(i,1);
-				/*if(village[tmpl][i]==">"||village[tmpl][i]=="#"||village[tmpl][i]=="<"){
+				if(village[tmpl][i]=="O"){
 					village[tmpl][i]=" ";
-				}*/
+				}
 			}
 		}
 		tmpl++;
@@ -107,7 +107,8 @@ int main(int argc, char *argv[]) {
 	curs_set(0);
 	
 	start_color();
-	init_pair(1, COLOR_WHITE, COLOR_BLACK);
+	init_color(COLOR_BLUE, 0, 0, 150);
+	init_pair(1, COLOR_WHITE, COLOR_BLUE);
 	wattron(worldwin,COLOR_PAIR(1));
 	wattron(worldwin,A_BOLD);
 	/*
@@ -131,6 +132,12 @@ int main(int argc, char *argv[]) {
 				player.craft[1]="";
 				village[9][20]=",";
 			}
+			else if((t1=="."&&t2=="/")||(t1=="/"&&t2==".")){
+				player.craft[0]="";
+				player.craft[1]="";
+				village[9][20]="o";
+			}
+			
 			
 			
 		}
@@ -290,6 +297,10 @@ int main(int argc, char *argv[]) {
 					}
 					player.craft[1]="";
 				}
+			}
+			else if(sur[ts]=="o"){
+				village[9][20]=" ";
+				village[11][26]="O";
 			}
 			
 		
