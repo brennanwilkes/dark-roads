@@ -26,6 +26,8 @@ public:
 	int max_sharp;
 	int max_wood;
 	
+	int fire;
+	
 	int handid;
 	std::vector<std::string> hand;
 	std::vector<std::string> craft;

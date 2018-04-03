@@ -31,6 +31,8 @@ void Player::set_up(){
 	max_sharp=2;
 	max_wood=3;
 	
+	fire=-1;
+	
 }
 
 
