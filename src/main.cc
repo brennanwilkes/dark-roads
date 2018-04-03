@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
 	}
 	
 	//wattron(worldwin,COLOR_PAIR(1));
-	wattron(worldwin,A_BOLD);
+	
 	/*
 	*---*
 	| d |
@@ -160,13 +160,27 @@ int main(int argc, char *argv[]) {
 			for(unsigned int j=0;j<village[i].size();j++){
 				ls=0;
 				if(player.fire!=-1){
-					//ls=(int)((hypot(i-11,(j-26)/2)));
-					ls=(int)(sqrt(((i-11)*(i-11))+(((j-26)/2)*((j-26)/2))));
+					//ls=(int)((hypot(i-11,(j-29)/2)));
+					ls=(int)(sqrt(((i-11)*(i-11))+(((j-29)/2)*((j-29)/2))));
+					ls=(ls*2)-player.fire;
 					if(ls>8){
 						ls=9;
+					}
+					else if(ls<1){
+						ls=1;
 					}//lst=ls;
-					//11 26
+					//11 29
 					
+				}
+				
+				if((village[i][j]==">"||village[i][j]=="<")&&player.hand[player.handid]!=" "){
+					wattron(worldwin,A_BOLD);
+				}
+				else if(village[i][j]=="/"||village[i][j]=="."||village[i][j]==","||village[i][j]=="o"){
+					wattron(worldwin,A_BOLD);
+				}
+				else if(village[i][j]=="O"&&(player.hand[player.handid]=="/")){
+					wattron(worldwin,A_BOLD);
 				}
 				
 				if((village[i][j]==">"&&player.craft[0]!="")||(village[i][j]=="<"&&player.craft[1]!="")){
@@ -176,7 +190,7 @@ int main(int argc, char *argv[]) {
 				wattron(worldwin,COLOR_PAIR(ls+1));
 				mvwprintw(worldwin,i,j,village[i][j].c_str());	
 				
-				
+				wattroff(worldwin,A_BOLD);
 				wattroff(worldwin,COLOR_PAIR(ls+1));
 				wattroff(worldwin,A_REVERSE);
 			}
@@ -328,8 +342,14 @@ int main(int argc, char *argv[]) {
 			}
 			else if(sur[ts]=="o"){
 				village[9][20]=" ";
-				village[11][26]="O";
+				village[11][29]="O";
 				player.fire=10;
+			}
+			else if(sur[ts]=="O"){
+				if(player.hand[player.handid]=="/"){
+					player.fire++;
+					player.remove("/");
+				}
 			}
 			
 		
