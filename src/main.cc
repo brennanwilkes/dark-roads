@@ -270,19 +270,19 @@ int main(int argc, char *argv[]) {
 			xs=0;
 			ys=0;
 			ts=10;
-			if(k_press==KEY_UP || k_press==119){
+			if(k_press==KEY_UP || k_press==(int)'w'){
 				ys=-1;
 				ts=0;
 			}
-			else if(k_press==KEY_DOWN || k_press==115){
+			else if(k_press==KEY_DOWN || k_press==(int)'s'){
 				ys=1;
 				ts=3;
 			}
-			else if(k_press==KEY_LEFT || k_press==97){
+			else if(k_press==KEY_LEFT || k_press==(int)'a'){
 				xs=-1;
 				ts=1;
 			}
-			else if(k_press==KEY_RIGHT || k_press==100){
+			else if(k_press==KEY_RIGHT || k_press==(int)'d'){
 				xs=1;
 				ts=2;
 			}
@@ -371,6 +371,10 @@ int main(int argc, char *argv[]) {
 		
 	}
 	endwin();
+	
+	if (system(NULL){ /checks if command processor is available
+		system("reset");
+	}
 	
 	cout<<yMax<<" "<<xMax<<endl;
 	cout<<player.craft[0]<<endl;
