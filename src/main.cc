@@ -240,6 +240,7 @@ int main(int argc, char *argv[]) {
 					}
 					player.craft[0]="";
 				}
+				player.handid=0;
 				continue;
 			}
 			else if(village[player.y+hand_ys][player.x+hand_xs]=="<"){
@@ -253,6 +254,7 @@ int main(int argc, char *argv[]) {
 					}
 					player.craft[1]="";
 				}
+				player.handid=0;
 				continue;
 			}
 			
