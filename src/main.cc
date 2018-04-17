@@ -372,7 +372,7 @@ int main(int argc, char *argv[]) {
 	}
 	endwin();
 	
-	if (system(NULL){ /checks if command processor is available
+	if (system(NULL)){ //checks if command processor is available
 		system("reset");
 	}
 	
