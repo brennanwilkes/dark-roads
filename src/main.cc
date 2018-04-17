@@ -276,7 +276,7 @@ int main(int argc, char *argv[]) {
 				xs=1;
 				ts=2;
 			}
-			else if(k_press==9){
+			else if(k_press==(int)'\t'){
 				if(player.handid+1==player.hand.size()){
 					player.handid=0;
 				}
@@ -284,14 +284,16 @@ int main(int argc, char *argv[]) {
 					player.handid++;
 				}
 			}
-			else if(k_press==32){
+			else if(k_press==(int)' '){
 				if(player.hand[player.handid]==" "){
 					//Crafting?
 					
 				}
-				
-				
 			}
+			else if(k_press==(int)'q'){
+				break;
+			}		
+			
 		}
 		if(xs!=0 || ys!=0){
 			if(sur[ts]==" "){
@@ -357,9 +359,7 @@ int main(int argc, char *argv[]) {
 	
 		
 		
-		if(k_press==113){
-			break;
-		}
+
 		
 	}
 	endwin();
