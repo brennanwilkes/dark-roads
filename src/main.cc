@@ -262,19 +262,19 @@ int main(int argc, char *argv[]) {
 			xs=0;
 			ys=0;
 			ts=10;
-			if(k_press==KEY_UP){
+			if(k_press==KEY_UP || k_press==119){
 				ys=-1;
 				ts=0;
 			}
-			else if(k_press==KEY_DOWN){
+			else if(k_press==KEY_DOWN || k_press==115){
 				ys=1;
 				ts=3;
 			}
-			else if(k_press==KEY_LEFT){
+			else if(k_press==KEY_LEFT || k_press==97){
 				xs=-1;
 				ts=1;
 			}
-			else if(k_press==KEY_RIGHT){
+			else if(k_press==KEY_RIGHT || k_press==100){
 				xs=1;
 				ts=2;
 			}
