@@ -16,6 +16,8 @@ DARK ROADS
 #include <cmath>
 #include <fstream>
 #include <cstdlib>
+#include <ctime>
+
 
 //NCURSESSSSS Includes
 #include <ncurses.h>
