@@ -32,6 +32,11 @@ DARK ROADS
 
 using namespace std;
 
+#define CAMPFIRE "O"
+
+#define YMAX 24
+#define XMAX 80
+
 
 
 int scene;	//Just an example on how to do a global
@@ -44,7 +49,7 @@ inline float getDis(GameObject* src,int x2,int y2);
 inline float getDis(int x1,int y1,int x2,int y2);
 void clear_screen(WINDOW*);
 
-vector<vector<string> > village(24);
+vector<vector<string> > village(YMAX);
 
 vector<string> sur(5);
 
@@ -52,12 +57,14 @@ vector<string> sur(5);
 //		1 2
 //		 34
 
+
+
 int main(int argc, char *argv[]) {
 	scene=0;
 	
-	for(int i=0;i<24;i++){
-		village[i].resize(80);
-		for(int j=0;j<80;j++){
+	for(int i=0;i<YMAX;i++){
+		village[i].resize(XMAX);
+		for(int j=0;j<XMAX;j++){
 			village[i][j]=" ";	
 		}
 	}
@@ -69,6 +76,7 @@ int main(int argc, char *argv[]) {
 	int tmpl=0;
 	while (!infile.eof()) {
 		getline(infile,tmpfl);
+		
 		for(int i=0;i<tmpfl.length();i++){
 			if(tmpfl.substr(i,1)!="\n"){
 				village[tmpl][i]=tmpfl.substr(i,1);
@@ -85,8 +93,8 @@ int main(int argc, char *argv[]) {
 	
 	
 	player.set_up();
-	player.x=40;
-	player.y=12;
+	player.x=XMAX/2; //40
+	player.y=YMAX/2; //12
 
 	dudes.push_back(&player);
 	
@@ -128,7 +136,7 @@ int main(int argc, char *argv[]) {
 	int xs,ys,ts,ls;
 	
 		
-	int lst;
+	//int lst;
 	
 	
 	while (true){
@@ -344,17 +352,15 @@ int main(int argc, char *argv[]) {
 			}
 			else if(sur[ts]=="o"){
 				village[9][20]=" ";
-				village[11][29]="O";
+				village[11][29]=CAMPFIRE;
 				player.fire=10;
 			}
-			else if(sur[ts]=="O"){
+			else if(sur[ts]==CAMPFIRE){
 				if(player.hand[player.handid]=="/"){
 					player.fire++;
 					player.remove("/");
 				}
 			}
-			
-		
 		}
 	
 		
