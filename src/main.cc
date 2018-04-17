@@ -129,6 +129,7 @@ int main(int argc, char *argv[]) {
 	
 	int xs,ys,ts,ls;
 	
+	int hand_xs,hand_ys;
 		
 	int lst;
 	
@@ -202,12 +203,57 @@ int main(int argc, char *argv[]) {
 		for(unsigned int i=0;i<dudes.size();i++){
 			mvwprintw(worldwin,dudes[i]->y,dudes[i]->x,dudes[i]->img.c_str());	
 		}
-		
-		
-		mvwprintw(worldwin,1,74,"*---*");
-		mvwprintw(worldwin,2,74,"|   |");
-		mvwprintw(worldwin,2,76,player.hand[player.handid].c_str());
-		mvwprintw(worldwin,3,74,"*---*");
+		hand_xs=0;
+		hand_ys=0;
+		if(player.hand[player.handid]!=" "){
+			if(player.last_dir==0){
+				hand_ys=-1;		//print hand up
+			}
+			else if(player.last_dir==1){
+				hand_xs=-1;		//print hand left
+			}
+			else if(player.last_dir==2){
+				hand_xs=1;		//print hand right
+			}
+			else if(player.last_dir==3){
+				hand_ys=1;		//print hand down
+			}
+			
+			mvwprintw(worldwin,player.y+hand_ys,player.x+hand_xs,player.hand[player.handid].c_str());
+			
+			if(village[player.y+hand_ys][player.x+hand_xs]==">"){
+				if(player.craft[0]==""&&player.hand[player.handid]!=" "){
+					player.craft[0]=player.hand[player.handid];
+					player.remove(player.hand[player.handid]);
+				}
+				else{
+					if(player.craft[0]!=""){
+						player.add(player.craft[0]);
+					}
+					player.craft[0]="";
+				}
+				continue;
+			}
+			else if(village[player.y+hand_ys][player.x+hand_xs]=="<"){
+				if(player.craft[1]==""&&player.hand[player.handid]!=" "){
+					player.craft[1]=player.hand[player.handid];
+					player.remove(player.hand[player.handid]);
+				}
+				else{
+					if(player.craft[1]!=""){
+						player.add(player.craft[1]);
+					}
+					player.craft[1]="";
+				}
+				continue;
+			}
+			
+		}
+		//mvwprintw(worldwin,1,74,"*---*");
+		//mvwprintw(worldwin,2,74,"|   |");
+		//mvwprintw(worldwin,2,76,player.hand[player.handid].c_str());
+		//mvwprintw(worldwin,3,74,"*---*");
+
 		
 		
 		if(player.y>0){
@@ -300,11 +346,13 @@ int main(int argc, char *argv[]) {
 				player.y=player.y+ys;
 				player.x=player.x+xs;
 				player.water=false;
+				player.last_dir=ts;
 			}
 			else if(sur[ts]=="_"){
 				player.y=player.y+ys;
 				player.x=player.x+xs;
 				player.water=true;
+				player.last_dir=ts;
 			}
 			else if(sur[ts]=="/"&&player.sticks<player.max_sticks){
 				player.add("/");

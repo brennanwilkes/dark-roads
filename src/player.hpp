@@ -28,6 +28,8 @@ public:
 	
 	int fire;
 	
+	int last_dir;
+	
 	int handid;
 	std::vector<std::string> hand;
 	std::vector<std::string> craft;
