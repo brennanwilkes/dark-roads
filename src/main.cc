@@ -52,11 +52,10 @@ inline float getDis(int x1,int y1,int x2,int y2);
 void clear_screen(WINDOW*);
 bool draw(WINDOW*);
 int light_distance(int,int);
-vector<string> calc_sur(int);
+
 
 vector<vector<string> > village(YMAX);
 
-vector<string> sur(5);
 
 //		 0
 //		1 2
@@ -147,7 +146,6 @@ int main(int argc, char *argv[]) {
 	*/
 	
 	int xs,ys,ts;
-	int hand_xs,hand_ys;
 	//int lst;
 	
 	
@@ -170,48 +168,6 @@ int main(int argc, char *argv[]) {
 				village[9][20]="o";
 			}
 		}
-		/*hand_xs=0;
-		hand_ys=0;
-		if(player.last_dir==0){
-			hand_ys=-1;		//print hand up
-		}
-		else if(player.last_dir==1){
-			hand_xs=-1;		//print hand left
-		}
-		else if(player.last_dir==2){
-			hand_xs=1;		//print hand right
-		}
-		else if(player.last_dir==3){
-			hand_ys=1;		//print hand down
-		}
-		if(village[player.y+hand_ys][player.x+hand_xs]==">"){
-			if(player.craft[0]==""&&player.hand[player.handid]!=" "){
-				player.craft[0]=player.hand[player.handid];
-				player.remove(player.hand[player.handid]);
-			}
-			else{
-				if(player.craft[0]!=""){
-					player.add(player.craft[0]);
-				}
-				player.craft[0]="";
-			}
-			player.handid=0;
-			continue;
-		}
-		else if(village[player.y+hand_ys][player.x+hand_xs]=="<"){
-			if(player.craft[1]==""&&player.hand[player.handid]!=" "){
-				player.craft[1]=player.hand[player.handid];
-				player.remove(player.hand[player.handid]);
-			}
-			else{
-				if(player.craft[1]!=""){
-					player.add(player.craft[1]);
-				}
-				player.craft[1]="";
-			}
-			player.handid=0;
-			continue;
-		}*/
 		
 		
 		if(draw(worldwin)){
@@ -226,8 +182,6 @@ int main(int argc, char *argv[]) {
 
 		
 		
-		
-		sur=calc_sur(0);
 		
 		
 		
@@ -492,62 +446,4 @@ bool draw(WINDOW* w){
 	}
 	return false;
 }
-vector<string> calc_sur(int md){
-		int x_shift,y_shift;
-		
-		x_shift=0;
-		y_shift=0;
-		
-		if(md==1){
-			if(player.last_dir==0){
-				y_shift=-1;		//print hand up
-			}
-			else if(player.last_dir==1){
-				x_shift=-1;		//print hand left
-			}
-			else if(player.last_dir==2){
-				x_shift=1;		//print hand right
-			}
-			else if(player.last_dir==3){
-				y_shift=1;		//print hand down
-			}
-		}
-		
-		
-		vector<string> t_sur(5);
-		
-		if(player.y>0){
-			t_sur[0]=village[player.y-1+y_shift][player.x+x_shift];
-		}
-		else{
-			t_sur[0]="N";
-		}
-		if(player.y<23){
-			t_sur[3]=village[player.y+1+y_shift][player.x+x_shift];
-		}
-		else{
-			t_sur[3]="N";
-		}
-		if(player.x>0){
-			t_sur[1]=village[player.y+y_shift][player.x-1+x_shift];
-		}
-		else{
-			t_sur[1]="N";
-		}
-		if(player.x<79){
-			t_sur[2]=village[player.y+y_shift][player.x+1+x_shift];
-		}
-		else{
-			t_sur[2]="N";
-		}
-		if(t_sur[2]=="N"||t_sur[3]=="N"){
-			t_sur[4]="N";
-		}
-		else{
-			t_sur[4]=village[player.y+1+y_shift][player.x+1+x_shift];
-		}
-		return t_sur;
-}
-
-
 
