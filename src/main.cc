@@ -52,6 +52,7 @@ inline float getDis(int x1,int y1,int x2,int y2);
 void clear_screen(WINDOW*);
 bool draw(WINDOW*);
 int light_distance(int,int);
+vector<string> calc_sur(int);
 
 vector<vector<string> > village(YMAX);
 
@@ -146,7 +147,7 @@ int main(int argc, char *argv[]) {
 	*/
 	
 	int xs,ys,ts;
-		
+	int hand_xs,hand_ys;
 	//int lst;
 	
 	
@@ -169,6 +170,48 @@ int main(int argc, char *argv[]) {
 				village[9][20]="o";
 			}
 		}
+		/*hand_xs=0;
+		hand_ys=0;
+		if(player.last_dir==0){
+			hand_ys=-1;		//print hand up
+		}
+		else if(player.last_dir==1){
+			hand_xs=-1;		//print hand left
+		}
+		else if(player.last_dir==2){
+			hand_xs=1;		//print hand right
+		}
+		else if(player.last_dir==3){
+			hand_ys=1;		//print hand down
+		}
+		if(village[player.y+hand_ys][player.x+hand_xs]==">"){
+			if(player.craft[0]==""&&player.hand[player.handid]!=" "){
+				player.craft[0]=player.hand[player.handid];
+				player.remove(player.hand[player.handid]);
+			}
+			else{
+				if(player.craft[0]!=""){
+					player.add(player.craft[0]);
+				}
+				player.craft[0]="";
+			}
+			player.handid=0;
+			continue;
+		}
+		else if(village[player.y+hand_ys][player.x+hand_xs]=="<"){
+			if(player.craft[1]==""&&player.hand[player.handid]!=" "){
+				player.craft[1]=player.hand[player.handid];
+				player.remove(player.hand[player.handid]);
+			}
+			else{
+				if(player.craft[1]!=""){
+					player.add(player.craft[1]);
+				}
+				player.craft[1]="";
+			}
+			player.handid=0;
+			continue;
+		}*/
 		
 		
 		if(draw(worldwin)){
@@ -183,37 +226,8 @@ int main(int argc, char *argv[]) {
 
 		
 		
-		if(player.y>0){
-			sur[0]=village[player.y-1][player.x];
-		}
-		else{
-			sur[0]="N";
-		}
-		if(player.y<23){
-			sur[3]=village[player.y+1][player.x];
-		}
-		else{
-			sur[3]="N";
-		}
-		if(player.x>0){
-			sur[1]=village[player.y][player.x-1];
-		}
-		else{
-			sur[1]="N";
-		}
-		if(player.x<79){
-			sur[2]=village[player.y][player.x+1];
-		}
-		else{
-			sur[2]="N";
-		}
-		if(sur[2]=="N"||sur[3]=="N"){
-			sur[4]="N";
-		}
-		else{
-			sur[4]=village[player.y+1][player.x+1];
-		}
 		
+		sur=calc_sur(0);
 		
 		
 		
@@ -271,31 +285,53 @@ int main(int argc, char *argv[]) {
 			
 		}
 		if(xs!=0 || ys!=0){
-			if(sur[ts]==" "){
-				player.y=player.y+ys;
-				player.x=player.x+xs;
-				player.water=false;
-				player.last_dir=ts;
+			if(player.y+ys>23||player.y+ys<0||player.x+xs>79||player.x+xs<0){
+				continue;
 			}
-			else if(sur[ts]=="_"){
+			if(village[player.y+ys][player.x+xs]=="_"){
 				player.y=player.y+ys;
 				player.x=player.x+xs;
 				player.water=true;
 				player.last_dir=ts;
 			}
-			else if(sur[ts]=="/"&&player.sticks<player.max_sticks){
+			
+			
+			
+			if(player.hand[player.handid]!=" "){
+				player.last_dir=ts;
+				
+				if(village[player.y+ys][player.x+xs]==" "){
+					xs=xs*2;
+					ys=ys*2;
+				}
+			}
+			if(player.y+ys>23||player.y+ys<0||player.x+xs>79||player.x+xs<0){
+				continue;
+			}
+			
+			
+			if(village[player.y+ys][player.x+xs]==" "){
+				if(xs>1||xs<-1||ys>1||ys<-1){
+					xs=xs/2;
+					ys=ys/2;
+				}
+				player.y=player.y+ys;
+				player.x=player.x+xs;
+				player.water=false;
+			}
+			else if(village[player.y+ys][player.x+xs]=="/"&&player.sticks<player.max_sticks){
 				player.add("/");
 				village[player.y+ys][player.x+xs]=" ";
 			}
-			else if(sur[ts]=="."&&player.stones<player.max_stones){
+			else if(village[player.y+ys][player.x+xs]=="."&&player.stones<player.max_stones){
 				player.add(".");
 				village[player.y+ys][player.x+xs]=" ";
 			}
-			else if(sur[ts]==","&&player.sharp<player.max_sharp){
+			else if(village[player.y+ys][player.x+xs]==","&&player.sharp<player.max_sharp){
 				player.add(",");
 				village[player.y+ys][player.x+xs]=" ";
 			}
-			else if(sur[ts]==">"){
+			else if(village[player.y+ys][player.x+xs]==">"){
 				if(player.craft[0]==""&&player.hand[player.handid]!=" "){
 					player.craft[0]=player.hand[player.handid];
 					player.remove(player.hand[player.handid]);
@@ -307,7 +343,7 @@ int main(int argc, char *argv[]) {
 					player.craft[0]="";
 				}
 			}
-			else if(sur[ts]=="<"){
+			else if(village[player.y+ys][player.x+xs]=="<"){
 				if(player.craft[1]==""&&player.hand[player.handid]!=" "){
 					player.craft[1]=player.hand[player.handid];
 					player.remove(player.hand[player.handid]);
@@ -319,12 +355,12 @@ int main(int argc, char *argv[]) {
 					player.craft[1]="";
 				}
 			}
-			else if(sur[ts]=="o"){
+			else if(village[player.y+ys][player.x+xs]=="o"){
 				village[9][20]=" ";
 				village[11][29]=CAMPFIRE;
 				player.fire=10;
 			}
-			else if(sur[ts]==CAMPFIRE){
+			else if(village[player.y+ys][player.x+xs]==CAMPFIRE){
 				if(player.hand[player.handid]=="/"){
 					player.fire++;
 					player.remove("/");
@@ -451,39 +487,67 @@ bool draw(WINDOW* w){
 		wattroff(w,COLOR_PAIR(21+light_distance(player.y+hand_ys,player.x+hand_xs)));
 		wattron(w,COLOR_PAIR(1));
 		
-		if(village[player.y+hand_ys][player.x+hand_xs]==">"){
-			if(player.craft[0]==""&&player.hand[player.handid]!=" "){
-				player.craft[0]=player.hand[player.handid];
-				player.remove(player.hand[player.handid]);
-			}
-			else{
-				if(player.craft[0]!=""){
-					player.add(player.craft[0]);
-				}
-				player.craft[0]="";
-			}
-			player.handid=0;
-			return true;
-		}
-		else if(village[player.y+hand_ys][player.x+hand_xs]=="<"){
-			if(player.craft[1]==""&&player.hand[player.handid]!=" "){
-				player.craft[1]=player.hand[player.handid];
-				player.remove(player.hand[player.handid]);
-			}
-			else{
-				if(player.craft[1]!=""){
-					player.add(player.craft[1]);
-				}
-				player.craft[1]="";
-			}
-			player.handid=0;
-			return true;
-		}
+		
 		
 	}
 	return false;
 }
-
+vector<string> calc_sur(int md){
+		int x_shift,y_shift;
+		
+		x_shift=0;
+		y_shift=0;
+		
+		if(md==1){
+			if(player.last_dir==0){
+				y_shift=-1;		//print hand up
+			}
+			else if(player.last_dir==1){
+				x_shift=-1;		//print hand left
+			}
+			else if(player.last_dir==2){
+				x_shift=1;		//print hand right
+			}
+			else if(player.last_dir==3){
+				y_shift=1;		//print hand down
+			}
+		}
+		
+		
+		vector<string> t_sur(5);
+		
+		if(player.y>0){
+			t_sur[0]=village[player.y-1+y_shift][player.x+x_shift];
+		}
+		else{
+			t_sur[0]="N";
+		}
+		if(player.y<23){
+			t_sur[3]=village[player.y+1+y_shift][player.x+x_shift];
+		}
+		else{
+			t_sur[3]="N";
+		}
+		if(player.x>0){
+			t_sur[1]=village[player.y+y_shift][player.x-1+x_shift];
+		}
+		else{
+			t_sur[1]="N";
+		}
+		if(player.x<79){
+			t_sur[2]=village[player.y+y_shift][player.x+1+x_shift];
+		}
+		else{
+			t_sur[2]="N";
+		}
+		if(t_sur[2]=="N"||t_sur[3]=="N"){
+			t_sur[4]="N";
+		}
+		else{
+			t_sur[4]=village[player.y+1+y_shift][player.x+1+x_shift];
+		}
+		return t_sur;
+}
 
 
 
