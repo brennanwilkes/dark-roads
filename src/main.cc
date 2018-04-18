@@ -50,10 +50,12 @@ inline float getDis(GameObject* src);
 inline float getDis(GameObject* src,int x2,int y2);
 inline float getDis(int x1,int y1,int x2,int y2);
 void clear_screen(WINDOW*);
+bool draw(WINDOW*);
+int light_distance(int,int);
+
 
 vector<vector<string> > village(YMAX);
 
-vector<string> sur(5);
 
 //		 0
 //		1 2
@@ -118,12 +120,20 @@ int main(int argc, char *argv[]) {
 	
 	start_color();
 	//init_color(10, 0, 0, 150);
-	for(int i=0;i<10;i++){
+	for(int i=0;i<10;i++){						//blue
 		init_color(10+i, 0, 0, 150-(15*i));
 	}
 	for(int i=0;i<10;i++){
-		init_color(20+i, 1000-((i+1)*100),1000-((i+1)*100),1000-((i+1)*100));
+		init_color(20+i, 1000-((i+1)*100),1000-((i+1)*100),1000-((i+1)*100));	//white
 		init_pair(i+1, 20+i, 10+i);
+	}
+	for(int i=0;i<10;i++){
+		init_color(30+i, 1000-((i+1)*100), 800-((i+1)*80), 0);		//gold
+		init_pair(i+11, 30+i, 10+i);
+	}
+	for(int i=0;i<10;i++){
+		init_color(40+i, 500-((i+1)*50),500-((i+1)*50),500-((i+1)*50));	//grey
+		init_pair(i+21, 40+i, 10+i);
 	}
 	
 	//wattron(worldwin,COLOR_PAIR(1));
@@ -135,22 +145,18 @@ int main(int argc, char *argv[]) {
 		
 	*/
 	
-	int xs,ys,ts,ls;
-	
-	int hand_xs,hand_ys;
-		
+	int xs,ys,ts;
 	//int lst;
 	
 	
 	while (true){
 		
-		wattroff(worldwin,COLOR_PAIR(1));
 		
 		if(player.craft[0]!=""&&player.craft[1]!=""){
 			//make thing
 			string t1=player.craft[0];
 			string t2=player.craft[1];
-			
+		
 			if(t1=="."&&t2=="."){
 				player.craft[0]="";
 				player.craft[1]="";
@@ -161,139 +167,20 @@ int main(int argc, char *argv[]) {
 				player.craft[1]="";
 				village[9][20]="o";
 			}
-			
-			
-			
 		}
 		
-		clear_screen(worldwin);
-		for(unsigned int i=0;i<village.size();i++){
-			for(unsigned int j=0;j<village[i].size();j++){
-				ls=0;
-				if(player.fire!=-1){
-					//ls=(int)((hypot(i-11,(j-29)/2)));
-					ls=(int)(sqrt(((i-11)*(i-11))+(((j-29)/2)*((j-29)/2))));
-					ls=(ls*2)-player.fire;
-					if(ls>8){
-						ls=9;
-					}
-					else if(ls<1){
-						ls=1;
-					}//lst=ls;
-					//11 29
-					
-				}
-				
-				if((village[i][j]==">"||village[i][j]=="<")&&player.hand[player.handid]!=" "){
-					wattron(worldwin,A_BOLD);
-				}
-				else if(village[i][j]=="/"||village[i][j]=="."||village[i][j]==","||village[i][j]=="o"){
-					wattron(worldwin,A_BOLD);
-				}
-				else if(village[i][j]=="O"&&(player.hand[player.handid]=="/")){
-					wattron(worldwin,A_BOLD);
-				}
-				
-				if((village[i][j]==">"&&player.craft[0]!="")||(village[i][j]=="<"&&player.craft[1]!="")){
-					wattron(worldwin,A_REVERSE);
-				}
-				
-				wattron(worldwin,COLOR_PAIR(ls+1));
-				mvwprintw(worldwin,i,j,village[i][j].c_str());	
-				
-				wattroff(worldwin,A_BOLD);
-				wattroff(worldwin,COLOR_PAIR(ls+1));
-				wattroff(worldwin,A_REVERSE);
-			}
+		
+		if(draw(worldwin)){
+			continue;
 		}
 		
-		wattron(worldwin,COLOR_PAIR(1));
-		for(unsigned int i=0;i<dudes.size();i++){
-			mvwprintw(worldwin,dudes[i]->y,dudes[i]->x,dudes[i]->img.c_str());	
-		}
-		hand_xs=0;
-		hand_ys=0;
-		if(player.hand[player.handid]!=" "){
-			if(player.last_dir==0){
-				hand_ys=-1;		//print hand up
-			}
-			else if(player.last_dir==1){
-				hand_xs=-1;		//print hand left
-			}
-			else if(player.last_dir==2){
-				hand_xs=1;		//print hand right
-			}
-			else if(player.last_dir==3){
-				hand_ys=1;		//print hand down
-			}
-			
-			mvwprintw(worldwin,player.y+hand_ys,player.x+hand_xs,player.hand[player.handid].c_str());
-			
-			if(village[player.y+hand_ys][player.x+hand_xs]==">"){
-				if(player.craft[0]==""&&player.hand[player.handid]!=" "){
-					player.craft[0]=player.hand[player.handid];
-					player.remove(player.hand[player.handid]);
-				}
-				else{
-					if(player.craft[0]!=""){
-						player.add(player.craft[0]);
-					}
-					player.craft[0]="";
-				}
-				continue;
-			}
-			else if(village[player.y+hand_ys][player.x+hand_xs]=="<"){
-				if(player.craft[1]==""&&player.hand[player.handid]!=" "){
-					player.craft[1]=player.hand[player.handid];
-					player.remove(player.hand[player.handid]);
-				}
-				else{
-					if(player.craft[1]!=""){
-						player.add(player.craft[1]);
-					}
-					player.craft[1]="";
-				}
-				continue;
-			}
-			
-		}
+		
 		//mvwprintw(worldwin,1,74,"*---*");
 		//mvwprintw(worldwin,2,74,"|   |");
 		//mvwprintw(worldwin,2,76,player.hand[player.handid].c_str());
 		//mvwprintw(worldwin,3,74,"*---*");
 
 		
-		
-		if(player.y>0){
-			sur[0]=village[player.y-1][player.x];
-		}
-		else{
-			sur[0]="N";
-		}
-		if(player.y<23){
-			sur[3]=village[player.y+1][player.x];
-		}
-		else{
-			sur[3]="N";
-		}
-		if(player.x>0){
-			sur[1]=village[player.y][player.x-1];
-		}
-		else{
-			sur[1]="N";
-		}
-		if(player.x<79){
-			sur[2]=village[player.y][player.x+1];
-		}
-		else{
-			sur[2]="N";
-		}
-		if(sur[2]=="N"||sur[3]=="N"){
-			sur[4]="N";
-		}
-		else{
-			sur[4]=village[player.y+1][player.x+1];
-		}
 		
 		
 		
@@ -352,31 +239,53 @@ int main(int argc, char *argv[]) {
 			
 		}
 		if(xs!=0 || ys!=0){
-			if(sur[ts]==" "){
-				player.y=player.y+ys;
-				player.x=player.x+xs;
-				player.water=false;
-				player.last_dir=ts;
+			if(player.y+ys>23||player.y+ys<0||player.x+xs>79||player.x+xs<0){
+				continue;
 			}
-			else if(sur[ts]=="_"){
+			if(village[player.y+ys][player.x+xs]=="_"){
 				player.y=player.y+ys;
 				player.x=player.x+xs;
 				player.water=true;
 				player.last_dir=ts;
 			}
-			else if(sur[ts]=="/"&&player.sticks<player.max_sticks){
+			
+			
+			
+			if(player.hand[player.handid]!=" "){
+				player.last_dir=ts;
+				
+				if(village[player.y+ys][player.x+xs]==" "){
+					xs=xs*2;
+					ys=ys*2;
+				}
+			}
+			if(player.y+ys>23||player.y+ys<0||player.x+xs>79||player.x+xs<0){
+				continue;
+			}
+			
+			
+			if(village[player.y+ys][player.x+xs]==" "){
+				if(xs>1||xs<-1||ys>1||ys<-1){
+					xs=xs/2;
+					ys=ys/2;
+				}
+				player.y=player.y+ys;
+				player.x=player.x+xs;
+				player.water=false;
+			}
+			else if(village[player.y+ys][player.x+xs]=="/"&&player.sticks<player.max_sticks){
 				player.add("/");
 				village[player.y+ys][player.x+xs]=" ";
 			}
-			else if(sur[ts]=="."&&player.stones<player.max_stones){
+			else if(village[player.y+ys][player.x+xs]=="."&&player.stones<player.max_stones){
 				player.add(".");
 				village[player.y+ys][player.x+xs]=" ";
 			}
-			else if(sur[ts]==","&&player.sharp<player.max_sharp){
+			else if(village[player.y+ys][player.x+xs]==","&&player.sharp<player.max_sharp){
 				player.add(",");
 				village[player.y+ys][player.x+xs]=" ";
 			}
-			else if(sur[ts]==">"){
+			else if(village[player.y+ys][player.x+xs]==">"){
 				if(player.craft[0]==""&&player.hand[player.handid]!=" "){
 					player.craft[0]=player.hand[player.handid];
 					player.remove(player.hand[player.handid]);
@@ -388,7 +297,7 @@ int main(int argc, char *argv[]) {
 					player.craft[0]="";
 				}
 			}
-			else if(sur[ts]=="<"){
+			else if(village[player.y+ys][player.x+xs]=="<"){
 				if(player.craft[1]==""&&player.hand[player.handid]!=" "){
 					player.craft[1]=player.hand[player.handid];
 					player.remove(player.hand[player.handid]);
@@ -400,12 +309,12 @@ int main(int argc, char *argv[]) {
 					player.craft[1]="";
 				}
 			}
-			else if(sur[ts]=="o"){
+			else if(village[player.y+ys][player.x+xs]=="o"){
 				village[9][20]=" ";
 				village[11][29]=CAMPFIRE;
 				player.fire=10;
 			}
-			else if(sur[ts]==CAMPFIRE){
+			else if(village[player.y+ys][player.x+xs]==CAMPFIRE){
 				if(player.hand[player.handid]=="/"){
 					player.fire++;
 					player.remove("/");
@@ -450,8 +359,95 @@ void clear_screen(WINDOW* w){
 	}
 	wclear(w);
 }
+int light_distance(int y,int x){
+	if(player.fire==-1){
+		return 0;
+	}
+	int ls=(int)(sqrt(((y-11)*(y-11))+(((x-29)/2)*((x-29)/2))));	//fireplace is at 29 11
+	ls=(ls*2)-player.fire;
+	if(ls>8){
+		ls=9;
+	}
+	else if(ls<1){
+		ls=1;
+	}
+	
+	return ls;
+}
 
+bool draw(WINDOW* w){
+	
 
-
-
+	
+	int hand_xs,hand_ys,ls,colour_shift;
+	
+	wattroff(w,COLOR_PAIR(1));
+	
+	
+	
+	clear_screen(w);
+	for(unsigned int i=0;i<village.size();i++){
+		for(unsigned int j=0;j<village[i].size();j++){
+			ls=light_distance(i,j);
+			
+			if((village[i][j]==">"||village[i][j]=="<")&&player.hand[player.handid]!=" "){
+				colour_shift=10;
+				//wattron(w,A_BOLD);
+			}
+			else if(player.hand[player.handid]==" "&&(village[i][j]=="/"||village[i][j]=="."||village[i][j]==","||village[i][j]=="o")){
+				colour_shift=10;
+				//wattron(w,A_BOLD);
+			}
+			else if(village[i][j]=="O"&&(player.hand[player.handid]=="/")){
+				colour_shift=10;
+				//wattron(w,A_BOLD);
+			}
+			else{
+				colour_shift=0;
+			}
+						
+			if((village[i][j]==">"&&player.craft[0]!="")||(village[i][j]=="<"&&player.craft[1]!="")){
+				wattron(w,A_REVERSE);
+			}
+			
+			wattron(w,COLOR_PAIR(colour_shift+ls+1));
+			mvwprintw(w,i,j,village[i][j].c_str());	
+			
+			wattroff(w,A_BOLD);
+			wattroff(w,COLOR_PAIR(colour_shift+ls+1));
+			wattroff(w,A_REVERSE);
+		}
+	}
+	
+	wattron(w,COLOR_PAIR(1));
+	for(unsigned int i=0;i<dudes.size();i++){
+		mvwprintw(w,dudes[i]->y,dudes[i]->x,dudes[i]->img.c_str());	
+	}
+	hand_xs=0;
+	hand_ys=0;
+	if(player.hand[player.handid]!=" "){
+		if(player.last_dir==0){
+			hand_ys=-1;		//print hand up
+		}
+		else if(player.last_dir==1){
+			hand_xs=-1;		//print hand left
+		}
+		else if(player.last_dir==2){
+			hand_xs=1;		//print hand right
+		}
+		else if(player.last_dir==3){
+			hand_ys=1;		//print hand down
+		}
+		
+		wattroff(w,COLOR_PAIR(1));
+		wattron(w,COLOR_PAIR(21+light_distance(player.y+hand_ys,player.x+hand_xs)));
+		mvwprintw(w,player.y+hand_ys,player.x+hand_xs,player.hand[player.handid].c_str());
+		wattroff(w,COLOR_PAIR(21+light_distance(player.y+hand_ys,player.x+hand_xs)));
+		wattron(w,COLOR_PAIR(1));
+		
+		
+		
+	}
+	return false;
+}
 
