@@ -40,7 +40,7 @@ public:
 	std::map<std::string,int> inv_codes;
 	
 	void remove(std::string);
-	void add(std::string);
+	bool add(std::string);
 	
 };
 #endif

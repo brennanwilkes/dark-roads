@@ -274,8 +274,9 @@ int main(int argc, char *argv[]) {
 				player.water=false;
 			}
 			else if(village[player.y+ys][player.x+xs]=="/"||village[player.y+ys][player.x+xs]=="."||village[player.y+ys][player.x+xs]==","){
-				player.add(village[player.y+ys][player.x+xs]);
-				village[player.y+ys][player.x+xs]=" ";
+				if(player.add(village[player.y+ys][player.x+xs])){
+					village[player.y+ys][player.x+xs]=" ";
+				}
 			}
 			else if(village[player.y+ys][player.x+xs]==">"){
 				if(player.craft[0]==""&&player.hand[player.handid]!=" "){

@@ -77,13 +77,15 @@ void Player::remove(std::string chr){
 	}
 }
 
-void Player::add(std::string chr){
+bool Player::add(std::string chr){
 	if(player.inventory[player.inv_codes[chr]]<player.max_inv[player.inv_codes[chr]]){
 		if(player.inventory[player.inv_codes[chr]]==0){
 			player.hand.push_back(chr);
 		}
 		player.inventory[player.inv_codes[chr]]=player.inventory[player.inv_codes[chr]]+1;
+		return true;
 	}
+	return false;
 }
 
 
