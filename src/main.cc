@@ -52,6 +52,7 @@ inline float getDis(int x1,int y1,int x2,int y2);
 void clear_screen(WINDOW*);
 bool draw(WINDOW*);
 int light_distance(int,int);
+bool craft(string,string,string);
 
 
 vector<vector<string> > village(YMAX);
@@ -149,23 +150,26 @@ int main(int argc, char *argv[]) {
 	//int lst;
 	
 	
+	
+	vector<vector<string> > recipes={
+	{".",".",","},
+	{".","/","o"},
+	{"/",",","H"},
+	};
+	
+	
+	
+	
+	
 	while (true){
 		
 		
 		if(player.craft[0]!=""&&player.craft[1]!=""){
 			//make thing
-			string t1=player.craft[0];
-			string t2=player.craft[1];
-		
-			if(t1=="."&&t2=="."){
-				player.craft[0]="";
-				player.craft[1]="";
-				village[9][20]=",";
-			}
-			else if((t1=="."&&t2=="/")||(t1=="/"&&t2==".")){
-				player.craft[0]="";
-				player.craft[1]="";
-				village[9][20]="o";
+			for(int i=0;i<recipes.size();i++){
+				if(!craft(recipes[i][0],recipes[i][1],recipes[i][2])){
+					break;
+				}
 			}
 		}
 		
@@ -445,4 +449,17 @@ bool draw(WINDOW* w){
 	}
 	return false;
 }
+
+bool craft(string s1,string s2,string r){
+	if((player.craft[0]==s1&&player.craft[1]==s2)||(player.craft[1]==s1&&player.craft[0]==s2)){
+		player.craft[0]="";
+		player.craft[1]="";
+		village[9][20]=r;
+		return true;
+	}
+	return false;
+}
+
+
+
 

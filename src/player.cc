@@ -32,13 +32,14 @@ void Player::set_up(){
 	//max_wood=3;
 	
 	
-	inventory={0,0,0,0};
-	max_inv={5,5,2,3};
+	inventory={0,0,0,0,0};
+	max_inv={5,5,2,3,1};
 	
 	inv_codes["/"]=0;
 	inv_codes["."]=1;
 	inv_codes[","]=2;
 	//inv_codes["WOOD"]=3;
+	inv_codes["H"]=4;
 	
 	
 	
