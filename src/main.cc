@@ -53,10 +53,17 @@ void clear_screen(WINDOW*);
 bool draw(WINDOW*);
 int light_distance(int,int);
 bool craft(string,string,string);
+void tick(WINDOW*);
 
+unsigned int tot_ticks=0;
 
 vector<vector<string> > village(YMAX);
 
+vector<vector<string> > recipes={
+	{".",".",","},
+	{".","/","o"},
+	{"/",",","A"},
+};
 
 //		 0
 //		1 2
@@ -151,25 +158,12 @@ int main(int argc, char *argv[]) {
 	
 	
 	
-	vector<vector<string> > recipes={
-	{".",".",","},
-	{".","/","o"},
-	{"/",",","A"},
-	};
+	
 	
 	
 	while (true){
-		if(player.craft[0]!=""&&player.craft[1]!=""){
-			//make thing
-			for(int i=0;i<recipes.size();i++){
-				if(craft(recipes[i][0],recipes[i][1],recipes[i][2])){
-					break;
-				}
-			}
-		}
-		if(draw(worldwin)){
-			continue;
-		}
+		tick(worldwin);
+		
 		
 		if(player.water){
 			xs=1;
@@ -443,7 +437,7 @@ bool draw(WINDOW* w){
 		
 		
 	}
-	return false;
+	return true;
 }
 
 bool craft(string s1,string s2,string r){
@@ -454,6 +448,31 @@ bool craft(string s1,string s2,string r){
 		return true;
 	}
 	return false;
+}
+
+void tick(WINDOW* w){
+	tot_ticks++;
+	
+	
+	if(player.craft[0]!=""&&player.craft[1]!=""){
+		//make thing
+		for(int i=0;i<recipes.size();i++){
+			if(craft(recipes[i][0],recipes[i][1],recipes[i][2])){
+				break;
+			}
+		}
+	}
+	
+	draw(w);
+	
+	
+	
+	if(tot_ticks%10==0&&player.fire>0){
+		player.fire--;
+	}
+	
+	
+	
 }
 
 
