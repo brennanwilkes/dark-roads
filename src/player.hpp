@@ -34,6 +34,11 @@ public:
 	std::vector<std::string> hand;
 	std::vector<std::string> craft;
 	
+	std::vector<int> inventory;
+	std::vector<int> max_inv;
+	
+	std::map<std::string,int> inv_codes;
+	
 	void remove(std::string);
 	void add(std::string);
 	

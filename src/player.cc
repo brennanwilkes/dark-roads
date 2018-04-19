@@ -31,6 +31,17 @@ void Player::set_up(){
 	max_sharp=2;
 	max_wood=3;
 	
+	
+	inventory={0,0,0,0};
+	max_inv={5,5,2,3};
+	
+	inv_codes["/"]=0;
+	inv_codes["."]=1;
+	inv_codes[","]=2;
+	//inv_codes["WOOD"]=3;
+	
+	
+	
 	last_dir=0;
 	
 	fire=-1;
@@ -39,97 +50,40 @@ void Player::set_up(){
 
 
 void Player::tick(){
-	float mult=1;
+	//float mult=1;
 	
-	bool move=false;
-	
-	
-	
-	
-	
+	//bool move=false;
 }
 
 
 void Player::remove(std::string chr){
 	std::vector<std::string> tmp={};
 	int tmp2;
-	if(chr=="/"){
-		player.sticks=player.sticks-1;
-		if(player.sticks==0){
-			for(unsigned int i=0;i<player.hand.size();i++){
-				if(player.hand[i]!="/"){
-					tmp.push_back(player.hand[i]);
-				}
-				else{
-					tmp2=i;
-				}
+	
+	player.inventory[player.inv_codes[chr]]=player.inventory[player.inv_codes[chr]]-1;
+	if(player.inventory[player.inv_codes[chr]]==0){
+		for(unsigned int i=0;i<player.hand.size();i++){
+			if(player.hand[i]!=chr){
+				tmp.push_back(player.hand[i]);
 			}
-			player.hand=tmp;
-			if(player.handid>=tmp2){
-				player.handid=player.handid-1;
+			else{
+				tmp2=i;
 			}
 		}
-	}
-	else if(chr=="."){
-		player.stones=player.stones-1;
-		if(player.stones==0){
-			for(unsigned int i=0;i<player.hand.size();i++){
-				if(player.hand[i]!="."){
-					tmp.push_back(player.hand[i]);
-				}
-				else{
-					tmp2=i;
-				}
-			}
-			player.hand=tmp;
-			if(player.handid>=tmp2){
-				player.handid=player.handid-1;
-			}
+		player.hand=tmp;
+		if(player.handid>=tmp2){
+			player.handid=player.handid-1;
 		}
 	}
-	else if(chr==","){
-		player.sharp=player.sharp-1;
-		if(player.sharp==0){
-			for(unsigned int i=0;i<player.hand.size();i++){
-				if(player.hand[i]!=","){
-					tmp.push_back(player.hand[i]);
-				}
-				else{
-					tmp2=i;
-				}
-			}
-			player.hand=tmp;
-			if(player.handid>=tmp2){
-				player.handid=player.handid-1;
-			}
-		}
-	}
-	
-	
-	
 }
 
 void Player::add(std::string chr){
-	if(chr=="/"){
-		if(player.sticks==0){
-			player.hand.push_back("/");
+	if(player.inventory[player.inv_codes[chr]]<player.max_inv[player.inv_codes[chr]]){
+		if(player.inventory[player.inv_codes[chr]]==0){
+			player.hand.push_back(chr);
 		}
-		player.sticks=player.sticks+1;
+		player.inventory[player.inv_codes[chr]]=player.inventory[player.inv_codes[chr]]+1;
 	}
-	else if(chr=="."){
-		if(player.stones==0){
-			player.hand.push_back(".");
-		}
-		player.stones=player.stones+1;
-	}
-	else if(chr==","){
-		if(player.sharp==0){
-			player.hand.push_back(",");
-		}
-		player.sharp=player.sharp+1;
-	}
-	
-	
 }
 
 
