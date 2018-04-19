@@ -2,8 +2,6 @@
 
 Summer project for IDS Best Team but probally just Brennan unless other people are interested
 
-SFML 2.4.2
-
 DARK ROADS
 
 */
@@ -17,7 +15,7 @@ DARK ROADS
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
-
+#include <random>
 
 //NCURSESSSSS Includes
 #include <ncurses.h>
@@ -56,6 +54,7 @@ bool craft(string,string,string);
 void tick(WINDOW*);
 
 unsigned int fire_tick=0;
+unsigned int tree_tick=0;
 
 vector<vector<string> > village(YMAX);
 
@@ -73,6 +72,8 @@ vector<vector<string> > recipes={
 
 int main(int argc, char *argv[]) {
 	scene=0;
+	
+	srand (time(NULL));
 	
 	for(int i=0;i<YMAX;i++){
 		village[i].resize(XMAX);
@@ -281,7 +282,7 @@ int main(int argc, char *argv[]) {
 			else if(village[player.y+ys][player.x+xs]=="o"){
 				village[9][20]=" ";
 				village[11][29]=CAMPFIRE;
-				player.fire=10;
+				player.fire=16;
 			}
 			else if(village[player.y+ys][player.x+xs]==CAMPFIRE){
 				if(player.hand[player.handid]=="/"){
@@ -289,7 +290,7 @@ int main(int argc, char *argv[]) {
 					player.remove("/");
 				}
 				else if(player.hand[player.handid]=="="){
-					player.fire=player.fire+3;
+					player.fire=player.fire+5;
 					player.remove("=");
 				}
 			}
@@ -387,7 +388,7 @@ bool draw(WINDOW* w){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
-			else if(village[i][j]=="^"&&(player.hand[player.handid]=="A")){
+			else if(village[i][j]=="^"&&(player.hand[player.handid]=="A")&&player.inventory[player.inv_codes["="]]<player.max_inv[player.inv_codes["="]]){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
@@ -452,7 +453,7 @@ bool craft(string s1,string s2,string r){
 
 void tick(WINDOW* w){
 	fire_tick++;
-	
+	//tree_tick++;
 	
 	if(player.craft[0]!=""&&player.craft[1]!=""){
 		//make thing
@@ -465,8 +466,6 @@ void tick(WINDOW* w){
 	
 	draw(w);
 	
-	
-	
 	if(player.fire>0){
 		if(fire_tick>100/player.fire){
 			player.fire--;
@@ -474,8 +473,39 @@ void tick(WINDOW* w){
 		}
 	}
 	
-	
+	for(int i=0;i<village.size();i++){
+		for(int j=0;j<village[i].size();j++){
+			if(village[i][j]=="^"){
+				if((int)(rand()%1000)==0){
+					vector<vector<int> > sur={};
+					for(int y=0;y<3;y++){
+						for(int x=0;x<3;x++){
+							if(i+y<23&&i+y>0&&j+x<79&&j+x>0){
+								if(village[i+y][j+x]==" "){
+									sur.push_back({i+y,j+x});
+								}
+							}
+						}
+					}
+					if(sur.size()>0){
+						int tmp=(int)(rand()%sur.size());
+						village[sur[tmp][0]][sur[tmp][1]]="^";
+					}
+				}
+			}
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
