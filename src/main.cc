@@ -37,6 +37,9 @@ using namespace std;
 #define YMAX 24
 #define XMAX 80
 
+#define YMIN 0
+#define XMIN 0
+
 
 
 int scene;	//Just an example on how to do a global
@@ -216,7 +219,7 @@ int main(int argc, char *argv[]) {
 			
 		}
 		if(xs!=0 || ys!=0){
-			if(player.y+ys>23||player.y+ys<0||player.x+xs>79||player.x+xs<0){
+			if(player.y+ys>(YMAX-1) || player.y+ys<YMIN || player.x+xs>(XMAX-1) ||player.x+xs<XMIN){
 				continue;
 			}
 			if(village[player.y+ys][player.x+xs]=="_"){
@@ -236,7 +239,7 @@ int main(int argc, char *argv[]) {
 					ys=ys*2;
 				}
 			}
-			if(player.y+ys>23||player.y+ys<0||player.x+xs>79||player.x+xs<0){
+			if(player.y+ys>(YMAX-1) ||player.y+ys<YMIN||player.x+xs>(XMAX-1) ||player.x+xs<XMIN){
 				continue;
 			}
 			
@@ -312,10 +315,10 @@ int main(int argc, char *argv[]) {
 	endwin();
 	
 	if (system(NULL)){ //checks if command processor is available
-		system("reset");
+		if(system("reset")){}
 	}
 	
-	
+
 	cout<<yMax<<" "<<xMax<<endl;
 	cout<<player.craft[0]<<endl;
 	cout<<player.craft[1]<<endl;
@@ -363,7 +366,7 @@ bool draw(WINDOW* w){
 	
 
 	
-	int hand_xs,hand_ys,ls,colour_shift;
+	int hand_xs,hand_ys,ls,colour_shift=0;
 	
 	wattroff(w,COLOR_PAIR(1));
 	
