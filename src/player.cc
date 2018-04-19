@@ -38,8 +38,8 @@ void Player::set_up(){
 	inv_codes["/"]=0;
 	inv_codes["."]=1;
 	inv_codes[","]=2;
-	//inv_codes["WOOD"]=3;
-	inv_codes["H"]=4;
+	inv_codes["="]=3;
+	inv_codes["A"]=4;
 	
 	
 	
