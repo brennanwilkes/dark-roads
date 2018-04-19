@@ -386,8 +386,10 @@ bool draw(WINDOW* w){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
-			else if(player.hand[player.handid]==" "&&(village[i][j]=="/"||village[i][j]=="."||village[i][j]==","||village[i][j]=="o")){
-				colour_shift=10;
+			else if(village[i][j]=="/"||village[i][j]=="."||village[i][j]==","||village[i][j]=="o"){
+				if(player.inventory[player.inv_codes[village[i][j]]]<player.max_inv[player.inv_codes[village[i][j]]]){
+					colour_shift=10;
+				}
 				//wattron(w,A_BOLD);
 			}
 			else if(village[i][j]=="O"&&(player.hand[player.handid]=="/")){
