@@ -55,13 +55,13 @@ int light_distance(int,int);
 bool craft(string,string,string);
 void tick(WINDOW*);
 
-unsigned int tot_ticks=0;
+unsigned int fire_tick=0;
 
 vector<vector<string> > village(YMAX);
 
 vector<vector<string> > recipes={
 	{".",".",","},
-	{".","/","o"},
+	{".","=","o"},
 	{"/",",","A"},
 };
 
@@ -451,7 +451,7 @@ bool craft(string s1,string s2,string r){
 }
 
 void tick(WINDOW* w){
-	tot_ticks++;
+	fire_tick++;
 	
 	
 	if(player.craft[0]!=""&&player.craft[1]!=""){
@@ -467,10 +467,12 @@ void tick(WINDOW* w){
 	
 	
 	
-	if(tot_ticks%10==0&&player.fire>0){
-		player.fire--;
+	if(player.fire>0){
+		if(fire_tick>100/player.fire){
+			player.fire--;
+			fire_tick=0;
+		}
 	}
-	
 	
 	
 }
