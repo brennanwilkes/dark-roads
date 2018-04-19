@@ -56,10 +56,17 @@ void clear_screen(WINDOW*);
 bool draw(WINDOW*);
 int light_distance(int,int);
 bool craft(string,string,string);
+void tick(WINDOW*);
 
+unsigned int fire_tick=0;
 
 vector<vector<string> > village(YMAX);
 
+vector<vector<string> > recipes={
+	{".",".",","},
+	{".","=","o"},
+	{"/",",","A"},
+};
 
 //		 0
 //		1 2
@@ -154,44 +161,11 @@ int main(int argc, char *argv[]) {
 	
 	
 	
-	vector<vector<string> > recipes={
-	{".",".",","},
-	{".","/","o"},
-	{"/",",","H"},
-	};
-	
-	
 	
 	
 	
 	while (true){
-		
-		
-		if(player.craft[0]!=""&&player.craft[1]!=""){
-			//make thing
-			for(int i=0;i<recipes.size();i++){
-				if(!craft(recipes[i][0],recipes[i][1],recipes[i][2])){
-					break;
-				}
-			}
-		}
-		
-		
-		if(draw(worldwin)){
-			continue;
-		}
-		
-		
-		//mvwprintw(worldwin,1,74,"*---*");
-		//mvwprintw(worldwin,2,74,"|   |");
-		//mvwprintw(worldwin,2,76,player.hand[player.handid].c_str());
-		//mvwprintw(worldwin,3,74,"*---*");
-
-		
-		
-		
-		
-		
+		tick(worldwin);
 		
 		
 		if(player.water){
@@ -202,11 +176,9 @@ int main(int argc, char *argv[]) {
 			refresh();
 			wrefresh(worldwin);
 			usleep(50000);
-			
 		}
 		else{
 			k_press = wgetch(worldwin);			//keyboard input
-		
 			xs=0;
 			ys=0;
 			ts=10;
@@ -280,7 +252,7 @@ int main(int argc, char *argv[]) {
 				player.x=player.x+xs;
 				player.water=false;
 			}
-			else if(village[player.y+ys][player.x+xs]=="/"||village[player.y+ys][player.x+xs]=="."||village[player.y+ys][player.x+xs]==","){
+			else if(village[player.y+ys][player.x+xs]=="/"||village[player.y+ys][player.x+xs]=="."||village[player.y+ys][player.x+xs]==","||village[player.y+ys][player.x+xs]=="A"){
 				if(player.add(village[player.y+ys][player.x+xs])){
 					village[player.y+ys][player.x+xs]=" ";
 				}
@@ -319,6 +291,18 @@ int main(int argc, char *argv[]) {
 					player.fire++;
 					player.remove("/");
 				}
+				else if(player.hand[player.handid]=="="){
+					player.fire=player.fire+3;
+					player.remove("=");
+				}
+			}
+			else if(village[player.y+ys][player.x+xs]=="^"&&player.hand[player.handid]=="A"){
+				if(player.add("=")){
+					village[player.y+ys][player.x+xs]=" ";
+					if(player.add("/")){
+						player.add("/");
+					}
+				}
 			}
 		}
 	
@@ -333,8 +317,10 @@ int main(int argc, char *argv[]) {
 		if(system("reset")){}
 	}
 	
-	//cout<<yMax<<" "<<xMax<<endl;
-	//cout<<player.craft[0]<<endl;
+
+	cout<<yMax<<" "<<xMax<<endl;
+	cout<<player.craft[0]<<endl;
+	cout<<player.craft[1]<<endl;
 	return 0;
 }
 
@@ -379,7 +365,7 @@ bool draw(WINDOW* w){
 	
 
 	
-	int hand_xs,hand_ys,ls,colour_shift;
+	int hand_xs,hand_ys,ls,colour_shift=0;
 	
 	wattroff(w,COLOR_PAIR(1));
 	
@@ -394,13 +380,17 @@ bool draw(WINDOW* w){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
-			else if(village[i][j]=="/"||village[i][j]=="."||village[i][j]==","||village[i][j]=="o"){
+			else if(village[i][j]=="/"||village[i][j]=="."||village[i][j]==","||village[i][j]=="o"||village[i][j]=="A"){
 				if(player.inventory[player.inv_codes[village[i][j]]]<player.max_inv[player.inv_codes[village[i][j]]]){
 					colour_shift=10;
 				}
 				//wattron(w,A_BOLD);
 			}
-			else if(village[i][j]=="O"&&(player.hand[player.handid]=="/")){
+			else if(village[i][j]=="O"&&(player.hand[player.handid]=="/"||player.hand[player.handid]=="=")){
+				colour_shift=10;
+				//wattron(w,A_BOLD);
+			}
+			else if(village[i][j]=="^"&&(player.hand[player.handid]=="A")){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
@@ -450,7 +440,7 @@ bool draw(WINDOW* w){
 		
 		
 	}
-	return false;
+	return true;
 }
 
 bool craft(string s1,string s2,string r){
@@ -461,6 +451,33 @@ bool craft(string s1,string s2,string r){
 		return true;
 	}
 	return false;
+}
+
+void tick(WINDOW* w){
+	fire_tick++;
+	
+	
+	if(player.craft[0]!=""&&player.craft[1]!=""){
+		//make thing
+		for(int i=0;i<recipes.size();i++){
+			if(craft(recipes[i][0],recipes[i][1],recipes[i][2])){
+				break;
+			}
+		}
+	}
+	
+	draw(w);
+	
+	
+	
+	if(player.fire>0){
+		if(fire_tick>100/player.fire){
+			player.fire--;
+			fire_tick=0;
+		}
+	}
+	
+	
 }
 
 

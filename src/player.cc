@@ -38,8 +38,8 @@ void Player::set_up(){
 	inv_codes["/"]=0;
 	inv_codes["."]=1;
 	inv_codes[","]=2;
-	//inv_codes["WOOD"]=3;
-	inv_codes["H"]=4;
+	inv_codes["="]=3;
+	inv_codes["A"]=4;
 	
 	
 	
@@ -59,7 +59,7 @@ void Player::tick(){
 
 void Player::remove(std::string chr){
 	std::vector<std::string> tmp={};
-	int tmp2;
+	int tmp2=player.hand.size(); //this being uninitialized was giving a warning
 	
 	player.inventory[player.inv_codes[chr]]=player.inventory[player.inv_codes[chr]]-1;
 	if(player.inventory[player.inv_codes[chr]]==0){
@@ -68,7 +68,7 @@ void Player::remove(std::string chr){
 				tmp.push_back(player.hand[i]);
 			}
 			else{
-				tmp2=i;
+				tmp2=i; //will this always run (at least once a loop)?
 			}
 		}
 		player.hand=tmp;
