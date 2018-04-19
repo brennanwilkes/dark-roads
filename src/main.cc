@@ -290,13 +290,13 @@ int main(int argc, char *argv[]) {
 					player.remove("/");
 				}
 				else if(player.hand[player.handid]=="="){
-					player.fire=player.fire+5;
+					player.fire=player.fire+3;
 					player.remove("=");
 				}
 			}
 			else if(village[player.y+ys][player.x+xs]=="^"&&player.hand[player.handid]=="A"){
+				village[player.y+ys][player.x+xs]=" ";
 				if(player.add("=")){
-					village[player.y+ys][player.x+xs]=" ";
 					if(player.add("/")){
 						player.add("/");
 					}
@@ -472,24 +472,25 @@ void tick(WINDOW* w){
 			fire_tick=0;
 		}
 	}
-	
-	for(int i=0;i<village.size();i++){
-		for(int j=0;j<village[i].size();j++){
-			if(village[i][j]=="^"){
-				if((int)(rand()%1000)==0){
-					vector<vector<int> > sur={};
-					for(int y=0;y<3;y++){
-						for(int x=0;x<3;x++){
-							if(i+y<23&&i+y>0&&j+x<79&&j+x>0){
-								if(village[i+y][j+x]==" "){
-									sur.push_back({i+y,j+x});
+	if(player.inventory[player.inv_codes["A"]]>0){
+		for(int i=0;i<village.size();i++){
+			for(int j=0;j<village[i].size();j++){
+				if(village[i][j]=="^"){
+					if((int)(rand()%1000)==0){
+						vector<vector<int> > sur={};
+						for(int y=0;y<3;y++){
+							for(int x=0;x<3;x++){
+								if(i+y<23&&i+y>0&&j+x<79&&j+x>0){
+									if(village[i+y][j+x]==" "){
+										sur.push_back({i+y,j+x});
+									}
 								}
 							}
 						}
-					}
-					if(sur.size()>0){
-						int tmp=(int)(rand()%sur.size());
-						village[sur[tmp][0]][sur[tmp][1]]="^";
+						if(sur.size()>0){
+							int tmp=(int)(rand()%sur.size());
+							village[sur[tmp][0]][sur[tmp][1]]="^";
+						}
 					}
 				}
 			}
