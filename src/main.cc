@@ -273,16 +273,8 @@ int main(int argc, char *argv[]) {
 				player.x=player.x+xs;
 				player.water=false;
 			}
-			else if(village[player.y+ys][player.x+xs]=="/"&&player.sticks<player.max_sticks){
-				player.add("/");
-				village[player.y+ys][player.x+xs]=" ";
-			}
-			else if(village[player.y+ys][player.x+xs]=="."&&player.stones<player.max_stones){
-				player.add(".");
-				village[player.y+ys][player.x+xs]=" ";
-			}
-			else if(village[player.y+ys][player.x+xs]==","&&player.sharp<player.max_sharp){
-				player.add(",");
+			else if(village[player.y+ys][player.x+xs]=="/"||village[player.y+ys][player.x+xs]=="."||village[player.y+ys][player.x+xs]==","){
+				player.add(village[player.y+ys][player.x+xs]);
 				village[player.y+ys][player.x+xs]=" ";
 			}
 			else if(village[player.y+ys][player.x+xs]==">"){

@@ -16,15 +16,15 @@ public:
 	int cx;
 	int cy;
 	bool water;
-	int sticks;
-	int stones;
-	int sharp;
-	int wood;
+	//int sticks;
+	//int stones;
+	//int sharp;
+	//int wood;
 	
-	int max_sticks;
-	int max_stones;
-	int max_sharp;
-	int max_wood;
+	//int max_sticks;
+	//int max_stones;
+	//int max_sharp;
+	//int max_wood;
 	
 	int fire;
 	

@@ -18,18 +18,18 @@ void Player::set_up(){
 	img = "@";
 	water=false;
 	
-	sticks=0;
-	stones=0;
-	sharp=0;
-	wood=0;
+	//sticks=0;
+	//stones=0;
+	//sharp=0;
+	//wood=0;
 	handid=0;
 	hand = {" "};//,"/","."};
 	craft = {"",""};
 	
-	max_sticks=5;
-	max_stones=5;
-	max_sharp=2;
-	max_wood=3;
+	//max_sticks=5;
+	//max_stones=5;
+	//max_sharp=2;
+	//max_wood=3;
 	
 	
 	inventory={0,0,0,0};
