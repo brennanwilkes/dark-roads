@@ -55,6 +55,7 @@ inline float getDis(int x1,int y1,int x2,int y2);
 void clear_screen(WINDOW*);
 bool draw(WINDOW*);
 int light_distance(int,int);
+bool craft(string,string,string);
 
 
 vector<vector<string> > village(YMAX);
@@ -152,23 +153,26 @@ int main(int argc, char *argv[]) {
 	//int lst;
 	
 	
+	
+	vector<vector<string> > recipes={
+	{".",".",","},
+	{".","/","o"},
+	{"/",",","H"},
+	};
+	
+	
+	
+	
+	
 	while (true){
 		
 		
 		if(player.craft[0]!=""&&player.craft[1]!=""){
 			//make thing
-			string t1=player.craft[0];
-			string t2=player.craft[1];
-		
-			if(t1=="."&&t2=="."){
-				player.craft[0]="";
-				player.craft[1]="";
-				village[9][20]=",";
-			}
-			else if((t1=="."&&t2=="/")||(t1=="/"&&t2==".")){
-				player.craft[0]="";
-				player.craft[1]="";
-				village[9][20]="o";
+			for(int i=0;i<recipes.size();i++){
+				if(!craft(recipes[i][0],recipes[i][1],recipes[i][2])){
+					break;
+				}
 			}
 		}
 		
@@ -276,17 +280,10 @@ int main(int argc, char *argv[]) {
 				player.x=player.x+xs;
 				player.water=false;
 			}
-			else if(village[player.y+ys][player.x+xs]=="/"&&player.sticks<player.max_sticks){
-				player.add("/");
-				village[player.y+ys][player.x+xs]=" ";
-			}
-			else if(village[player.y+ys][player.x+xs]=="."&&player.stones<player.max_stones){
-				player.add(".");
-				village[player.y+ys][player.x+xs]=" ";
-			}
-			else if(village[player.y+ys][player.x+xs]==","&&player.sharp<player.max_sharp){
-				player.add(",");
-				village[player.y+ys][player.x+xs]=" ";
+			else if(village[player.y+ys][player.x+xs]=="/"||village[player.y+ys][player.x+xs]=="."||village[player.y+ys][player.x+xs]==","){
+				if(player.add(village[player.y+ys][player.x+xs])){
+					village[player.y+ys][player.x+xs]=" ";
+				}
 			}
 			else if(village[player.y+ys][player.x+xs]==">"){
 				if(player.craft[0]==""&&player.hand[player.handid]!=" "){
@@ -397,8 +394,10 @@ bool draw(WINDOW* w){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
-			else if(player.hand[player.handid]==" "&&(village[i][j]=="/"||village[i][j]=="."||village[i][j]==","||village[i][j]=="o")){
-				colour_shift=10;
+			else if(village[i][j]=="/"||village[i][j]=="."||village[i][j]==","||village[i][j]=="o"){
+				if(player.inventory[player.inv_codes[village[i][j]]]<player.max_inv[player.inv_codes[village[i][j]]]){
+					colour_shift=10;
+				}
 				//wattron(w,A_BOLD);
 			}
 			else if(village[i][j]=="O"&&(player.hand[player.handid]=="/")){
@@ -453,4 +452,17 @@ bool draw(WINDOW* w){
 	}
 	return false;
 }
+
+bool craft(string s1,string s2,string r){
+	if((player.craft[0]==s1&&player.craft[1]==s2)||(player.craft[1]==s1&&player.craft[0]==s2)){
+		player.craft[0]="";
+		player.craft[1]="";
+		village[9][20]=r;
+		return true;
+	}
+	return false;
+}
+
+
+
 

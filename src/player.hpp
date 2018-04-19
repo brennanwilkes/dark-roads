@@ -16,15 +16,15 @@ public:
 	int cx;
 	int cy;
 	bool water;
-	int sticks;
-	int stones;
-	int sharp;
-	int wood;
+	//int sticks;
+	//int stones;
+	//int sharp;
+	//int wood;
 	
-	int max_sticks;
-	int max_stones;
-	int max_sharp;
-	int max_wood;
+	//int max_sticks;
+	//int max_stones;
+	//int max_sharp;
+	//int max_wood;
 	
 	int fire;
 	
@@ -34,8 +34,13 @@ public:
 	std::vector<std::string> hand;
 	std::vector<std::string> craft;
 	
+	std::vector<int> inventory;
+	std::vector<int> max_inv;
+	
+	std::map<std::string,int> inv_codes;
+	
 	void remove(std::string);
-	void add(std::string);
+	bool add(std::string);
 	
 };
 #endif
