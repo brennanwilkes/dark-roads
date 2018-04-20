@@ -71,22 +71,21 @@ void Player::tick(){
 
 
 void Player::remove(std::string chr){
-	std::vector<std::string> tmp={};
-	int itmInd=player.hand.size();
+	int indx = 0;
 	
 	player.inventory[chr]--;
+
 	if(player.inventory[chr]==0){
-		for(unsigned int i=0;i<player.hand.size();i++){
-			if(player.hand[i]!=chr){
-				tmp.push_back(player.hand[i]);
-			}
-			else{
-				itmInd=i;
+		for(unsigned int i=0; i<player.hand.size(); i++){
+			if(player.hand[i]==chr){
+				indx = i;
+				break;
 			}
 		}
-		player.hand=tmp;
-		if(player.handid>=itmInd){
-			player.handid=player.handid-1;
+		player.hand.erase(player.hand.begin()+indx);
+		
+		if(player.handid >= indx){
+			player.handid--;
 		}
 	}
 }
