@@ -32,15 +32,28 @@ void Player::set_up(){
 	//max_wood=3;
 	
 	
-	inventory={0,0,0,0,0};
-	max_inv={5,5,2,3,1};
+	//inventory={0,0,0,0,0};
+	//max_inv={5,5,2,3,1};
 	
+	inventory["/"] = 0;
+	inventory["."] = 0;
+	inventory[","] = 0;
+	inventory["="] = 0;
+	inventory["A"] = 0;	
+	
+	
+	max_inv["/"] = 5;
+	max_inv["."] = 5;
+	max_inv[","] = 2;
+	max_inv["="] = 3;
+	max_inv["A"] = 1;
+	/*
 	inv_codes["/"]=0;
 	inv_codes["."]=1;
 	inv_codes[","]=2;
 	inv_codes["="]=3;
 	inv_codes["A"]=4;
-	
+	*/
 	
 	
 	last_dir=0;
@@ -61,8 +74,8 @@ void Player::remove(std::string chr){
 	std::vector<std::string> tmp={};
 	int itmInd=player.hand.size();
 	
-	player.inventory[player.inv_codes[chr]]=player.inventory[player.inv_codes[chr]]-1;
-	if(player.inventory[player.inv_codes[chr]]==0){
+	player.inventory[chr]--;
+	if(player.inventory[chr]==0){
 		for(unsigned int i=0;i<player.hand.size();i++){
 			if(player.hand[i]!=chr){
 				tmp.push_back(player.hand[i]);
@@ -80,11 +93,11 @@ void Player::remove(std::string chr){
 
 
 bool Player::add(std::string chr){
-	if(player.inventory[player.inv_codes[chr]]<player.max_inv[player.inv_codes[chr]]){
-		if(player.inventory[player.inv_codes[chr]]==0){
+	if(player.inventory[chr]<player.max_inv[chr]){
+		if(player.inventory[chr]==0){
 			player.hand.push_back(chr);
 		}
-		player.inventory[player.inv_codes[chr]]=player.inventory[player.inv_codes[chr]]+1;
+		player.inventory[chr]++;
 		return true;
 	}
 	return false;

@@ -382,7 +382,7 @@ bool draw(WINDOW* w){
 				//wattron(w,A_BOLD);
 			}
 			else if(village[i][j]=="/"||village[i][j]=="."||village[i][j]==","||village[i][j]=="o"||village[i][j]=="A"){
-				if(player.inventory[player.inv_codes[village[i][j]]]<player.max_inv[player.inv_codes[village[i][j]]]){
+				if(player.inventory[village[i][j]]<player.max_inv[village[i][j]]){
 					colour_shift=10;
 				}
 				//wattron(w,A_BOLD);
@@ -391,7 +391,7 @@ bool draw(WINDOW* w){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
-			else if(village[i][j]=="^"&&(player.hand[player.handid]=="A")&&player.inventory[player.inv_codes["="]]<player.max_inv[player.inv_codes["="]]){
+			else if(village[i][j]=="^"&&(player.hand[player.handid]=="A")&&player.inventory["="]<player.max_inv["="]){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
@@ -475,7 +475,7 @@ void tick(WINDOW* w){
 			fire_tick=0;
 		}
 	}
-	if(player.inventory[player.inv_codes["A"]]>0){
+	if(player.inventory["A"]>0){
 		for(int i=0;i<village.size();i++){
 			for(int j=0;j<village[i].size();j++){
 				if(village[i][j]=="^"){
