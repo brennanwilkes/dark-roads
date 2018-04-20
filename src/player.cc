@@ -18,22 +18,10 @@ void Player::set_up(){
 	img = "@";
 	water=false;
 	
-	//sticks=0;
-	//stones=0;
-	//sharp=0;
-	//wood=0;
+;
 	handid=0;
-	hand = {" "};//,"/","."};
+	hand = {" "};
 	craft = {"",""};
-	
-	//max_sticks=5;
-	//max_stones=5;
-	//max_sharp=2;
-	//max_wood=3;
-	
-	
-	//inventory={0,0,0,0,0};
-	//max_inv={5,5,2,3,1};
 	
 	inventory["/"] = 0;
 	inventory["."] = 0;
@@ -41,12 +29,12 @@ void Player::set_up(){
 	inventory["="] = 0;
 	inventory["A"] = 0;	
 	
-	
 	max_inv["/"] = 5;
 	max_inv["."] = 5;
 	max_inv[","] = 2;
 	max_inv["="] = 3;
 	max_inv["A"] = 1;
+
 	/*
 	inv_codes["/"]=0;
 	inv_codes["."]=1;
@@ -54,7 +42,6 @@ void Player::set_up(){
 	inv_codes["="]=3;
 	inv_codes["A"]=4;
 	*/
-	
 	
 	last_dir=0;
 	
@@ -76,6 +63,7 @@ void Player::remove(std::string chr){
 	player.inventory[chr]--;
 
 	if(player.inventory[chr]==0){
+
 		for(unsigned int i=0; i<player.hand.size(); i++){
 			if(player.hand[i]==chr){
 				indx = i;
