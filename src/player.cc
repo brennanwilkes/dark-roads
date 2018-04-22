@@ -18,7 +18,7 @@ void Player::set_up(){
 	img = "@";
 	water=false;
 	
-;
+
 	handid=0;
 	hand = {" "};
 	craft = {"",""};

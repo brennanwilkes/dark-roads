@@ -37,10 +37,6 @@ using namespace std;
 #define YMAX 24
 #define XMAX 80
 
-#define YMIN 0
-#define XMIN 0
-
-
 
 int scene;	//Just an example on how to do a global
 Player player=Player();
@@ -119,6 +115,7 @@ int main(int argc, char *argv[]) {
 	initscr();
 	noecho();
 	cbreak();
+	
 	int yMax,xMax;
 	getmaxyx(stdscr, yMax, xMax);
 	int k_press;
@@ -169,6 +166,40 @@ int main(int argc, char *argv[]) {
 		tick(worldwin);
 		
 		
+		
+		k_press = wgetch(worldwin);			//keyboard input
+		xs=0;
+		ys=0;
+		ts=10;
+		if(k_press==KEY_UP || k_press==(int)'w'){
+			ys=-1;
+			ts=0;
+		}
+		else if(k_press==KEY_DOWN || k_press==(int)'s'){
+			ys=1;
+			ts=3;
+		}
+		else if(k_press==KEY_LEFT || k_press==(int)'a'){
+			xs=-1;
+			ts=1;
+		}
+		else if(k_press==KEY_RIGHT || k_press==(int)'d'){
+			xs=1;
+			ts=2;
+		}
+		else if(k_press==(int)'\t'){
+			(++player.handid) %= player.hand.size();
+		}
+		else if(k_press==(int)' '){
+			if(player.hand[player.handid]==" "){
+				//Crafting?
+				
+			}
+		}
+		else if(k_press==(int)'q'){
+			break;
+		}
+		
 		if(player.water){
 			xs=1;
 			ys=1;
@@ -178,48 +209,9 @@ int main(int argc, char *argv[]) {
 			wrefresh(worldwin);
 			usleep(50000);
 		}
-		else{
-			k_press = wgetch(worldwin);			//keyboard input
-			xs=0;
-			ys=0;
-			ts=10;
-			if(k_press==KEY_UP || k_press==(int)'w'){
-				ys=-1;
-				ts=0;
-			}
-			else if(k_press==KEY_DOWN || k_press==(int)'s'){
-				ys=1;
-				ts=3;
-			}
-			else if(k_press==KEY_LEFT || k_press==(int)'a'){
-				xs=-1;
-				ts=1;
-			}
-			else if(k_press==KEY_RIGHT || k_press==(int)'d'){
-				xs=1;
-				ts=2;
-			}
-			else if(k_press==(int)'\t'){
-				if(player.handid+1==player.hand.size()){
-					player.handid=0;
-				}
-				else{
-					player.handid++;
-				}
-			}
-			else if(k_press==(int)' '){
-				if(player.hand[player.handid]==" "){
-					//Crafting?
-					
-				}
-			}
-			else if(k_press==(int)'q'){
-				break;
-			}		
-			
-		}
+		
 		if(xs!=0 || ys!=0){
-			if(player.y+ys>(YMAX-1) || player.y+ys<YMIN || player.x+xs>(XMAX-1) ||player.x+xs<XMIN){
+			if(player.y+ys>(yMax-1) || player.y+ys<0 || player.x+xs>(xMax-1) ||player.x+xs<0){
 				continue;
 			}
 			if(village[player.y+ys][player.x+xs]=="_"){
@@ -239,7 +231,7 @@ int main(int argc, char *argv[]) {
 					ys=ys*2;
 				}
 			}
-			if(player.y+ys>(YMAX-1) ||player.y+ys<YMIN||player.x+xs>(XMAX-1) ||player.x+xs<XMIN){
+			if(player.y+ys>(yMax-1) || player.y+ys<0 || player.x+xs>(xMax-1) || player.x+xs<0){
 				continue;
 			}
 			
@@ -475,12 +467,16 @@ void tick(WINDOW* w){
 			fire_tick=0;
 		}
 	}
+	
+	vector<vector<int> > sur={};
+	
 	if(player.inventory["A"]>0){
 		for(int i=0;i<village.size();i++){
 			for(int j=0;j<village[i].size();j++){
+				
 				if(village[i][j]=="^"){
 					if((int)(rand()%1000)==0){
-						vector<vector<int> > sur={};
+						sur.clear();
 						for(int y=0;y<3;y++){
 							for(int x=0;x<3;x++){
 								if(i+y<23&&i+y>0&&j+x<79&&j+x>0){
