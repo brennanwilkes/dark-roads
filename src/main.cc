@@ -41,6 +41,7 @@ using namespace std;
 int stage;
 Player player=Player();
 vector<GameObject*> dudes;
+int text_delay;
 
 inline float getDis(GameObject* src,GameObject* dest);
 inline float getDis(GameObject* src);
@@ -261,9 +262,14 @@ int main(int argc, char *argv[]) {
 				player.x=player.x+xs;
 				player.water=false;
 			}
+			else if(player.y+ys==9&&player.x+xs==20){
+				if(player.add(village[player.y+ys][player.x+xs])){
+					village[player.y+ys][player.x+xs]=" ";				//pickup
+				}
+			}
 			else if(village[player.y+ys][player.x+xs]=="/"||village[player.y+ys][player.x+xs]=="."||village[player.y+ys][player.x+xs]==","||village[player.y+ys][player.x+xs]=="A"){
 				if(player.add(village[player.y+ys][player.x+xs])){
-					village[player.y+ys][player.x+xs]=" ";
+					village[player.y+ys][player.x+xs]=" ";				//pickup
 				}
 			}
 			else if(village[player.y+ys][player.x+xs]==">"){

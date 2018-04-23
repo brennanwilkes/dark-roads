@@ -10,7 +10,8 @@
 #include "gameObject.hpp"
 #include "terrain.hpp"
 
-extern int stage;	//Just an example on how to do a global
+extern int stage;	
+extern int text_delay;	
 extern Player player;
 extern inline float getDis(GameObject* src,GameObject* dest);
 extern inline float getDis(GameObject* src);
