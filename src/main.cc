@@ -38,7 +38,7 @@ using namespace std;
 #define XMAX 80
 
 
-int scene;	//Just an example on how to do a global
+int stage;
 Player player=Player();
 vector<GameObject*> dudes;
 
@@ -51,6 +51,7 @@ bool draw(WINDOW*);
 int light_distance(int,int);
 bool craft(string,string,string);
 void tick(WINDOW*);
+void stage_check();
 
 unsigned int fire_tick=0;
 unsigned int tree_tick=0;
@@ -71,7 +72,7 @@ vector<vector<string> > recipes={
 
 
 int main(int argc, char *argv[]) {
-	scene=0;
+	stage=0;
 	
 	srand (time(NULL));
 	
@@ -388,14 +389,8 @@ bool draw(WINDOW* w){
 		for(unsigned int j=0;j<village[i].size();j++){
 			ls=light_distance(i,j);
 			
-			if((village[i][j]==">"||village[i][j]=="<")&&player.hand[player.handid]!=" "){
+			if((village[i][j]==">"||village[i][j]=="<")&&player.hand[player.handid]!=" "&&stage<3){
 				colour_shift=10;
-				//wattron(w,A_BOLD);
-			}
-			else if(village[i][j]=="/"||village[i][j]=="."||village[i][j]==","||village[i][j]=="o"||village[i][j]=="A"){
-				if(player.inventory[village[i][j]]<player.max_inv[village[i][j]]){
-					colour_shift=10;
-				}
 				//wattron(w,A_BOLD);
 			}
 			else if(village[i][j]=="O"&&(player.hand[player.handid]=="/"||player.hand[player.handid]=="=")){
@@ -409,6 +404,27 @@ bool draw(WINDOW* w){
 			else{
 				colour_shift=0;
 			}
+			string tmp_str;
+			
+			vector<int> v;
+			for(map<string,int>::iterator it = player.inventory.begin(); it != player.inventory.end(); ++it) {
+				tmp_str=it->first;
+				if(village[i][j]==tmp_str){
+					if(player.inventory[village[i][j]]<player.max_inv[village[i][j]]&&stage<2){
+						colour_shift=10;
+					}
+				}
+			}
+			
+			
+			/*for(int k=0;k<player.inventory.keys().size();k++){
+				tmp_str=player.inventory.keys()[0];
+				if(village[i][j]==tmp_str){
+					if(player.inventory[village[i][j]]<player.max_inv[village[i][j]]&&stage<2){
+						colour_shift=10;
+					}
+				}
+			}*/
 						
 			if((village[i][j]==">"&&player.craft[0]!="")||(village[i][j]=="<"&&player.craft[1]!="")){
 				wattron(w,A_REVERSE);
@@ -469,6 +485,8 @@ void tick(WINDOW* w){
 	fire_tick++;
 	//tree_tick++;
 	
+	stage_check();
+	
 	if(player.craft[0]!=""&&player.craft[1]!=""){
 		//make thing
 		for(int i=0;i<recipes.size();i++){
@@ -516,6 +534,25 @@ void tick(WINDOW* w){
 	}
 }
 
+void stage_check(){
+	if(stage==0){
+		if(player.hand.size()>1){
+			stage=1;
+		}
+	}
+	else if(stage==1){
+		if(player.inventory["A"]>0){
+			stage=2;
+		}
+	}
+	else if(stage==2){
+		if(village[11][29]=="O"){
+			stage=3;
+		}
+	}
+	
+	
+}
 
 
 
