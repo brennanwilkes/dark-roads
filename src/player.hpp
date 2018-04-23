@@ -17,7 +17,7 @@ public:
 	int cy;
 	bool water;
 	
-	int fire;
+	std::map<std::vector<int>,int> fire;
 	
 	int last_dir;
 	

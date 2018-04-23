@@ -9,8 +9,8 @@ public:
 	GameObject();
 	//virtual ~GameObject();
 	//virtual void set_up();
-	float x;
-	float y;
+	int x;
+	int y;
 	int id;
 	int health;
 	std::string img;
