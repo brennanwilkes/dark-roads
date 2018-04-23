@@ -61,6 +61,7 @@ vector<vector<string> > recipes={
 	{".",".",","},
 	{".","=","o"},
 	{"/",",","A"},
+	{"=","=","#"},
 };
 
 //		 0
@@ -191,9 +192,23 @@ int main(int argc, char *argv[]) {
 			(++player.handid) %= player.hand.size();
 		}
 		else if(k_press==(int)' '){
-			if(player.hand[player.handid]==" "){
-				//Crafting?
-				
+			if(player.hand[player.handid]=="#"){
+				int hand_xs=0;
+				int hand_ys=0;
+				if(player.last_dir==0){
+					hand_ys=-1;		//hand up
+				}
+				else if(player.last_dir==1){
+					hand_xs=-1;		//hand left
+				}
+				else if(player.last_dir==2){
+					hand_xs=1;		//hand right
+				}
+				else if(player.last_dir==3){
+					hand_ys=1;		//hand down
+				}
+				village[player.y+hand_ys][player.x+hand_xs]="#";
+				player.remove("#");
 			}
 		}
 		else if(k_press==(int)'q'){
@@ -296,6 +311,10 @@ int main(int argc, char *argv[]) {
 						player.add("/");
 					}
 				}
+			}
+			else if(village[player.y+ys][player.x+xs]=="#"&&player.hand[player.handid]=="A"){
+				village[player.y+ys][player.x+xs]=" ";
+				player.add("#");
 			}
 		}
 	
