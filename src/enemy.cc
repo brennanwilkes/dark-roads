@@ -12,30 +12,29 @@ void Enemy::set_up(int xx,int yy,int idd){
 	
 	id=idd;
 	
+	calc_path(player.y,player.x,village);
+	
 
-	
-	interact=false;
-	change=false;
-	rand_mov_left=0;
-	rand_mov_dir=0;
-	
-	
-	hostile=true;		//	so these should be determined
-	combat=true;		//	on a case to case basis
-	
-	health=25;
-	dead=false;	
 }
 
 void Enemy::tick(){
 	
-	if(health<=0){
-		dead=true;
-	}
+	
 	
 	
 }
 
+std::vector<std::vector<int> > Enemy::calc_path(int ty,int tx,std::vector<std::vector<std::string> >grid){
+	
+	
+	
+	
+	
+	
+	
+}
+	
+	
 
 
 

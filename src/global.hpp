@@ -17,6 +17,7 @@ extern inline float getDis(GameObject* src,GameObject* dest);
 extern inline float getDis(GameObject* src);
 extern inline float getDis(GameObject* src,int x2,int y2);
 extern inline float getDis(int x1,int y1,int x2,int y2);
+extern std::vector<std::vector<std::string> > village;
 
 extern std::vector<GameObject*> dudes;
 

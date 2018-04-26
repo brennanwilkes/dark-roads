@@ -4,6 +4,7 @@
 #include "gameObject.hpp"
 #include <map>
 #include <string>
+#include <vector>
 
 class Enemy : public GameObject{
 public:
@@ -13,16 +14,10 @@ public:
 	
 	void tick();
 	
-	bool interact;
-	bool change;
 	
-	int rand_mov_left;
-	int rand_mov_dir;
+	std::vector<std::vector<int> > path;
 	
-	bool hostile;
-	bool combat;
-	
-	bool dead;	//EVENTUALLY this should be replaced with a deconstructor
+	std::vector<std::vector<int> > calc_path(int,int,std::vector<std::vector<std::string> >);	
 	
 };
 #endif
