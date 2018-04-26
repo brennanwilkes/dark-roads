@@ -73,7 +73,10 @@ vector<vector<string> > recipes={
 
 
 int main(int argc, char *argv[]) {
+	
+	
 	stage=0;
+	
 	
 	srand (time(NULL));
 	
@@ -110,6 +113,16 @@ int main(int argc, char *argv[]) {
 	player.set_up();
 	player.x=XMAX/2; //40
 	player.y=YMAX/2; //12
+	
+	
+	if(argc>1){
+		if(*argv[1]=='a'){
+			stage=2;
+			player.add("A");
+			
+		}
+	}
+	
 
 	dudes.push_back(&player);
 	
