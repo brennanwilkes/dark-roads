@@ -110,10 +110,13 @@ int main(int argc, char *argv[]) {
 	
 	
 	
+	
 	player.set_up();
 	player.x=XMAX/2; //40
 	player.y=YMAX/2; //12
 	
+	Enemy romar;
+	romar.set_up(40,10,0);
 	
 	if(argc>1){
 		if(*argv[1]=='a'){

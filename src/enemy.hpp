@@ -23,6 +23,12 @@ public:
 	std::map<std::vector<int>,bool> visited;
 	std::map<std::vector<int>,std::vector<int> > cost;
 	
+	std::vector<std::vector<int> > get_path(std::vector<int>,int,int);
+	
+	std::map<std::vector<int>,std::vector<int> > back;
+	
+	
+	
 	int calc_dis(int,int);
 	
 	void calc_sur(int,int);
