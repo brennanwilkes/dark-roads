@@ -31,7 +31,7 @@ public:
 	
 	int calc_dis(int,int);
 	
-	void calc_sur(int,int);
+	void calc_sur(int,int,std::vector<std::vector<std::string> >);
 	
 	
 };

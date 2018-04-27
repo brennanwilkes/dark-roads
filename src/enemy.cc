@@ -20,7 +20,7 @@ void Enemy::set_up(int xx,int yy,int idd){
 		}
 	}
 	
-	path = calc_path(player.y,player.x,village);
+	path = calc_path(y,x,village);
 	
 
 }
@@ -36,7 +36,7 @@ std::vector<std::vector<int> > Enemy::calc_path(int sy,int sx,std::vector<std::v
 	
 	//G H F
 	cost[{sy,sx}]={0,calc_dis(sy,sx),calc_dis(sy,sx)};
-	calc_sur(sy,sx);
+	calc_sur(sy,sx,grid);
 	
 	int lowest;
 	std::vector<int> nxt;
@@ -56,8 +56,6 @@ std::vector<std::vector<int> > Enemy::calc_path(int sy,int sx,std::vector<std::v
 		}
 		
 		
-		//check win condition here!
-		//std::cout<<cost[{20,75}][2]<<std::endl;
 		if(nxt[0]==player.y&&nxt[1]==player.x){
 			return get_path({player.y,player.x},sy,sx);
 		}
@@ -67,7 +65,7 @@ std::vector<std::vector<int> > Enemy::calc_path(int sy,int sx,std::vector<std::v
 		}
 		
 		
-		calc_sur(nxt[0],nxt[1]);
+		calc_sur(nxt[0],nxt[1],grid);
 	}
 	
 	
@@ -78,7 +76,7 @@ int Enemy::calc_dis(int y,int x){
 	return abs(player.y-y)+abs(player.x-x);
 }
 
-void Enemy::calc_sur(int y,int x){
+void Enemy::calc_sur(int y,int x,std::vector<std::vector<std::string> >grid){
 	visited[{y,x}]=true;
 	for(int i=-1;i<2;i++){
 		for(int j=-1;j<2;j++){
@@ -89,9 +87,11 @@ void Enemy::calc_sur(int y,int x){
 				if(x+j>=80||x+j<0){
 					continue;
 				}
-				if(cost[{y+i,x+j}][0]>cost[{y,x}][0]+1){
-					cost[{y+i,x+j}]={cost[{y,x}][0]+1,calc_dis(y+i,x+j),cost[{y,x}][0]+1+calc_dis(y+i,x+j)};
-					back[{y+i,x+j}]={y,x};
+				if(grid[y][x]==" "){
+					if(cost[{y+i,x+j}][0]>cost[{y,x}][0]+1){
+						cost[{y+i,x+j}]={cost[{y,x}][0]+1,calc_dis(y+i,x+j),cost[{y,x}][0]+1+calc_dis(y+i,x+j)};
+						back[{y+i,x+j}]={y,x};
+					}
 				}
 			}
 		}
