@@ -19,5 +19,14 @@ public:
 	
 	std::vector<std::vector<int> > calc_path(int,int,std::vector<std::vector<std::string> >);	
 	
+	
+	std::map<std::vector<int>,bool> visited;
+	std::map<std::vector<int>,std::vector<int> > cost;
+	
+	int calc_dis(int,int);
+	
+	void calc_sur(int,int);
+	
+	
 };
 #endif

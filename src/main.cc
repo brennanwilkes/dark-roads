@@ -137,6 +137,7 @@ int main(int argc, char *argv[]) {
 	int k_press;
 	
 	WINDOW* worldwin = newwin(yMax,xMax,0,0);
+	
 	refresh();
 	wrefresh(worldwin);
 	keypad(worldwin, true);
