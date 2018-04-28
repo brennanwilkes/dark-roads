@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
 	}
 	
 	/* TODO: EXTRACT TO FUNCTION OR CLASS */
-	ifstream village_file("Assets/village2.txt");
+	ifstream village_file("Assets/village.txt");
 	if (!village_file) {
 		cout << "Error loading Assets/village.txt" << endl;
 	} else {
@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
 			if (village_line == "\n") continue; // Skip empty lines
 			
 			for (int i = 0; i < village_line.length(); i++) {
-				village[village_x][i] = (village_line.at(i) == 'O') ? " " : village_line.at(i)
+				village[village_x][i] = (village_line.at(i) == 'O') ? " " : village_line.substr(i, 1);
 			}
 			village_x++;
 		}
