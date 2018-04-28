@@ -87,7 +87,25 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	
-	
+	/* TODO: EXTRACT TO FUNCTION OR CLASS */
+	ifstream village_file("Assets/village2.txt");
+	if (!village_file) {
+		cout << "Error loading Assets/village.txt" << endl;
+	} else {
+		string village_line;
+		int village_x = 0;
+		while (!village_file.eof()) {
+			getline(village_file, village_line);
+			if (village_line == "\n") continue; // Skip empty lines
+			
+			for (int i = 0; i < village_line.length(); i++) {
+				village[village_x][i] = (village_line.at(i) == 'O') ? " " : village_line.at(i)
+			}
+			village_x++;
+		}
+	}
+	village_file.close();
+	/*
 	ifstream infile;
 	infile.open("Assets/village.txt");
 	string tmpfl;
@@ -106,7 +124,7 @@ int main(int argc, char *argv[]) {
 		tmpl++;
 	}
 	infile.close();
-
+*/
 	
 	
 	
