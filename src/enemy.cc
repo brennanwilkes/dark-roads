@@ -13,12 +13,7 @@ void Enemy::set_up(int xx,int yy,std::string chr){
 	
 	img=chr;
 	
-	for(int i=0;i<24;i++){
-		for(int j=0;j<80;j++){
-			visited[{i,j}]=false;
-			cost[{i,j}]={2147483647,2147483647,2147483647};
-		}
-	}
+	
 	
 	path = calc_path(y,x,village);
 	
@@ -30,7 +25,7 @@ void Enemy::tick(){
 	path_tick++;
 	
 	
-	if(path_tick>2){
+	if(path_tick>5){
 		path_tick=0;
 		path=calc_path(y,x,village);
 	}
@@ -47,6 +42,15 @@ void Enemy::tick(){
 }
 
 std::vector<std::vector<int> > Enemy::calc_path(int sy,int sx,std::vector<std::vector<std::string> >grid){
+	
+	
+	for(int i=0;i<24;i++){
+		for(int j=0;j<80;j++){
+			visited[{i,j}]=false;
+			cost[{i,j}]={2147483647,2147483647,2147483647};
+		}
+	}
+	
 	
 	//G H F
 	cost[{sy,sx}]={0,calc_dis(sy,sx),calc_dis(sy,sx)};
@@ -70,16 +74,14 @@ std::vector<std::vector<int> > Enemy::calc_path(int sy,int sx,std::vector<std::v
 		}
 		
 		
+		
+		if(lowest>calc_dis(sy,sx)*5){		//no path or too long path
+			//std::cout<<"Couldnt find path"<<std::endl;
+			return {};
+		}
 		if(nxt[0]==player.y&&nxt[1]==player.x){
 			return get_path({player.y,player.x},sy,sx);
 		}
-		if(lowest>1000){//calc_dis(sy,sx)*5){		//no path or too long path
-			std::cout<<"Couldnt find path"<<std::endl;
-			std::cout<<lowest<<std::endl;
-			//std::cout<<1/0;
-			return {};
-		}
-		
 		
 		calc_sur(nxt[0],nxt[1],grid);
 	}
@@ -106,7 +108,7 @@ void Enemy::calc_sur(int y,int x,std::vector<std::vector<std::string> >grid){
 				if(x+j>=80||x+j<0){
 					continue;
 				}
-				if(true){//grid[y][x]!="^"&&grid[y][x]!="#"){
+				if(grid[y][x]!="^"&&grid[y][x]!="#"&&grid[y][x]!="O"&&grid[y][x]!="_"){
 					if(cost[{y+i,x+j}][0]>cost[{y,x}][0]+1){
 						cost[{y+i,x+j}] = { cost[{y,x}][0]+1,	calc_dis(y+i,x+j),	cost[{y,x}][0]	+1+	calc_dis(y+i,x+j)	};
 						back[{y+i,x+j}]={y,x};
