@@ -138,18 +138,19 @@ int main(int argc, char *argv[]) {
 	
 	Enemy romar;
 
+	string tmp_in;
 	
-	if(argc>1){
-		if(*argv[1]=='a'){
+	for(int i=0;i<argc;i++){
+		tmp_in = argv[i];
+		if(tmp_in=="-a"){
 			stage=2;
 			player.add("A");
 		}
-		if(*argv[1]=='e'){
+		else if(tmp_in=="-e"){
 			romar.set_up(30,10,"&");
 			dudes.push_back(&romar);
 		}
 	}
-	
 
 	dudes.push_back(&player);
 	
