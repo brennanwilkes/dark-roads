@@ -43,6 +43,8 @@ Player player=Player();
 vector<GameObject*> dudes;
 int text_delay;
 
+Enemy path_finder;
+
 inline float getDis(GameObject* src,GameObject* dest);
 inline float getDis(GameObject* src);
 inline float getDis(GameObject* src,int x2,int y2);
@@ -56,6 +58,7 @@ void stage_check();
 
 unsigned int fire_tick=0;
 unsigned int tree_tick=0;
+unsigned int enem_tick=0;
 
 vector<vector<string> > village(YMAX);
 
@@ -134,6 +137,7 @@ int main(int argc, char *argv[]) {
 	player.y=YMAX/2; //12
 	
 	Enemy romar;
+
 	
 	if(argc>1){
 		if(*argv[1]=='a'){
@@ -559,6 +563,7 @@ bool craft(string s1,string s2,string r){
 void tick(WINDOW* w){
 	fire_tick++;
 	//tree_tick++;
+	enem_tick++;
 	
 	stage_check();
 	
@@ -618,8 +623,72 @@ void tick(WINDOW* w){
 		dudes[i]->tick();
 	}
 	
-	
-	
+	if(enem_tick>10){
+		enem_tick=0;
+		if(stage>=3){
+			for(int i=0;i<45;i++){
+				if(i<18){
+					if(village[i][0]==" "&&village[i][1]==" "){
+						if(stage==2){
+							stage=4;
+						}
+						else{
+							if(dudes.size()<3){
+								Enemy* new_en = new Enemy();
+								new_en->set_up(0,i,"&");
+								dudes.push_back(new_en);
+							}
+						}
+					}
+				}
+				if(village[0][i]==" "&&village[1][i]==" "){
+					if(stage==2){
+						stage=4;
+					}
+					else{
+						if(dudes.size()<3){
+							Enemy* new_en = new Enemy();
+							new_en->set_up(i,0,"&");
+							dudes.push_back(new_en);
+						}
+					}
+				}
+			}
+		}
+	}
+			
+			/*enem_tick=0;
+			for(int i=0;i<50;i++){
+				if(village[0][i]=="^"||village[1][i]=="^"||village[0][i]=="_"||village[1][i]=="_"||village[0][i]=="#"||village[1][i]=="#"){
+					continue;
+				}
+				path_finder.set_up(i,0,"");
+				if(path_finder.path.size()>1){
+					if(stage==3){
+						stage=4;
+					}
+					Enemy* new_en = new Enemy();
+					new_en->set_up(i,0,"&");
+					dudes.push_back(new_en);
+				}
+			}
+			for(int i=0;i<24;i++){
+				if(village[i][0]=="^"||village[i][1]=="^"||village[i][0]=="_"||village[i][1]=="_"||village[i][0]=="#"||village[i][1]=="#"){
+					continue;
+				}
+				path_finder.set_up(0,i,"");
+				//cout<<path_finder.path.size()<<endl;
+				//cout<<1/0;
+				if(path_finder.path.size()>1){
+					if(stage==3){
+						stage=4;
+					}
+					Enemy* new_en = new Enemy();
+					new_en->set_up(0,i,"&");
+					dudes.push_back(new_en);
+					//cout<<1/0;
+				}
+			}*/
 	
 	
 	
@@ -640,6 +709,7 @@ void stage_check(){
 			stage=2;
 		}
 	}
+	
 	
 	
 	

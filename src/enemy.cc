@@ -43,6 +43,9 @@ void Enemy::tick(){
 
 std::vector<std::vector<int> > Enemy::calc_path(int sy,int sx,std::vector<std::vector<std::string> >grid){
 	
+	if(grid[sy][sx]=="^"||grid[sy][sx]=="_"){
+		return {};
+	}
 	
 	for(int i=0;i<24;i++){
 		for(int j=0;j<80;j++){
@@ -75,7 +78,7 @@ std::vector<std::vector<int> > Enemy::calc_path(int sy,int sx,std::vector<std::v
 		
 		
 		
-		if(lowest>calc_dis(sy,sx)*5){		//no path or too long path
+		if(lowest>calc_dis(sy,sx)*2){		//no path or too long path
 			//std::cout<<"Couldnt find path"<<std::endl;
 			return {};
 		}
