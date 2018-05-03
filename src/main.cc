@@ -116,13 +116,15 @@ int main(int argc, char *argv[]) {
 	player.y=YMAX/2; //12
 	
 	Enemy romar;
-	romar.set_up(30,10,0);
+	romar.set_up(30,10,"&");
 	
 	if(argc>1){
 		if(*argv[1]=='a'){
 			stage=2;
 			player.add("A");
-			
+		}
+		if(*argv[1]=='e'){
+			dudes.push_back(&romar);
 		}
 	}
 	
@@ -592,6 +594,21 @@ void tick(WINDOW* w){
 			}
 		}
 	}
+	
+	
+	for(int i=0;i<dudes.size();i++){
+		dudes[i]->tick();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 void stage_check(){

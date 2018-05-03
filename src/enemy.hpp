@@ -10,7 +10,7 @@ class Enemy : public GameObject{
 public:
 	Enemy();
 	
-	void set_up(int xx,int yy,int idd);
+	void set_up(int,int,std::string);
 	
 	void tick();
 	
@@ -32,6 +32,8 @@ public:
 	int calc_dis(int,int);
 	
 	void calc_sur(int,int,std::vector<std::vector<std::string> >);
+	
+	int path_tick;
 	
 	
 };

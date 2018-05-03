@@ -16,6 +16,7 @@ public:
 	std::string img;
 	
 	
+	virtual void tick();
 	
 	
 };

@@ -2,3 +2,7 @@
 
 GameObject::GameObject(){
 }
+
+void GameObject::tick(){
+
+}
