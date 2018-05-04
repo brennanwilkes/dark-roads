@@ -17,9 +17,15 @@ DARK ROADS
 #include <ctime>
 #include <random>
 
+
 //NCURSESSSSS Includes
 #include <ncurses.h>
 #include <unistd.h>
+
+
+//sound includes
+#include <SFML/Audio.hpp>
+
 
 
 //User Includes
@@ -206,8 +212,10 @@ int main(int argc, char *argv[]) {
 	//int lst;
 	
 	
-	
-	
+	sf::Music music;
+	music.openFromFile("Assets/test.ogg");
+	music.setVolume(25);
+	music.play();
 	
 	
 	while (true){
