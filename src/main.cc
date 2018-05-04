@@ -150,6 +150,9 @@ int main(int argc, char *argv[]) {
 			romar.set_up(30,10,"&");
 			dudes.push_back(&romar);
 		}
+		else if(tmp_in=="-o"){
+			player.add("o");
+		}
 	}
 
 	dudes.push_back(&player);
@@ -441,6 +444,7 @@ int light_distance(int y,int x){
 			}
 		}
 	}
+	ls++;	//just to remove a warning
 	/*
 	
 	int ls=(int)(sqrt(((y-11)*(y-11))+(((x-29)/2)*((x-29)/2))));	//fireplace is at 29 11
