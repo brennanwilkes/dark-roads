@@ -51,6 +51,8 @@ int text_delay;
 
 Enemy path_finder;
 
+sf::Music rain_sound,fire_sound;
+
 inline float getDis(GameObject* src,GameObject* dest);
 inline float getDis(GameObject* src);
 inline float getDis(GameObject* src,int x2,int y2);
@@ -212,10 +214,14 @@ int main(int argc, char *argv[]) {
 	//int lst;
 	
 	
-	sf::Music music;
-	music.openFromFile("Assets/test.ogg");
-	music.setVolume(25);
-	music.play();
+
+	rain_sound.openFromFile("Assets/rain.ogg");
+	rain_sound.setVolume(25);
+	rain_sound.setLoop(true);
+	rain_sound.play();
+	
+	fire_sound.openFromFile("Assets/fire.ogg");
+	fire_sound.setLoop(true);
 	
 	
 	while (true){
@@ -271,6 +277,8 @@ int main(int argc, char *argv[]) {
 				player.fire[{player.y+hand_ys,player.x+hand_xs}]=16;
 				if(stage<3){
 					stage=3;
+					fire_sound.play();
+					fire_sound.setVolume(0);
 				}
 				player.remove("o");
 			}
@@ -482,6 +490,7 @@ bool draw(WINDOW* w){
 		for(unsigned int j=0;j<village[i].size();j++){
 			ls=light_distance(i,j);
 			
+			
 			if((village[i][j]==">"||village[i][j]=="<")&&player.hand[player.handid]!=" "&&stage<3){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
@@ -579,6 +588,12 @@ void tick(WINDOW* w){
 	enem_tick++;
 	
 	stage_check();
+	
+	
+	
+	fire_sound.setVolume((9-light_distance(player.y,player.x))*2);
+			
+			
 	
 	if(player.craft[0]!=""&&player.craft[1]!=""){
 		//make thing
