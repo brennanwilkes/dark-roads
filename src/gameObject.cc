@@ -2,6 +2,8 @@
 
 GameObject::GameObject(){
 }
+GameObject::~GameObject(){
+}
 
 void GameObject::tick(){
 

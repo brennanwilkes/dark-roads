@@ -445,7 +445,7 @@ int light_distance(int y,int x){
 		for(int xx=0;xx<XMAX;xx++){
 			if(village[yy][xx]=="O"){
 				int ls=(int)(sqrt(((y-yy)*(y-yy))+(((x-xx)/2)*((x-xx)/2))));
-				ls=(ls*2)-player.fire[{yy,xx}];
+				ls=(ls*1)-(player.fire[{yy,xx}]/3);
 				if(ls>8){
 					ls=9;
 				}
@@ -591,7 +591,7 @@ void tick(WINDOW* w){
 	
 	
 	
-	fire_sound.setVolume((9-light_distance(player.y,player.x))*2);
+	fire_sound.setVolume((10-light_distance(player.y,player.x))*2);
 			
 			
 	
@@ -607,7 +607,7 @@ void tick(WINDOW* w){
 	draw(w);
 	
 	if(stage>=3){
-		if(fire_tick>10){
+		if(fire_tick>3){
 			for(map<vector<int>,int>::iterator it = player.fire.begin(); it != player.fire.end(); ++it) {
 				player.fire[it->first]--;
 				if(player.fire[it->first]<0){
@@ -649,6 +649,13 @@ void tick(WINDOW* w){
 	
 	for(int i=0;i<dudes.size();i++){
 		dudes[i]->tick();
+		if(dudes[i]->img=="&"){
+			if(light_distance(dudes[i]->y,dudes[i]->x)==1){
+				GameObject* tmp = dudes[i];
+				dudes.erase(dudes.begin()+i);
+				delete tmp;
+			}
+		}
 	}
 	
 	if(enem_tick>10){
