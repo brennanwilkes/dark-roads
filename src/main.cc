@@ -52,8 +52,8 @@ int text_delay;
 Enemy path_finder;
 
 sf::Music rain_sound,fire_sound;
-sf::Sound enem_spawn_sound,enem_death_sound;
-sf::SoundBuffer enem_spawn_buffer,enem_death_buffer;
+sf::Sound enem_spawn_sound,enem_death_sound,craft_sound,tree_sound;
+sf::SoundBuffer enem_spawn_buffer,enem_death_buffer,craft_buffer,tree_buffer;
 
 
 inline float getDis(GameObject* src,GameObject* dest);
@@ -235,6 +235,14 @@ int main(int argc, char *argv[]) {
 	enem_death_sound.setBuffer(enem_death_buffer);
 	enem_death_sound.setVolume(10);
 	
+	tree_buffer.loadFromFile("Assets/tree.ogg");
+	tree_sound.setBuffer(tree_buffer);
+	tree_sound.setVolume(50);
+	
+	craft_buffer.loadFromFile("Assets/craft.ogg");
+	craft_sound.setBuffer(craft_buffer);
+	craft_sound.setVolume(50);
+	
 	while (true){
 		tick(worldwin);
 		
@@ -394,6 +402,7 @@ int main(int argc, char *argv[]) {
 			}
 			else if(village[player.y+ys][player.x+xs]=="^"&&player.hand[player.handid]=="A"){	//tree chop
 				village[player.y+ys][player.x+xs]=" ";
+				tree_sound.play();
 				if(player.add("=")){
 					if(player.add("/")){
 						player.add("/");
@@ -588,6 +597,7 @@ bool craft(string s1,string s2,string r){
 		player.craft[0]="";
 		player.craft[1]="";
 		village[9][20]=r;
+		craft_sound.play();
 		return true;
 	}
 	return false;
