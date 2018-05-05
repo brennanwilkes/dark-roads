@@ -661,10 +661,10 @@ void tick(WINDOW* w){
 		}
 	}
 	
-	if(enem_tick>10){
+	if(enem_tick>20){
 		enem_tick=0;
 		if(stage>=3){
-			for(int i=0;i<45;i++){
+			for(int i=0;i<65;i++){
 				if(i<18){
 					if(village[i][0]==" "&&village[i][1]==" "){
 						if(stage==2){
@@ -679,15 +679,31 @@ void tick(WINDOW* w){
 						}
 					}
 				}
-				if(village[0][i]==" "&&village[1][i]==" "){
-					if(stage==2){
-						stage=4;
+				if(i<45){
+					if(village[0][i]==" "&&village[1][i]==" "){
+						if(stage==2){
+							stage=4;
+						}
+						else{
+							if(dudes.size()<3){
+								Enemy* new_en = new Enemy();
+								new_en->set_up(i,0,"&");
+								dudes.push_back(new_en);
+							}
+						}
 					}
-					else{
-						if(dudes.size()<3){
-							Enemy* new_en = new Enemy();
-							new_en->set_up(i,0,"&");
-							dudes.push_back(new_en);
+				}
+				if(i>15){
+					if(village[23][i]==" "&&village[22][i]==" "){
+						if(stage==2){
+							stage=4;
+						}
+						else{
+							if(dudes.size()<3){
+								Enemy* new_en = new Enemy();
+								new_en->set_up(i,23,"&");
+								dudes.push_back(new_en);
+							}
 						}
 					}
 				}
