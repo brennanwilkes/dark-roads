@@ -229,7 +229,7 @@ int main(int argc, char *argv[]) {
 	
 	enem_spawn_buffer.loadFromFile("Assets/monster.ogg");
 	enem_spawn_sound.setBuffer(enem_spawn_buffer);
-	enem_spawn_sound.setVolume(20);
+	enem_spawn_sound.setVolume(40);
 	
 	enem_death_buffer.loadFromFile("Assets/burn.ogg");
 	enem_death_sound.setBuffer(enem_death_buffer);
@@ -600,9 +600,12 @@ void tick(WINDOW* w){
 	
 	stage_check();
 	
+	int tmp_fire=((10-light_distance(player.y,player.x))*2)-3;
+	if(tmp_fire<0){
+		tmp_fire=0;
+	}
 	
-	
-	fire_sound.setVolume((10-light_distance(player.y,player.x))*2);
+	fire_sound.setVolume(tmp_fire);
 			
 			
 	
