@@ -1,9 +1,9 @@
 /*
 
-Summer project for IDS Best Team but probally just Brennan unless other people are interested
+DARK ROADS - BRENNAN WILKES	
 
-DARK ROADS
 
+Michael Liu - Ryan Carrusca - soundbible.com
 */
 
 //C++ Includes
@@ -52,6 +52,9 @@ int text_delay;
 Enemy path_finder;
 
 sf::Music rain_sound,fire_sound;
+sf::Sound enem_spawn_sound,enem_death_sound;
+sf::SoundBuffer enem_spawn_buffer,enem_death_buffer;
+
 
 inline float getDis(GameObject* src,GameObject* dest);
 inline float getDis(GameObject* src);
@@ -223,6 +226,14 @@ int main(int argc, char *argv[]) {
 	fire_sound.openFromFile("Assets/fire.ogg");
 	fire_sound.setLoop(true);
 	
+	
+	enem_spawn_buffer.loadFromFile("Assets/monster.ogg");
+	enem_spawn_sound.setBuffer(enem_spawn_buffer);
+	enem_spawn_sound.setVolume(20);
+	
+	enem_death_buffer.loadFromFile("Assets/burn.ogg");
+	enem_death_sound.setBuffer(enem_death_buffer);
+	enem_death_sound.setVolume(10);
 	
 	while (true){
 		tick(worldwin);
@@ -654,6 +665,7 @@ void tick(WINDOW* w){
 				GameObject* tmp = dudes[i];
 				dudes.erase(dudes.begin()+i);
 				delete tmp;
+				enem_death_sound.play();
 			}
 			if(abs(player.y-dudes[i]->y)<=1&&abs(player.x-dudes[i]->x)<=1){
 				player.dead=true;
@@ -671,10 +683,11 @@ void tick(WINDOW* w){
 							stage=4;
 						}
 						else{
-							if(dudes.size()<3){
+							if(dudes.size()<2){
 								Enemy* new_en = new Enemy();
 								new_en->set_up(0,i,"&");
 								dudes.push_back(new_en);
+								enem_spawn_sound.play();
 							}
 						}
 					}
@@ -685,10 +698,11 @@ void tick(WINDOW* w){
 							stage=4;
 						}
 						else{
-							if(dudes.size()<3){
+							if(dudes.size()<2){
 								Enemy* new_en = new Enemy();
 								new_en->set_up(i,0,"&");
 								dudes.push_back(new_en);
+								enem_spawn_sound.play();
 							}
 						}
 					}
@@ -699,10 +713,11 @@ void tick(WINDOW* w){
 							stage=4;
 						}
 						else{
-							if(dudes.size()<3){
+							if(dudes.size()<2){
 								Enemy* new_en = new Enemy();
 								new_en->set_up(i,23,"&");
 								dudes.push_back(new_en);
+								enem_spawn_sound.play();
 							}
 						}
 					}

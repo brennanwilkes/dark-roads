@@ -25,7 +25,7 @@ void Enemy::tick(){
 	path_tick++;
 	
 	
-	if(path_tick>5){
+	if(path_tick>2){
 		path_tick=0;
 		path=calc_path(y,x,village);
 	}
