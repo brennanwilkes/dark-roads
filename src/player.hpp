@@ -10,6 +10,7 @@ class Player : public GameObject{
 public:
 	Player();
 	void set_up();
+	bool dead;
 	
 	
 	void tick();

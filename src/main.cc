@@ -655,6 +655,9 @@ void tick(WINDOW* w){
 				dudes.erase(dudes.begin()+i);
 				delete tmp;
 			}
+			if(abs(player.y-dudes[i]->y)<=1&&abs(player.x-dudes[i]->x)<=1){
+				player.dead=true;
+			}
 		}
 	}
 	
