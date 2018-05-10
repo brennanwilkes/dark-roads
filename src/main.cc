@@ -74,9 +74,9 @@ unsigned int enem_tick=0;
 vector<vector<string> > village(YMAX);
 
 vector<vector<string> > recipes={
-	{".",".",","},
+	//{".",".",","},
 	{".","=","o"},
-	{"/",",","A"},
+	{"/",".","A"},
 	{"=","=","#"},
 };
 
@@ -701,6 +701,7 @@ void tick(WINDOW* w){
 								new_en->set_up(0,i,"&");
 								dudes.push_back(new_en);
 								enem_spawn_sound.play();
+								
 							}
 						}
 					}
@@ -716,6 +717,7 @@ void tick(WINDOW* w){
 								new_en->set_up(i,0,"&");
 								dudes.push_back(new_en);
 								enem_spawn_sound.play();
+								
 							}
 						}
 					}
@@ -731,6 +733,7 @@ void tick(WINDOW* w){
 								new_en->set_up(i,23,"&");
 								dudes.push_back(new_en);
 								enem_spawn_sound.play();
+								
 							}
 						}
 					}
