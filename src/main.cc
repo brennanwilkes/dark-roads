@@ -594,6 +594,7 @@ bool draw(WINDOW* w){
 		}
 	}
 	
+	
 	wattron(w,COLOR_PAIR(1));
 	for(unsigned int i=0;i<dudes.size();i++){
 		mvwprintw(w,dudes[i]->y,dudes[i]->x,dudes[i]->img.c_str());	
