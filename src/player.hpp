@@ -11,6 +11,7 @@ public:
 	Player();
 	void set_up();
 	bool dead;
+	int dead_shift;
 	
 	
 	void tick();

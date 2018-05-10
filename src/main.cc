@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
 			if (village_line == "\n") continue; // Skip empty lines
 			
 			for (int i = 0; i < village_line.length(); i++) {
-				village[village_x][i] = (village_line.at(i) == 'O') ? " " : village_line.substr(i, 1);
+				village[village_x][i] = (village_line.at(i) == 'S') ? " " : village_line.substr(i, 1);
 			}
 			village_x++;
 		}
@@ -163,6 +163,10 @@ int main(int argc, char *argv[]) {
 		}
 		else if(tmp_in=="-o"){
 			player.add("o");
+		}
+		else if(tmp_in=="-w"){
+			player.add("=");
+			player.inventory["="]=25;
 		}
 	}
 
@@ -244,7 +248,35 @@ int main(int argc, char *argv[]) {
 	craft_sound.setVolume(50);
 	
 	while (true){
+		
 		tick(worldwin);
+		
+		if(player.dead){
+			
+			
+			if(player.dead_shift>=20){
+				wattron(worldwin,COLOR_PAIR(1));
+				mvwprintw(worldwin,20,40,"A");
+				wattroff(worldwin,COLOR_PAIR(1));
+				refresh();
+				wrefresh(worldwin);
+				usleep(50000);
+			}
+			else{
+				player.dead_shift++;
+				refresh();
+				wrefresh(worldwin);
+				usleep(5000);
+			}
+		
+			
+			
+			
+			
+			continue;
+		}
+		
+		
 		
 		
 		
@@ -466,13 +498,6 @@ int light_distance(int y,int x){
 			if(village[yy][xx]=="O"){
 				int ls=(int)(sqrt(((y-yy)*(y-yy))+(((x-xx)/2)*((x-xx)/2))));
 				ls=(ls*1)-(player.fire[{yy,xx}]/3);
-				if(ls>8){
-					ls=9;
-				}
-				else if(ls<1){
-					ls=1;
-				}
-				
 				if(ls<dis){
 					dis=ls;
 				}
@@ -481,17 +506,26 @@ int light_distance(int y,int x){
 		}
 	}
 	ls++;	//just to remove a warning
-	/*
 	
-	int ls=(int)(sqrt(((y-11)*(y-11))+(((x-29)/2)*((x-29)/2))));	//fireplace is at 29 11
-	ls=(ls*2)-player.fire;
-	if(ls>8){
-		ls=9;
+	
+	
+	if(player.dead){
+		dis=dis+player.dead_shift;
 	}
-	else if(ls<1){
-		ls=1;
+	
+	
+	if(dis>8){
+		dis=9;
 	}
-	*/
+	else if(dis<1){
+		dis=1;
+	}
+	
+	
+	
+	
+	
+	
 	return dis;
 }
 
@@ -608,6 +642,11 @@ void tick(WINDOW* w){
 	//tree_tick++;
 	enem_tick++;
 	
+	
+	
+	
+	
+	
 	stage_check();
 	
 	int tmp_fire=((10-light_distance(player.y,player.x))*2)-3;
@@ -629,6 +668,12 @@ void tick(WINDOW* w){
 	}
 	
 	draw(w);
+	
+	
+	
+	
+	
+	
 	
 	if(stage>=3){
 		if(fire_tick>3){
@@ -682,6 +727,7 @@ void tick(WINDOW* w){
 			}
 			if(abs(player.y-dudes[i]->y)<=1&&abs(player.x-dudes[i]->x)<=1){
 				player.dead=true;
+				player.dead_shift=0;
 			}
 		}
 	}
@@ -741,39 +787,6 @@ void tick(WINDOW* w){
 			}
 		}
 	}
-			
-			/*enem_tick=0;
-			for(int i=0;i<50;i++){
-				if(village[0][i]=="^"||village[1][i]=="^"||village[0][i]=="_"||village[1][i]=="_"||village[0][i]=="#"||village[1][i]=="#"){
-					continue;
-				}
-				path_finder.set_up(i,0,"");
-				if(path_finder.path.size()>1){
-					if(stage==3){
-						stage=4;
-					}
-					Enemy* new_en = new Enemy();
-					new_en->set_up(i,0,"&");
-					dudes.push_back(new_en);
-				}
-			}
-			for(int i=0;i<24;i++){
-				if(village[i][0]=="^"||village[i][1]=="^"||village[i][0]=="_"||village[i][1]=="_"||village[i][0]=="#"||village[i][1]=="#"){
-					continue;
-				}
-				path_finder.set_up(0,i,"");
-				//cout<<path_finder.path.size()<<endl;
-				//cout<<1/0;
-				if(path_finder.path.size()>1){
-					if(stage==3){
-						stage=4;
-					}
-					Enemy* new_en = new Enemy();
-					new_en->set_up(0,i,"&");
-					dudes.push_back(new_en);
-					//cout<<1/0;
-				}
-			}*/
 	
 	
 	
