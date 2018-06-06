@@ -33,5 +33,8 @@ public:
 	void remove(std::string);
 	bool add(std::string);
 	
+	std::string lore;
+	
+	
 };
 #endif

@@ -70,8 +70,11 @@ void stage_check();
 unsigned int fire_tick=0;
 unsigned int tree_tick=0;
 unsigned int enem_tick=0;
+unsigned int lore_tick=0;
 
 vector<vector<string> > village(YMAX);
+vector<vector<string> > lore = {{},{},{},{},{},{}};
+
 
 vector<vector<string> > recipes={
 	//{".",".",","},
@@ -119,26 +122,21 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	village_file.close();
-	/*
-	ifstream infile;
-	infile.open("Assets/village.txt");
-	string tmpfl;
-	int tmpl=0;
-	while (!infile.eof()) {
-		getline(infile,tmpfl);
-		
-		for(int i=0;i<tmpfl.length();i++){
-			if(tmpfl.substr(i,1)!="\n"){
-				village[tmpl][i]=tmpfl.substr(i,1);
-				if(village[tmpl][i]=="O"){
-					village[tmpl][i]=" ";
-				}
-			}
+	
+	
+	
+	ifstream lore_file("Assets/lore.txt");
+	if (!lore_file) {
+		cout << "Error loading Assets/lore.txt" << endl;
+	} else {
+		string lore_line;
+		while (!lore_file.eof()) {
+			getline(lore_file, lore_line);
+			if (lore_line == "\n"||lore_line.length()<2) continue; // Skip empty lines
+			lore[stoi(lore_line.substr(0,1))].push_back(lore_line.substr(1,lore_line.length()-1));
 		}
-		tmpl++;
 	}
-	infile.close();
-*/
+	lore_file.close();
 	
 	
 	
@@ -631,6 +629,18 @@ bool draw(WINDOW* w){
 		
 		
 	}
+	if(lore[stage].size()>0){
+		if(lore_tick==10){
+			player.lore=lore[stage][rand() % lore[stage].size()];
+		}
+		if(lore_tick>10){
+			mvwprintw(w,22,40,player.lore.c_str());
+		}
+		if(lore_tick>15){
+			lore_tick=0;
+		}
+	}
+	
 	return true;
 }
 
@@ -649,6 +659,9 @@ void tick(WINDOW* w){
 	fire_tick++;
 	//tree_tick++;
 	enem_tick++;
+	
+	lore_tick++;
+	
 	
 	
 	

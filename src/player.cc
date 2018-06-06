@@ -20,6 +20,8 @@ void Player::set_up(){
 	
 	dead=false;
 
+	lore="";
+	
 	handid=0;
 	hand = {" "};
 	craft = {"",""};
