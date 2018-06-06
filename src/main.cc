@@ -397,7 +397,7 @@ int main(int argc, char *argv[]) {
 					village[player.y+ys][player.x+xs]=" ";				//pickup
 				}
 			}
-			else if(village[player.y+ys][player.x+xs]=="/"||village[player.y+ys][player.x+xs]=="."||village[player.y+ys][player.x+xs]==","||village[player.y+ys][player.x+xs]=="A"){
+			else if(village[player.y+ys][player.x+xs]=="/"||village[player.y+ys][player.x+xs]=="."||village[player.y+ys][player.x+xs]=="S"||village[player.y+ys][player.x+xs]=="A"){
 				if(player.add(village[player.y+ys][player.x+xs])){
 					village[player.y+ys][player.x+xs]=" ";				//pickup
 				}
@@ -434,6 +434,10 @@ int main(int argc, char *argv[]) {
 				else if(player.hand[player.handid]=="="){					
 					player.fire[{player.y+ys,player.x+xs}]=player.fire[{player.y+ys,player.x+xs}]+3;
 					player.remove("=");
+				}
+				else if(player.hand[player.handid]=="S"){					
+					player.fire[{player.y+ys,player.x+xs}]=player.fire[{player.y+ys,player.x+xs}]+10;
+					player.remove("S");
 				}
 			}
 			else if(village[player.y+ys][player.x+xs]=="^"&&player.hand[player.handid]=="A"){	//tree chop
@@ -724,10 +728,12 @@ void tick(WINDOW* w){
 		dudes[i]->tick();
 		if(dudes[i]->img=="&"){
 			if(light_distance(dudes[i]->y,dudes[i]->x)==1){
+				village[dudes[i]->y][dudes[i]->x]="S";
 				GameObject* tmp = dudes[i];
 				dudes.erase(dudes.begin()+i);
 				delete tmp;
 				enem_death_sound.play();
+				
 			}
 			if((abs(player.y-dudes[i]->y)<=1&&abs(player.x-dudes[i]->x)<=1)&&player.dead==false){
 				player.dead=true;

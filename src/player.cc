@@ -28,8 +28,9 @@ void Player::set_up(){
 	inventory["."] = 0;
 	inventory["="] = 0;
 	inventory["A"] = 0;
-	inventory["#"] = 0;	
-	inventory["o"] = 0;	
+	inventory["#"] = 0;
+	inventory["o"] = 0;
+	inventory["S"] = 0;
 	
 	max_inv["/"] = 5;
 	max_inv["."] = 2;
@@ -37,7 +38,8 @@ void Player::set_up(){
 	max_inv["A"] = 1;
 	max_inv["#"] = 2;
 	max_inv["o"] = 1;
-
+	max_inv["S"] = 1;
+	
 	/*
 	inv_codes["/"]=0;
 	inv_codes["."]=1;
