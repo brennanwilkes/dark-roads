@@ -255,18 +255,22 @@ int main(int argc, char *argv[]) {
 			
 			
 			if(player.dead_shift>=20){
+				
 				wattron(worldwin,COLOR_PAIR(1));
-				mvwprintw(worldwin,20,40,"A");
+				mvwprintw(worldwin,20,55,"YOU DIED");
 				wattroff(worldwin,COLOR_PAIR(1));
 				refresh();
 				wrefresh(worldwin);
-				usleep(50000);
+				int t = wgetch(worldwin);
+				if(t==(int)' '){
+					break;
+				}
 			}
 			else{
 				player.dead_shift++;
 				refresh();
 				wrefresh(worldwin);
-				usleep(5000);
+				usleep(100000);
 			}
 		
 			
@@ -725,7 +729,7 @@ void tick(WINDOW* w){
 				delete tmp;
 				enem_death_sound.play();
 			}
-			if(abs(player.y-dudes[i]->y)<=1&&abs(player.x-dudes[i]->x)<=1){
+			if((abs(player.y-dudes[i]->y)<=1&&abs(player.x-dudes[i]->x)<=1)&&player.dead==false){
 				player.dead=true;
 				player.dead_shift=0;
 			}

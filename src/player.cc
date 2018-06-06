@@ -26,16 +26,14 @@ void Player::set_up(){
 	
 	inventory["/"] = 0;
 	inventory["."] = 0;
-	inventory[","] = 0;
 	inventory["="] = 0;
 	inventory["A"] = 0;
 	inventory["#"] = 0;	
 	inventory["o"] = 0;	
 	
 	max_inv["/"] = 5;
-	max_inv["."] = 5;
-	max_inv[","] = 2;
-	max_inv["="] = 3;
+	max_inv["."] = 2;
+	max_inv["="] = 4;
 	max_inv["A"] = 1;
 	max_inv["#"] = 2;
 	max_inv["o"] = 1;
