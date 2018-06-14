@@ -34,6 +34,7 @@ Michael Liu - Ryan Carrusca - soundbible.com
 #include "enemy.hpp"
 #include "terrain.hpp"
 #include "global.hpp"
+#include "world.hpp"
 
 
 using namespace std;
@@ -96,6 +97,13 @@ int main(int argc, char *argv[]) {
 	
 	
 	srand (time(NULL));
+	
+	/*
+	World* test = new World();
+	test->generate();
+	return 0;
+	*/
+	
 	
 	for(int i=0;i<YMAX;i++){
 		village[i].resize(XMAX);
@@ -371,8 +379,13 @@ int main(int argc, char *argv[]) {
 					ys=ys*2;
 				}
 			}
-			if(player.y+ys>(yMax-1) || player.y+ys<0 || player.x+xs>(xMax-1) || player.x+xs<0){
-				continue;
+			if(player.y+ys>(yMax-1) || player.y+ys<0 || player.x+xs>(xMax-1) || player.x+xs<0){		//leave screen
+				if(stage<4){
+					continue;
+				}
+				else{			//explore
+					continue;
+				}
 			}
 			
 			
