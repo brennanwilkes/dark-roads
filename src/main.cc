@@ -335,110 +335,12 @@ int main(int argc, char *argv[]) {
 		}
 		
 		if(xs!=0 || ys!=0){
-			if(player.y+ys>(yMax-1) || player.y+ys<0 || player.x+xs>(xMax-1) ||player.x+xs<0){
+			int mv = player.move(xs,ys,xMax,yMax,ts);
+			if(mv==-1){
 				continue;
 			}
-			if(village[player.y+ys][player.x+xs]=="_"){
-				player.y=player.y+ys;
-				player.x=player.x+xs;
-				player.water=true;
-				player.last_dir=ts;
-			}
-			
-			
-			
-			if(player.hand[player.handid]!=" "){
-				player.last_dir=ts;
-				
-				if(village[player.y+ys][player.x+xs]==" "){
-					xs=xs*2;
-					ys=ys*2;
-				}
-			}
-			if(player.y+ys>(yMax-1) || player.y+ys<0 || player.x+xs>(xMax-1) || player.x+xs<0){		//leave screen
-				if(stage<4){
-					continue;
-				}
-				else{			//explore
-					continue;
-				}
-			}
-			
-			
-			if(village[player.y+ys][player.x+xs]==" "){					//move
-				if(xs>1||xs<-1||ys>1||ys<-1){
-					xs=xs/2;
-					ys=ys/2;
-				}
-				player.y=player.y+ys;
-				player.x=player.x+xs;
-				player.water=false;
-			}
-			/*else if(village[player.y+ys][player.x+xs]=="o"){			//grab camp
-				village[9][20]=" ";
-				village[11][29]=CAMPFIRE;
-				player.fire[{11,29}]=16;
-			}*/
-			else if(player.y+ys==9&&player.x+xs==20){
-				if(player.add(village[player.y+ys][player.x+xs])){
-					village[player.y+ys][player.x+xs]=" ";				//pickup
-				}
-			}
-			else if(village[player.y+ys][player.x+xs]=="/"||village[player.y+ys][player.x+xs]=="."||village[player.y+ys][player.x+xs]=="S"||village[player.y+ys][player.x+xs]=="A"){
-				if(player.add(village[player.y+ys][player.x+xs])){
-					village[player.y+ys][player.x+xs]=" ";				//pickup
-				}
-			}
-			else if(village[player.y+ys][player.x+xs]==">"){
-				if(player.craft[0]==""&&player.hand[player.handid]!=" "){	//craft1
-					player.craft[0]=player.hand[player.handid];
-					player.remove(player.hand[player.handid]);
-				}
-				else{
-					if(player.craft[0]!=""){
-						player.add(player.craft[0]);
-					}
-					player.craft[0]="";
-				}
-			}
-			else if(village[player.y+ys][player.x+xs]=="<"){				//craft2
-				if(player.craft[1]==""&&player.hand[player.handid]!=" "){
-					player.craft[1]=player.hand[player.handid];
-					player.remove(player.hand[player.handid]);
-				}
-				else{
-					if(player.craft[1]!=""){
-						player.add(player.craft[1]);
-					}
-					player.craft[1]="";
-				}
-			}
-			else if(village[player.y+ys][player.x+xs]==CAMPFIRE){			//fire
-				if(player.hand[player.handid]=="/"){
-					player.fire[{player.y+ys,player.x+xs}]++;
-					player.remove("/");
-				}
-				else if(player.hand[player.handid]=="="){					
-					player.fire[{player.y+ys,player.x+xs}]=player.fire[{player.y+ys,player.x+xs}]+3;
-					player.remove("=");
-				}
-				else if(player.hand[player.handid]=="S"){					
-					player.fire[{player.y+ys,player.x+xs}]=player.fire[{player.y+ys,player.x+xs}]+10;
-					player.remove("S");
-				}
-			}
-			else if(village[player.y+ys][player.x+xs]=="^"&&player.hand[player.handid]=="A"){	//tree chop
-				village[player.y+ys][player.x+xs]=" ";
+			else if(mv==1){
 				tree_sound.play();
-				if(player.add("=")){
-					if(player.add("/")){
-						player.add("/");
-					}
-				}
-			}
-			else if(village[player.y+ys][player.x+xs]=="#"&&player.hand[player.handid]=="A"){	//wall chop
-				village[player.y+ys][player.x+xs]=" ";
-				player.add("#");
 			}
 		}
 	

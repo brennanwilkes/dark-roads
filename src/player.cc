@@ -132,7 +132,117 @@ bool Player::place(){
 }
 
 
-
+int Player::move(int xs,int ys,int xMax,int yMax,int ts){
+	if(y+ys>(yMax-1) || y+ys<0 || x+xs>(xMax-1) ||x+xs<0){
+		return -1;
+	}
+	if(village[y+ys][x+xs]=="_"){
+		y=y+ys;
+		x=x+xs;
+		water=true;
+		last_dir=ts;
+	}
+	
+	
+	
+	if(hand[handid]!=" "){
+		last_dir=ts;
+		
+		if(village[y+ys][x+xs]==" "){
+			xs=xs*2;
+			ys=ys*2;
+		}
+	}
+	if(y+ys>(yMax-1) || y+ys<0 || x+xs>(xMax-1) || x+xs<0){		//leave screen
+		if(stage<4){
+			return -1;
+		}
+		else{			//explore
+			return -1;
+		}
+	}
+	
+	
+	if(village[y+ys][x+xs]==" "){					//move
+		if(xs>1||xs<-1||ys>1||ys<-1){
+			xs=xs/2;
+			ys=ys/2;
+		}
+		y=y+ys;
+		x=x+xs;
+		water=false;
+	}
+	/*else if(village[y+ys][x+xs]=="o"){			//grab camp
+		village[9][20]=" ";
+		village[11][29]=CAMPFIRE;
+		fire[{11,29}]=16;
+	}*/
+	else if(y+ys==9&&x+xs==20){
+		if(add(village[y+ys][x+xs])){
+			village[y+ys][x+xs]=" ";				//pickup
+		}
+	}
+	else if(village[y+ys][x+xs]=="/"||village[y+ys][x+xs]=="."||village[y+ys][x+xs]=="S"||village[y+ys][x+xs]=="A"){
+		if(add(village[y+ys][x+xs])){
+			village[y+ys][x+xs]=" ";				//pickup
+		}
+	}
+	else if(village[y+ys][x+xs]==">"){
+		if(craft[0]==""&&hand[handid]!=" "){	//craft1
+			craft[0]=hand[handid];
+			remove(hand[handid]);
+		}
+		else{
+			if(craft[0]!=""){
+				add(craft[0]);
+			}
+			craft[0]="";
+		}
+	}
+	else if(village[y+ys][x+xs]=="<"){				//craft2
+		if(craft[1]==""&&hand[handid]!=" "){
+			craft[1]=hand[handid];
+			remove(hand[handid]);
+		}
+		else{
+			if(craft[1]!=""){
+				add(craft[1]);
+			}
+			craft[1]="";
+		}
+	}
+	else if(village[y+ys][x+xs]=="O"){			//fire
+		if(hand[handid]=="/"){
+			fire[{y+ys,x+xs}]++;
+			remove("/");
+		}
+		else if(hand[handid]=="="){					
+			fire[{y+ys,x+xs}]=fire[{y+ys,x+xs}]+3;
+			remove("=");
+		}
+		else if(hand[handid]=="S"){					
+			fire[{y+ys,x+xs}]=fire[{y+ys,x+xs}]+10;
+			remove("S");
+		}
+	}
+	else if(village[y+ys][x+xs]=="^"&&hand[handid]=="A"){	//tree chop
+		village[y+ys][x+xs]=" ";
+		if(add("=")){
+			if(add("/")){
+				add("/");
+			}
+		}
+		
+		return 1;			//tree sound
+		
+	}
+	else if(village[y+ys][x+xs]=="#"&&hand[handid]=="A"){	//wall chop
+		village[y+ys][x+xs]=" ";
+		add("#");
+	}
+	
+	return 0;
+}
 
 
 

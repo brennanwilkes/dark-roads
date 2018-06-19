@@ -37,7 +37,7 @@ public:
 	
 	
 	bool place();
-	
+	int move(int,int,int,int,int);
 	
 };
 #endif
