@@ -10,7 +10,8 @@
 #include "gameObject.hpp"
 #include "terrain.hpp"
 
-extern int stage;	
+extern int stage;
+extern int scene;
 extern int text_delay;	
 extern Player player;
 extern inline float getDis(GameObject* src,GameObject* dest);

@@ -36,5 +36,8 @@ public:
 	std::string lore;
 	
 	
+	bool place();
+	
+	
 };
 #endif

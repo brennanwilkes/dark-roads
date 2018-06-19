@@ -46,6 +46,7 @@ using namespace std;
 
 
 int stage;
+int scene;
 Player player=Player();
 vector<GameObject*> dudes;
 int text_delay;
@@ -94,7 +95,7 @@ int main(int argc, char *argv[]) {
 	
 	
 	stage=0;
-	
+	scene = 0; //village
 	
 	srand (time(NULL));
 	
@@ -314,34 +315,9 @@ int main(int argc, char *argv[]) {
 			(++player.handid) %= player.hand.size();
 		}
 		else if(k_press==(int)' '){
-		
-			int hand_xs=0;
-			int hand_ys=0;
-			if(player.last_dir==0){
-				hand_ys=-1;		//hand up
-			}
-			else if(player.last_dir==1){
-				hand_xs=-1;		//hand left
-			}
-			else if(player.last_dir==2){
-				hand_xs=1;		//hand right
-			}
-			else if(player.last_dir==3){
-				hand_ys=1;		//hand down
-			}
-			if(player.hand[player.handid]=="#"){
-				village[player.y+hand_ys][player.x+hand_xs]="#";
-				player.remove("#");
-			}
-			else if(player.hand[player.handid]=="o"){
-				village[player.y+hand_ys][player.x+hand_xs]=CAMPFIRE;
-				player.fire[{player.y+hand_ys,player.x+hand_xs}]=16;
-				if(stage<3){
-					stage=3;
-					fire_sound.play();
-					fire_sound.setVolume(0);
-				}
-				player.remove("o");
+			if(player.place()){
+				fire_sound.play();
+				fire_sound.setVolume(0);
 			}
 		}
 		else if(k_press==(int)'q'){

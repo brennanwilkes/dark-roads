@@ -66,31 +66,31 @@ void Player::tick(){
 void Player::remove(std::string chr){
 	int indx = 0;
 	
-	player.inventory[chr]--;
+	inventory[chr]--;
 
-	if(player.inventory[chr]==0){
+	if(inventory[chr]==0){
 
-		for(unsigned int i=0; i<player.hand.size(); i++){
-			if(player.hand[i]==chr){
+		for(unsigned int i=0; i<hand.size(); i++){
+			if(hand[i]==chr){
 				indx = i;
 				break;
 			}
 		}
-		player.hand.erase(player.hand.begin()+indx);
+		hand.erase(hand.begin()+indx);
 		
-		if(player.handid >= indx){
-			player.handid--;
+		if(handid >= indx){
+			handid--;
 		}
 	}
 }
 
 
 bool Player::add(std::string chr){
-	if(player.inventory[chr]<player.max_inv[chr]){
-		if(player.inventory[chr]==0){
-			player.hand.push_back(chr);
+	if(inventory[chr]<max_inv[chr]){
+		if(inventory[chr]==0){
+			hand.push_back(chr);
 		}
-		player.inventory[chr]++;
+		inventory[chr]++;
 		return true;
 	}
 	return false;
@@ -99,7 +99,37 @@ bool Player::add(std::string chr){
 
 
 
-
+bool Player::place(){
+	
+	int hand_xs=0;
+	int hand_ys=0;
+	if(last_dir==0){
+		hand_ys=-1;		//hand up
+	}
+	else if(last_dir==1){
+		hand_xs=-1;		//hand left
+	}
+	else if(last_dir==2){
+		hand_xs=1;		//hand right
+	}
+	else if(last_dir==3){
+		hand_ys=1;		//hand down
+	}
+	if(hand[handid]=="#"){
+		village[y+hand_ys][x+hand_xs]="#";
+		remove("#");
+	}
+	else if(hand[handid]=="o"){
+		village[y+hand_ys][x+hand_xs]="O";
+		fire[{y+hand_ys,x+hand_xs}]=16;
+		if(stage<3){
+			stage=3;
+		}
+		remove("o");
+		return true;
+	}
+	return false;
+}
 
 
 
