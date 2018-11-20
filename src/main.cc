@@ -260,11 +260,10 @@ int main(int argc, char *argv[]) {
 		
 		if(player.dead){
 			
-			
-			if(player.dead_shift>=20){
-				
+			if(player.dead_shift>=30){
 				wattron(worldwin,COLOR_PAIR(1));
 				mvwprintw(worldwin,20,55,"YOU DIED");
+				mvwprintw(worldwin,21,50,"Press space to quit");
 				wattroff(worldwin,COLOR_PAIR(1));
 				refresh();
 				wrefresh(worldwin);
@@ -272,6 +271,16 @@ int main(int argc, char *argv[]) {
 				if(t==(int)' '){
 					break;
 				}
+			}
+			else if(player.dead_shift>=20){
+				wattron(worldwin,COLOR_PAIR(1));
+				mvwprintw(worldwin,20,55,"YOU DIED");
+				wattroff(worldwin,COLOR_PAIR(1));
+				player.dead_shift++;
+				refresh();
+				wrefresh(worldwin);
+				usleep(100000);
+				
 			}
 			else{
 				player.dead_shift++;
