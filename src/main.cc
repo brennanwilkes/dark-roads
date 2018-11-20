@@ -158,6 +158,7 @@ int main(int argc, char *argv[]) {
 
 	string tmp_in;
 	
+	//command line arguments
 	for(int i=0;i<argc;i++){
 		tmp_in = argv[i];
 		if(tmp_in=="-a"){
@@ -298,41 +299,6 @@ int main(int argc, char *argv[]) {
 		
 		
 		
-		
-		
-		k_press = wgetch(worldwin);			//keyboard input
-		xs=0;
-		ys=0;
-		ts=10;
-		if(k_press==KEY_UP || k_press==(int)'w'){
-			ys=-1;
-			ts=0;
-		}
-		else if(k_press==KEY_DOWN || k_press==(int)'s'){
-			ys=1;
-			ts=3;
-		}
-		else if(k_press==KEY_LEFT || k_press==(int)'a'){
-			xs=-1;
-			ts=1;
-		}
-		else if(k_press==KEY_RIGHT || k_press==(int)'d'){
-			xs=1;
-			ts=2;
-		}
-		else if(k_press==(int)'\t'){
-			(++player.handid) %= player.hand.size();
-		}
-		else if(k_press==(int)' '){
-			if(player.place()){
-				fire_sound.play();
-				fire_sound.setVolume(0);
-			}
-		}
-		else if(k_press==(int)'q'){
-			break;
-		}
-		
 		if(player.water){
 			xs=1;
 			ys=1;
@@ -342,6 +308,44 @@ int main(int argc, char *argv[]) {
 			wrefresh(worldwin);
 			usleep(50000);
 		}
+		else{
+			k_press = wgetch(worldwin);			//keyboard input
+			xs=0;
+			ys=0;
+			ts=10;
+			if(k_press==KEY_UP || k_press==(int)'w'){
+				ys=-1;
+				ts=0;
+			}
+			else if(k_press==KEY_DOWN || k_press==(int)'s'){
+				ys=1;
+				ts=3;
+			}
+			else if(k_press==KEY_LEFT || k_press==(int)'a'){
+				xs=-1;
+				ts=1;
+			}
+			else if(k_press==KEY_RIGHT || k_press==(int)'d'){
+				xs=1;
+				ts=2;
+			}
+			else if(k_press==(int)'\t'){
+				(++player.handid) %= player.hand.size();
+			}
+			else if(k_press==(int)' '){
+				if(player.place()){
+					fire_sound.play();
+					fire_sound.setVolume(0);
+				}
+				else if(player.hand[player.handid]==" "){
+					//needs hint
+				}
+			}
+			else if(k_press==(int)'q'){
+				break;
+			}
+		}
+		
 		
 		if(xs!=0 || ys!=0){
 			int mv = player.move(xs,ys,xMax,yMax,ts);
@@ -365,9 +369,9 @@ int main(int argc, char *argv[]) {
 	}
 	
 
-	cout<<yMax<<" "<<xMax<<endl;
-	cout<<player.craft[0]<<endl;
-	cout<<player.craft[1]<<endl;
+	//cout<<yMax<<" "<<xMax<<endl;
+	//cout<<player.craft[0]<<endl;
+	//cout<<player.craft[1]<<endl;
 	return 0;
 }
 

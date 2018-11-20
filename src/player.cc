@@ -134,6 +134,7 @@ bool Player::place(){
 
 int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 	if(y+ys>(yMax-1) || y+ys<0 || x+xs>(xMax-1) ||x+xs<0){
+		player.dead=true;
 		return -1;
 	}
 	if(village[y+ys][x+xs]=="_"){
