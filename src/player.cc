@@ -273,6 +273,9 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 			village[y+ys][x+xs]=" ";
 			add("#");
 		}
+		if(village[y+ys][x+xs]==" "&&hand[handid]=="C"&&(y+ys==0||y+ys==yMax-1||x+xs==0||x+xs==xMax-1)){	//leave to region
+			return 2;
+		}
 	}
 	else if(scene==1){//outsideworld
 		if(xs>1||xs<-1||ys>1||ys<-1){

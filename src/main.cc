@@ -58,8 +58,8 @@ int sound_mult=1;
 Enemy path_finder;
 
 sf::Music rain_sound,fire_sound;
-sf::Sound enem_spawn_sound,enem_death_sound,craft_sound,tree_sound,meteor_sound;
-sf::SoundBuffer enem_spawn_buffer,enem_death_buffer,craft_buffer,tree_buffer,meteor_buffer;
+sf::Sound enem_spawn_sound,enem_death_sound,craft_sound,tree_sound,meteor_sound,leave_sound;
+sf::SoundBuffer enem_spawn_buffer,enem_death_buffer,craft_buffer,tree_buffer,meteor_buffer,leave_buffer;
 
 
 inline float getDis(GameObject* src,GameObject* dest);
@@ -304,6 +304,10 @@ int main(int argc, char *argv[]) {
 	meteor_sound.setBuffer(meteor_buffer);
 	meteor_sound.setVolume(50*sound_mult);
 	
+	leave_buffer.loadFromFile("Assets/leave.ogg");
+	leave_sound.setBuffer(leave_buffer);
+	leave_sound.setVolume(50*sound_mult);
+	
 	craft_buffer.loadFromFile("Assets/craft.ogg");
 	craft_sound.setBuffer(craft_buffer);
 	craft_sound.setVolume(50*sound_mult);
@@ -407,6 +411,10 @@ int main(int argc, char *argv[]) {
 			}
 			else if(mv==1){
 				tree_sound.play();
+			}
+			else if(mv==2){	//leave to region
+				leave_sound.play();
+				
 			}
 		}
 	
