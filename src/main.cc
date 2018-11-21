@@ -767,55 +767,24 @@ void tick(WINDOW* w){
 	if(enem_tick>20){
 		enem_tick=0;
 		if(stage>=3){
+			vector<vector<int> > spawns={};
 			for(int i=0;i<65;i++){
-				if(i<18){
-					if(village[i][0]==" "&&village[i][1]==" "){
-						if(stage==2){
-							stage=4;
-						}
-						else{
-							if(dudes.size()<2){
-								Enemy* new_en = new Enemy();
-								new_en->set_up(0,i,"&");
-								dudes.push_back(new_en);
-								enem_spawn_sound.play();
-								
-							}
-						}
-					}
+				if(i<18&&village[i][0]==" "&&village[i][1]==" "){
+					spawns.push_back({0,i});
 				}
-				if(i<45){
-					if(village[0][i]==" "&&village[1][i]==" "){
-						if(stage==2){
-							stage=4;
-						}
-						else{
-							if(dudes.size()<2){
-								Enemy* new_en = new Enemy();
-								new_en->set_up(i,0,"&");
-								dudes.push_back(new_en);
-								enem_spawn_sound.play();
-								
-							}
-						}
-					}
+				if(i<45&&village[0][i]==" "&&village[1][i]==" "){
+					spawns.push_back({i,0});
 				}
-				if(i>15){
-					if(village[23][i]==" "&&village[22][i]==" "){
-						if(stage==2){
-							stage=4;
-						}
-						else{
-							if(dudes.size()<2){
-								Enemy* new_en = new Enemy();
-								new_en->set_up(i,23,"&");
-								dudes.push_back(new_en);
-								enem_spawn_sound.play();
-								
-							}
-						}
-					}
+				if(i>15&&village[23][i]==" "&&village[22][i]==" "){
+					spawns.push_back({i,23});
 				}
+			}
+			if(spawns.size()>0&&dudes.size()<=(int)(spawns.size()/10)+1){
+				vector<int> spawn = spawns[rand()%spawns.size()];
+				Enemy* new_en = new Enemy();
+				new_en->set_up(spawn[0],spawn[1],"&");
+				dudes.push_back(new_en);
+				enem_spawn_sound.play();	
 			}
 		}
 	}
