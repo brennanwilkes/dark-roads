@@ -90,6 +90,8 @@ vector<vector<string> > recipes={
 	{"O","#","$"}
 };
 
+vector<int> hint_staging = {0,0,2,2,4,100};
+
 //		 0
 //		1 2
 //		 34
@@ -585,6 +587,9 @@ bool draw(WINDOW* w){
 		mvwprintw(w,1,xMax-13,"|           |");
 		int t=0;
 		for(int i=0;i<recipes.size();i++){
+			if(i>hint_staging[stage]){
+				break;
+			}
 			t++;
 			mvwprintw(w,i+2,xMax-13,("| "+recipes[i][0]+" + "+recipes[i][1]+" > "+recipes[i][2]+" |").c_str());
 		}
