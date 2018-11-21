@@ -133,6 +133,15 @@ bool Player::place(){
 		remove("o");
 		return true;
 	}
+	else if(hand[handid]=="O"){
+		village[y+hand_ys][x+hand_xs]="O";
+		fire[{y+hand_ys,x+hand_xs}]=4;
+		if(stage<3){
+			stage=3;
+		}
+		remove("O");
+		return true;
+	}
 	return false;
 }
 

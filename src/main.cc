@@ -193,6 +193,9 @@ int main(int argc, char *argv[]) {
 		else if(tmp_in=="-o"){
 			player.add("o");
 		}
+		else if(tmp_in=="-O"){
+			player.add("O");
+		}
 		else if(tmp_in=="-w"){
 			player.add("=");
 			player.inventory["="]=25;
@@ -429,13 +432,15 @@ int light_distance(int y,int x){
 	int dis=9;
 	//vector<int> pick={};
 	int ls=0;
+	string chr = "";
 	for(int yy=0;yy<YMAX;yy++){
 		for(int xx=0;xx<XMAX;xx++){
-			if(village[yy][xx]=="o"){
+			if((village[yy][xx]=="o")||(village[yy][xx]=="O")){
 				int ls=(int)(sqrt(((y-yy)*(y-yy))+(((x-xx)/2)*((x-xx)/2))));
 				ls=(ls*1)-(player.fire[{yy,xx}]/3);
 				if(ls<dis){
 					dis=ls;
+					chr=village[yy][xx];
 				}
 				
 			}
@@ -459,7 +464,9 @@ int light_distance(int y,int x){
 	
 	
 	
-	
+	if(chr=="O"){
+		dis=dis*-1;
+	}
 	
 	
 	return dis;
@@ -478,7 +485,7 @@ bool draw(WINDOW* w){
 	clear_screen(w);
 	for(unsigned int i=0;i<village.size();i++){
 		for(unsigned int j=0;j<village[i].size();j++){
-			ls=light_distance(i,j);
+			ls=abs(light_distance(i,j));
 			
 			if((village[i][j]=="^")&&(ls<2)&&(stage>=3)){
 				if(tree_fire[i][j] == -1){				//light trees on fire
@@ -551,9 +558,9 @@ bool draw(WINDOW* w){
 		}
 		
 		wattroff(w,COLOR_PAIR(1));
-		wattron(w,COLOR_PAIR(21+light_distance(player.y+hand_ys,player.x+hand_xs)));
+		wattron(w,COLOR_PAIR(21+abs(light_distance(player.y+hand_ys,player.x+hand_xs))));
 		mvwprintw(w,player.y+hand_ys,player.x+hand_xs,player.hand[player.handid].c_str());
-		wattroff(w,COLOR_PAIR(21+light_distance(player.y+hand_ys,player.x+hand_xs)));
+		wattroff(w,COLOR_PAIR(21+abs(light_distance(player.y+hand_ys,player.x+hand_xs))));
 		wattron(w,COLOR_PAIR(1));
 		
 		
@@ -614,7 +621,7 @@ void tick(WINDOW* w){
 	
 	stage_check();
 	
-	int tmp_fire=((10-light_distance(player.y,player.x))*2)-3;
+	int tmp_fire=((10-abs(light_distance(player.y,player.x)))*2)-3;
 	if(tmp_fire<0){
 		tmp_fire=0;
 	}
@@ -644,9 +651,11 @@ void tick(WINDOW* w){
 		if(fire_tick>3){
 			
 			for(map<vector<int>,int>::iterator it = player.fire.begin(); it != player.fire.end(); ++it) {
-				player.fire[it->first]--;
-				if(player.fire[it->first]<0){
-					player.fire[it->first]=0;
+				if(village[it->first[0]][it->first[1]]=="o"){
+					player.fire[it->first]--;
+					if(player.fire[it->first]<0){
+						player.fire[it->first]=0;
+					}
 				}
 			}
 			

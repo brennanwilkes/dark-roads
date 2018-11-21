@@ -111,7 +111,7 @@ void Enemy::calc_sur(int y,int x,std::vector<std::vector<std::string> >grid){
 				if(x+j>=80||x+j<0){
 					continue;
 				}
-				if(grid[y][x]!="^"&&grid[y][x]!="#"&&grid[y][x]!="O"&&grid[y][x]!="_"){
+				if(grid[y][x]!="^"&&grid[y][x]!="#"&&grid[y][x]!="o"&&grid[y][x]!="_"){
 					if(cost[{y+i,x+j}][0]>cost[{y,x}][0]+1){
 						cost[{y+i,x+j}] = { cost[{y,x}][0]+1,	calc_dis(y+i,x+j),	cost[{y,x}][0]	+1+	calc_dis(y+i,x+j)	};
 						back[{y+i,x+j}]={y,x};
