@@ -210,6 +210,9 @@ int main(int argc, char *argv[]) {
 		else if(tmp_in=="-s"){
 			sound_mult=0;
 		}
+		else if(tmp_in=="-k"){
+			player.kills=10;
+		}
 	}
 
 	dudes.push_back(&player);
@@ -664,7 +667,46 @@ void tick(WINDOW* w){
 	
 	
 	
-	
+	if(stage==4&&player.kills>=10){
+		vector<vector<string> > ast = {
+		{"?","?",".",".","?"}, //	??..?
+		{"?","?","O","?","?"}, //	?O??.
+		{".","?",".",".","?"}, //	.?..?	
+		};
+		stage=5;
+		bool space = true;
+		for(int y=5;y<village.size()-7;y++){
+			for(int x=0;x<village[y].size()-20;x++){
+				space = true;
+				for(int i=0;i<7;i++){
+					for(int j=0;j<9;j++){
+						if(village[y+i][x+j]!=" "){
+							space = false;
+							break;
+						}
+					}
+					if(space == false){
+						break;
+					}
+					else{
+						for(int ii=0;ii<ast.size();ii++){
+							for(int jj=0;jj<ast[ii].size();jj++){
+								village[y+ii+3][x+jj+3]=ast[ii][jj];
+								tree_fire[y+ii+3][x+jj+3]=3;
+							}
+						}
+						break;
+					}
+				}
+				if(space==true){
+					break;
+				}
+			}
+			if(space==true){
+				break;
+			}
+		}
+	}
 	
 	
 	
@@ -684,7 +726,9 @@ void tick(WINDOW* w){
 				for(int j=0;j<tree_fire[i].size();j++){
 					if(tree_fire[i][j]>5){
 						tree_fire[i][j]=-1;
-						village[i][j]=" ";
+						if(village[i][j]=="^"){
+							village[i][j]=" ";
+						}
 					}
 					else if(tree_fire[i][j]>-1){
 						tree_fire[i][j]++;
@@ -736,6 +780,7 @@ void tick(WINDOW* w){
 				if(abs(tc[0]-dudes[i]->y)<=tv&&abs(tc[1]-dudes[i]->x)<=tv){
 					if((abs(player.y-dudes[i]->y)<=3&&abs(player.x-dudes[i]->x)<=3)&&player.dead==false){
 						village[dudes[i]->y][dudes[i]->x]="S";
+						player.kills++;
 					}
 					GameObject* tmp = dudes[i];
 					dudes.erase(dudes.begin()+i);
@@ -750,6 +795,7 @@ void tick(WINDOW* w){
 			if(light_distance(dudes[i]->y,dudes[i]->x)==1){
 				if((abs(player.y-dudes[i]->y)<=4&&abs(player.x-dudes[i]->x)<=4)&&player.dead==false){
 					village[dudes[i]->y][dudes[i]->x]="S";
+					player.kills++;
 				}
 				GameObject* tmp = dudes[i];
 				dudes.erase(dudes.begin()+i);
@@ -785,6 +831,9 @@ void tick(WINDOW* w){
 				new_en->set_up(spawn[0],spawn[1],"&");
 				dudes.push_back(new_en);
 				enem_spawn_sound.play();	
+				if(stage<4){
+					stage=4;
+				}
 			}
 		}
 	}

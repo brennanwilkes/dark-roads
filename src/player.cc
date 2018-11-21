@@ -27,6 +27,8 @@ void Player::set_up(){
 	hand = {" "};
 	craft = {"",""};
 	
+	kills = 0;
+	
 	inventory["/"] = 0;
 	inventory["."] = 0;
 	inventory["="] = 0;

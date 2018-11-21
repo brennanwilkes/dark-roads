@@ -35,6 +35,8 @@ public:
 	void remove(std::string);
 	bool add(std::string);
 	
+	int kills;
+	
 	std::string lore;
 	
 	
