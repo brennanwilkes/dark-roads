@@ -52,6 +52,8 @@ int text_delay;
 int xMax;
 int yMax;
 
+int sound_mult=1;
+
 Enemy path_finder;
 
 sf::Music rain_sound,fire_sound;
@@ -205,6 +207,9 @@ int main(int argc, char *argv[]) {
 		else if(tmp_in=="-$"){
 			player.add("$");
 		}
+		else if(tmp_in=="-s"){
+			sound_mult=0;
+		}
 	}
 
 	dudes.push_back(&player);
@@ -265,7 +270,7 @@ int main(int argc, char *argv[]) {
 	
 
 	rain_sound.openFromFile("Assets/rain.ogg");
-	rain_sound.setVolume(25);
+	rain_sound.setVolume(25*sound_mult);
 	rain_sound.setLoop(true);
 	rain_sound.play();
 	
@@ -275,19 +280,19 @@ int main(int argc, char *argv[]) {
 	
 	enem_spawn_buffer.loadFromFile("Assets/monster.ogg");
 	enem_spawn_sound.setBuffer(enem_spawn_buffer);
-	enem_spawn_sound.setVolume(40);
+	enem_spawn_sound.setVolume(40*sound_mult);
 	
 	enem_death_buffer.loadFromFile("Assets/burn.ogg");
 	enem_death_sound.setBuffer(enem_death_buffer);
-	enem_death_sound.setVolume(10);
+	enem_death_sound.setVolume(10*sound_mult);
 	
 	tree_buffer.loadFromFile("Assets/tree.ogg");
 	tree_sound.setBuffer(tree_buffer);
-	tree_sound.setVolume(50);
+	tree_sound.setVolume(50*sound_mult);
 	
 	craft_buffer.loadFromFile("Assets/craft.ogg");
 	craft_sound.setBuffer(craft_buffer);
-	craft_sound.setVolume(50);
+	craft_sound.setVolume(50*sound_mult);
 	
 	while (true){
 		
@@ -642,7 +647,7 @@ void tick(WINDOW* w){
 		tmp_fire=0;
 	}
 	
-	fire_sound.setVolume(tmp_fire);
+	fire_sound.setVolume(tmp_fire*sound_mult);
 			
 			
 	
