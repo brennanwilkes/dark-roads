@@ -21,6 +21,7 @@ public:
 	bool water;
 	
 	std::map<std::vector<int>,int> fire;
+	std::map<std::vector<int>,int> trap;
 	
 	int last_dir;
 	

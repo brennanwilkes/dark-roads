@@ -202,6 +202,9 @@ int main(int argc, char *argv[]) {
 			player.add("=");
 			player.inventory["="]=25;
 		}
+		else if(tmp_in=="-$"){
+			player.add("$");
+		}
 	}
 
 	dudes.push_back(&player);
@@ -502,7 +505,15 @@ bool draw(WINDOW* w){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
-			else if(village[i][j]=="o"&&(player.hand[player.handid]=="/"||player.hand[player.handid]=="=")){
+			else if(village[i][j]=="o"&&(player.hand[player.handid]=="/"||player.hand[player.handid]=="="||player.hand[player.handid]=="S")){
+				colour_shift=10;
+				//wattron(w,A_BOLD);
+			}
+			else if(village[i][j]=="O"&&(player.hand[player.handid]=="S")){
+				colour_shift=10;
+				//wattron(w,A_BOLD);
+			}
+			else if(village[i][j]=="$"&&(player.hand[player.handid]=="S")){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
@@ -712,8 +723,29 @@ void tick(WINDOW* w){
 	for(int i=0;i<dudes.size();i++){
 		dudes[i]->tick();
 		if(dudes[i]->img=="&"){
+			
+			
+			for(map<vector<int>,int>::iterator it = player.trap.begin(); it != player.trap.end(); ++it) {
+				vector<int> tc=it->first;
+				int tv=it->second;
+				if(abs(tc[0]-dudes[i]->y)<=tv&&abs(tc[1]-dudes[i]->x)<=tv){
+					if((abs(player.y-dudes[i]->y)<=3&&abs(player.x-dudes[i]->x)<=3)&&player.dead==false){
+						village[dudes[i]->y][dudes[i]->x]="S";
+					}
+					GameObject* tmp = dudes[i];
+					dudes.erase(dudes.begin()+i);
+					delete tmp;
+					enem_death_sound.play();
+				}
+				
+			}
+			
+			
+			
 			if(light_distance(dudes[i]->y,dudes[i]->x)==1){
-				village[dudes[i]->y][dudes[i]->x]="S";
+				if((abs(player.y-dudes[i]->y)<=4&&abs(player.x-dudes[i]->x)<=4)&&player.dead==false){
+					village[dudes[i]->y][dudes[i]->x]="S";
+				}
 				GameObject* tmp = dudes[i];
 				dudes.erase(dudes.begin()+i);
 				delete tmp;

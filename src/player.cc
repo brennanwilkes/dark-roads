@@ -124,6 +124,11 @@ bool Player::place(){
 		village[y+hand_ys][x+hand_xs]="#";
 		remove("#");
 	}
+	if(hand[handid]=="$"){
+		village[y+hand_ys][x+hand_xs]="$";
+		remove("$");
+		trap[{y+hand_ys,x+hand_xs}]=1;
+	}
 	else if(hand[handid]=="o"){
 		village[y+hand_ys][x+hand_xs]="o";
 		fire[{y+hand_ys,x+hand_xs}]=16;
@@ -232,6 +237,18 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 			}
 			else if(hand[handid]=="S"){					
 				fire[{y+ys,x+xs}]=fire[{y+ys,x+xs}]+10;
+				remove("S");
+			}
+		}
+		else if(village[y+ys][x+xs]=="O"){			//fire
+			if(hand[handid]=="S"){					
+				fire[{y+ys,x+xs}]=fire[{y+ys,x+xs}]+2;
+				remove("S");
+			}
+		}
+		else if(village[y+ys][x+xs]=="$"){			//fire
+			if(hand[handid]=="S"){					
+				trap[{y+ys,x+xs}]=trap[{y+ys,x+xs}]+1;
 				remove("S");
 			}
 		}
