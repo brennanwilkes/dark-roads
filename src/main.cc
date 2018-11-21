@@ -39,7 +39,6 @@ Michael Liu - Ryan Carrusca - soundbible.com
 
 using namespace std;
 
-#define CAMPFIRE "O"
 
 #define YMAX 24
 #define XMAX 80
@@ -84,9 +83,11 @@ vector<vector<int> > tree_fire(YMAX);
 
 vector<vector<string> > recipes={
 	//{".",".",","},
-	{".","=","o"},
 	{"/",".","A"},
+	{".","=","o"},
 	{"=","=","#"},
+	{"o","S","O"},
+	{"O","#","$"}
 };
 
 //		 0
@@ -430,7 +431,7 @@ int light_distance(int y,int x){
 	int ls=0;
 	for(int yy=0;yy<YMAX;yy++){
 		for(int xx=0;xx<XMAX;xx++){
-			if(village[yy][xx]=="O"){
+			if(village[yy][xx]=="o"){
 				int ls=(int)(sqrt(((y-yy)*(y-yy))+(((x-xx)/2)*((x-xx)/2))));
 				ls=(ls*1)-(player.fire[{yy,xx}]/3);
 				if(ls<dis){
@@ -492,7 +493,7 @@ bool draw(WINDOW* w){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
-			else if(village[i][j]=="O"&&(player.hand[player.handid]=="/"||player.hand[player.handid]=="=")){
+			else if(village[i][j]=="o"&&(player.hand[player.handid]=="/"||player.hand[player.handid]=="=")){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}

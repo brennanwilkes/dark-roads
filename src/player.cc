@@ -34,6 +34,8 @@ void Player::set_up(){
 	inventory["#"] = 0;
 	inventory["o"] = 0;
 	inventory["S"] = 0;
+	inventory["O"] = 0;
+	inventory["$"] = 0;
 	
 	max_inv["/"] = 5;
 	max_inv["."] = 2;
@@ -42,6 +44,8 @@ void Player::set_up(){
 	max_inv["#"] = 2;
 	max_inv["o"] = 1;
 	max_inv["S"] = 1;
+	max_inv["O"] = 1;
+	max_inv["$"] = 1;
 	
 	/*
 	inv_codes["/"]=0;
@@ -121,7 +125,7 @@ bool Player::place(){
 		remove("#");
 	}
 	else if(hand[handid]=="o"){
-		village[y+hand_ys][x+hand_xs]="O";
+		village[y+hand_ys][x+hand_xs]="o";
 		fire[{y+hand_ys,x+hand_xs}]=16;
 		if(stage<3){
 			stage=3;
@@ -208,7 +212,7 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 				craft[1]="";
 			}
 		}
-		else if(village[y+ys][x+xs]=="O"){			//fire
+		else if(village[y+ys][x+xs]=="o"){			//fire
 			if(hand[handid]=="/"){
 				fire[{y+ys,x+xs}]++;
 				remove("/");
