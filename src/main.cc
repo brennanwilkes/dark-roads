@@ -50,6 +50,8 @@ int scene;
 Player player=Player();
 vector<GameObject*> dudes;
 int text_delay;
+int xMax;
+int yMax;
 
 Enemy path_finder;
 
@@ -76,6 +78,8 @@ unsigned int lore_tick=0;
 
 vector<vector<string> > village(YMAX);
 vector<vector<string> > lore = {{},{},{},{},{},{}};
+
+vector<vector<int> > tree_fire(YMAX);
 
 
 vector<vector<string> > recipes={
@@ -105,6 +109,13 @@ int main(int argc, char *argv[]) {
 	return 0;
 	*/
 	
+	for(int i=0;i<YMAX;i++){
+		tree_fire[i].resize(XMAX);
+		for(int j=0;j<XMAX;j++){
+			tree_fire[i][j]=-1;	
+		}
+	}
+	
 	
 	for(int i=0;i<YMAX;i++){
 		village[i].resize(XMAX);
@@ -112,6 +123,15 @@ int main(int argc, char *argv[]) {
 			village[i][j]=" ";	
 		}
 	}
+	
+	
+	/*for(unsigned int i=0;i<tree_fire.size();i++){
+		for(unsigned int j=0;j<tree_fire[i].size();j++){
+			cout<<tree_fire[i][j];
+		}
+		cout<<endl;
+	}
+	cout<<1/0;*/
 	
 	/* TODO: EXTRACT TO FUNCTION OR CLASS */
 	ifstream village_file("Assets/village.txt");
@@ -186,7 +206,7 @@ int main(int argc, char *argv[]) {
 	noecho();
 	cbreak();
 	
-	int yMax,xMax;
+	//int yMax,xMax;
 	getmaxyx(stdscr, yMax, xMax);
 	int k_press;
 	
@@ -214,6 +234,11 @@ int main(int argc, char *argv[]) {
 	for(int i=0;i<10;i++){
 		init_color(40+i, 500-((i+1)*50),500-((i+1)*50),500-((i+1)*50));	//grey
 		init_pair(i+21, 40+i, 10+i);
+	}
+	
+	for(int i=0;i<10;i++){
+		init_color(50+i, 1000-((i+1)*85),0,0);	//red
+		init_pair(i+31, 50+i, 10+i);
 	}
 	
 	//wattron(worldwin,COLOR_PAIR(1));
@@ -454,8 +479,16 @@ bool draw(WINDOW* w){
 		for(unsigned int j=0;j<village[i].size();j++){
 			ls=light_distance(i,j);
 			
+			if((village[i][j]=="^")&&(ls<2)&&(stage>=3)){
+				if(tree_fire[i][j] == -1){				//light trees on fire
+					tree_fire[i][j] = 1;
+				}
+			}
 			
-			if((village[i][j]==">"||village[i][j]=="<")&&player.hand[player.handid]!=" "&&stage<3){
+			if(tree_fire[i][j]>0){
+				colour_shift=30;
+			}
+			else if((village[i][j]==">"||village[i][j]=="<")&&player.hand[player.handid]!=" "&&stage<3){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
@@ -602,12 +635,26 @@ void tick(WINDOW* w){
 	
 	if(stage>=3){
 		if(fire_tick>3){
+			
 			for(map<vector<int>,int>::iterator it = player.fire.begin(); it != player.fire.end(); ++it) {
 				player.fire[it->first]--;
 				if(player.fire[it->first]<0){
 					player.fire[it->first]=0;
 				}
 			}
+			
+			for(int i=0;i<tree_fire.size();i++){
+				for(int j=0;j<tree_fire[i].size();j++){
+					if(tree_fire[i][j]>5){
+						tree_fire[i][j]=-1;
+						village[i][j]=" ";
+					}
+					else if(tree_fire[i][j]>-1){
+						tree_fire[i][j]++;
+					}
+				}
+			}
+			
 			fire_tick=0;
 		}
 	}
