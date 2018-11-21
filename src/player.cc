@@ -38,6 +38,7 @@ void Player::set_up(){
 	inventory["S"] = 0;
 	inventory["O"] = 0;
 	inventory["$"] = 0;
+	inventory["?"] = 0;
 	
 	max_inv["/"] = 5;
 	max_inv["."] = 2;
@@ -48,6 +49,7 @@ void Player::set_up(){
 	max_inv["S"] = 1;
 	max_inv["O"] = 1;
 	max_inv["$"] = 1;
+	max_inv["?"] = 3;
 	
 	/*
 	inv_codes["/"]=0;
@@ -199,7 +201,7 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 				village[y+ys][x+xs]=" ";				//pickup
 			}
 		}
-		else if(village[y+ys][x+xs]=="/"||village[y+ys][x+xs]=="."||village[y+ys][x+xs]=="S"||village[y+ys][x+xs]=="A"){
+		else if(village[y+ys][x+xs]=="/"||village[y+ys][x+xs]=="."||village[y+ys][x+xs]=="S"||village[y+ys][x+xs]=="A"||village[y+ys][x+xs]=="?"){
 			if(add(village[y+ys][x+xs])){
 				village[y+ys][x+xs]=" ";				//pickup
 			}

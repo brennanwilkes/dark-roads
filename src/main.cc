@@ -1,8 +1,9 @@
 /*
 
-DARK ROADS - BRENNAN WILKES	
+DARK ROADS - BRENNAN WILKES - 2017/2018	
 
 
+Special thanks to
 Michael Liu - Ryan Carrusca - soundbible.com
 */
 
@@ -57,8 +58,8 @@ int sound_mult=1;
 Enemy path_finder;
 
 sf::Music rain_sound,fire_sound;
-sf::Sound enem_spawn_sound,enem_death_sound,craft_sound,tree_sound;
-sf::SoundBuffer enem_spawn_buffer,enem_death_buffer,craft_buffer,tree_buffer;
+sf::Sound enem_spawn_sound,enem_death_sound,craft_sound,tree_sound,meteor_sound;
+sf::SoundBuffer enem_spawn_buffer,enem_death_buffer,craft_buffer,tree_buffer,meteor_buffer;
 
 
 inline float getDis(GameObject* src,GameObject* dest);
@@ -292,6 +293,10 @@ int main(int argc, char *argv[]) {
 	tree_buffer.loadFromFile("Assets/tree.ogg");
 	tree_sound.setBuffer(tree_buffer);
 	tree_sound.setVolume(50*sound_mult);
+	
+	meteor_buffer.loadFromFile("Assets/meteor_explosion.ogg");
+	meteor_sound.setBuffer(meteor_buffer);
+	meteor_sound.setVolume(50*sound_mult);
 	
 	craft_buffer.loadFromFile("Assets/craft.ogg");
 	craft_sound.setBuffer(craft_buffer);
@@ -537,8 +542,10 @@ bool draw(WINDOW* w){
 			for(map<string,int>::iterator it = player.inventory.begin(); it != player.inventory.end(); ++it) {
 				tmp_str=it->first;
 				if(village[i][j]==tmp_str){
-					if(player.inventory[village[i][j]]<player.max_inv[village[i][j]]&&stage<2){
-						colour_shift=10;
+					if(player.inventory[village[i][j]]<player.max_inv[village[i][j]]){
+						if(stage<2||(village[i][j]=="?"&&stage==5&&colour_shift!=30)){
+							colour_shift=10;
+						}
 					}
 				}
 			}
@@ -695,6 +702,7 @@ void tick(WINDOW* w){
 								tree_fire[y+ii+3][x+jj+3]=3;
 							}
 						}
+						meteor_sound.play();
 						break;
 					}
 				}
