@@ -90,10 +90,11 @@ vector<vector<string> > recipes={
 	{".","=","o"},
 	{"=","=","#"},
 	{"o","S","O"},
-	{"O","#","$"}
+	{"S","#","$"},
+	{"?","S","C"}
 };
 
-vector<int> hint_staging = {0,0,2,2,4,100};
+vector<int> hint_staging = {0,0,2,2,4,5,100};
 
 //		 0
 //		1 2
@@ -214,6 +215,10 @@ int main(int argc, char *argv[]) {
 		else if(tmp_in=="-k"){
 			player.kills=10;
 		}
+		else if(tmp_in=="-c"){
+			player.add("C");
+		}
+		
 	}
 
 	dudes.push_back(&player);
@@ -258,6 +263,7 @@ int main(int argc, char *argv[]) {
 		init_color(50+i, 1000-((i+1)*85),0,0);	//red
 		init_pair(i+31, 50+i, 10+i);
 	}
+	init_pair(41, 0, 31);	//GOLD BACKGROUND
 	
 	//wattron(worldwin,COLOR_PAIR(1));
 	
@@ -533,6 +539,10 @@ bool draw(WINDOW* w){
 			else if(village[i][j]=="^"&&(player.hand[player.handid]=="A")&&player.inventory["="]<player.max_inv["="]){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
+			}
+			else if(village[i][j]==" "&&player.hand[player.handid]=="C"&&(i==0||i==yMax-1||j==0||j==xMax-1)){
+				colour_shift=40;
+				ls=0;
 			}
 			else{
 				colour_shift=0;
