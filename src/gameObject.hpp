@@ -7,7 +7,7 @@
 class GameObject{
 public:
 	GameObject();
-	~GameObject();
+	virtual ~GameObject();
 	//virtual void set_up();
 	int x;
 	int y;
