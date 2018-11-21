@@ -18,6 +18,9 @@ void Enemy::set_up(int xx,int yy,std::string chr){
 	path = calc_path(y,x,village);
 	
 	path_tick=0;
+	if(stage<4){
+		stage=4;
+	}
 	
 }
 
