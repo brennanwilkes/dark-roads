@@ -13,6 +13,7 @@ public:
 	bool dead;
 	int dead_shift;
 	
+	bool hint;
 	
 	void tick();
 	int cx;

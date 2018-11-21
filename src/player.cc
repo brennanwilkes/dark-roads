@@ -19,6 +19,7 @@ void Player::set_up(){
 	water=false;
 	
 	dead=false;
+	hint=false;
 
 	lore="";
 	

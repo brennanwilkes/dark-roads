@@ -363,7 +363,7 @@ int main(int argc, char *argv[]) {
 					fire_sound.setVolume(0);
 				}
 				else if(player.hand[player.handid]==" "){
-					//needs hint
+					player.hint = true;//needs hint
 				}
 			}
 			else if(k_press==(int)'q'){
@@ -515,14 +515,6 @@ bool draw(WINDOW* w){
 			}
 			
 			
-			/*for(int k=0;k<player.inventory.keys().size();k++){
-				tmp_str=player.inventory.keys()[0];
-				if(village[i][j]==tmp_str){
-					if(player.inventory[village[i][j]]<player.max_inv[village[i][j]]&&stage<2){
-						colour_shift=10;
-					}
-				}
-			}*/
 						
 			if((village[i][j]==">"&&player.craft[0]!="")||(village[i][j]=="<"&&player.craft[1]!="")){
 				wattron(w,A_REVERSE);
@@ -577,6 +569,20 @@ bool draw(WINDOW* w){
 			lore_tick=0;
 		}
 	}
+	
+	
+	if(player.hint){
+		player.hint=false;
+		mvwprintw(w,0,xMax-13,"_____________");
+		mvwprintw(w,1,xMax-13,"|           |");
+		int t=0;
+		for(int i=0;i<recipes.size();i++){
+			t++;
+			mvwprintw(w,i+2,xMax-13,("| "+recipes[i][0]+" + "+recipes[i][1]+" > "+recipes[i][2]+" |").c_str());
+		}
+		mvwprintw(w,t+2,xMax-13,"|___________|");
+	}
+	
 	
 	return true;
 }
