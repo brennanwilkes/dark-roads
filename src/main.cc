@@ -613,13 +613,13 @@ bool draw(WINDOW* w){
 		
 	}
 	if(lore[stage].size()>0){
-		if(lore_tick==10){
+		if(lore_tick==15){
 			player.lore=lore[stage][rand() % lore[stage].size()];
 		}
-		if(lore_tick>10){
+		if(lore_tick>15){
 			mvwprintw(w,22,40,player.lore.c_str());
 		}
-		if(lore_tick>15){
+		if(lore_tick>18){
 			lore_tick=0;
 		}
 	}
