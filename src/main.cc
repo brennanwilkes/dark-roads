@@ -91,10 +91,11 @@ vector<vector<string> > recipes={
 	{"=","=","#"},
 	{"o","S","O"},
 	{"S","#","$"},
+	{"S","=","^"},
 	{"?","S","C"}
 };
 
-vector<int> hint_staging = {0,0,2,2,4,5,100};
+vector<int> hint_staging = {0,0,2,2,5,6,100};
 
 //		 0
 //		1 2

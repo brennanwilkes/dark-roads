@@ -38,6 +38,7 @@ void Player::set_up(){
 	inventory["S"] = 0;
 	inventory["O"] = 0;
 	inventory["$"] = 0;
+	inventory["^"] = 0;
 	inventory["?"] = 0;
 	inventory["C"] = 0;
 	
@@ -50,6 +51,7 @@ void Player::set_up(){
 	max_inv["S"] = 1;
 	max_inv["O"] = 1;
 	max_inv["$"] = 1;
+	max_inv["^"] = 1;
 	max_inv["?"] = 3;
 	max_inv["C"] = 1;
 	
@@ -126,9 +128,9 @@ bool Player::place(){
 	else if(last_dir==3){
 		hand_ys=1;		//hand down
 	}
-	if(hand[handid]=="#"){
-		village[y+hand_ys][x+hand_xs]="#";
-		remove("#");
+	if(hand[handid]=="#"||hand[handid]=="^"){
+		village[y+hand_ys][x+hand_xs]=hand[handid];
+		remove(hand[handid]);
 	}
 	if(hand[handid]=="$"){
 		village[y+hand_ys][x+hand_xs]="$";
