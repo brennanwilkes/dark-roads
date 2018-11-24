@@ -68,6 +68,7 @@ inline float getDis(GameObject* src,int x2,int y2);
 inline float getDis(int x1,int y1,int x2,int y2);
 void clear_screen(WINDOW*);
 bool draw(WINDOW*);
+bool mapdraw(WINDOW*);
 int light_distance(int,int);
 bool craft(string,string,string);
 void tick(WINDOW*);
@@ -79,7 +80,8 @@ unsigned int enem_tick=0;
 unsigned int lore_tick=0;
 
 vector<vector<string> > village(YMAX);
-vector<vector<string> > lore = {{},{},{},{},{},{}};
+vector<vector<string> > lore = {{},{},{},{},{},{},{},{},{},{},{}};
+map<vector<int>,string> exmap;
 
 vector<vector<int> > tree_fire(YMAX);
 
@@ -95,7 +97,7 @@ vector<vector<string> > recipes={
 	{"?","S","C"}
 };
 
-vector<int> hint_staging = {0,0,2,2,5,6,100};
+vector<int> hint_staging = {0,0,2,2,5,6,100,100,100};
 
 //		 0
 //		1 2
@@ -315,10 +317,13 @@ int main(int argc, char *argv[]) {
 	
 	while (true){
 		
-		tick(worldwin);
-		
+		if(stage==6){
+			mapdraw(worldwin);
+		}
+		else{
+			tick(worldwin);
+		}
 		if(player.dead){
-			
 			if(player.dead_shift>=30){
 				wattron(worldwin,COLOR_PAIR(1));
 				mvwprintw(worldwin,20,55,"YOU DIED");
@@ -339,7 +344,6 @@ int main(int argc, char *argv[]) {
 				refresh();
 				wrefresh(worldwin);
 				usleep(100000);
-				
 			}
 			else{
 				player.dead_shift++;
@@ -347,11 +351,6 @@ int main(int argc, char *argv[]) {
 				wrefresh(worldwin);
 				usleep(100000);
 			}
-		
-			
-			
-			
-			
 			continue;
 		}
 		
@@ -387,10 +386,10 @@ int main(int argc, char *argv[]) {
 				xs=1;
 				ts=2;
 			}
-			else if(k_press==(int)'\t'){
+			else if(k_press==(int)'\t'&&stage!=6){
 				(++player.handid) %= player.hand.size();
 			}
-			else if(k_press==(int)' '){
+			else if(k_press==(int)' '&&stage!=6){
 				if(player.place()){
 					fire_sound.play();
 					fire_sound.setVolume(0);
@@ -406,16 +405,24 @@ int main(int argc, char *argv[]) {
 		
 		
 		if(xs!=0 || ys!=0){
-			int mv = player.move(xs,ys,xMax,yMax,ts);
-			if(mv==-1){
-				continue;
+			if(stage!=6){
+				int mv = player.move(xs,ys,xMax,yMax,ts);
+				if(mv==-1){
+					continue;
+				}
+				else if(mv==1){
+					tree_sound.play();
+				}
+				else if(mv==2){	//leave to region
+					leave_sound.play();
+					stage = 6;
+				}
 			}
-			else if(mv==1){
-				tree_sound.play();
-			}
-			else if(mv==2){	//leave to region
-				leave_sound.play();
-				
+			else if(stage==6){
+				int mv = player.move(xs,ys);
+				if(mv==1){
+					stage=7;
+				}
 			}
 		}
 	
@@ -507,15 +514,10 @@ int light_distance(int y,int x){
 
 bool draw(WINDOW* w){
 	
-
-	
 	int hand_xs,hand_ys,ls,colour_shift=0;
-	
 	wattroff(w,COLOR_PAIR(1));
-	
-	
-	
 	clear_screen(w);
+	
 	for(unsigned int i=0;i<village.size();i++){
 		for(unsigned int j=0;j<village[i].size();j++){
 			ls=abs(light_distance(i,j));
@@ -640,6 +642,37 @@ bool draw(WINDOW* w){
 		}
 		mvwprintw(w,t+2,xMax-13,"|___________|");
 	}
+	
+	
+	return true;
+}
+
+bool mapdraw(WINDOW* w){
+	
+	int ls,colour_shift=0;
+	wattroff(w,COLOR_PAIR(1));
+	clear_screen(w);
+	
+	
+	vector<int> tmp;
+	for(map<vector<int>,string>::iterator it = exmap.begin(); it != exmap.end(); ++it) {
+		tmp = it->first;
+		if((tmp[0]-player.mapy<yMax/2)&&(tmp[0]-player.mapy>(yMax/-2))&&(tmp[1]-player.mapx<xMax/2)&&(tmp[1]-player.mapx>(xMax/-2))){
+			mvwprintw(w,yMax/2+tmp[0]-player.mapy,xMax/2+tmp[1]-player.mapx,exmap[tmp].c_str());	
+		}
+	}
+	
+	/*
+	ls=abs(light_distance(i,j));
+	wattron(w,COLOR_PAIR(colour_shift+ls+1));
+	mvwprintw(w,i,j,village[i][j].c_str());	
+	
+	wattroff(w,A_BOLD);
+	wattroff(w,COLOR_PAIR(colour_shift+ls+1));
+	wattroff(w,A_REVERSE);
+	*/
+	wattron(w,COLOR_PAIR(1));
+	mvwprintw(w,yMax/2,xMax/2,"@");	
 	
 	
 	return true;

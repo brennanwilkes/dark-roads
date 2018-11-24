@@ -11,6 +11,9 @@ void Player::set_up(){
 	x=0;
 	y=0;
 	
+	mapx=0;
+	mapy=0;
+	
 	id=0;
 	
 	health=100;
@@ -288,6 +291,17 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 		x=x+xs;
 		water=false;
 	}
+	return 0;
+}
+
+int Player::move(int xs,int ys){
+	mapx=mapx+xs;
+	mapy=mapy+ys;
+	
+	if(mapx==0&&mapy==0){
+		return 1; //return to clearing
+	}
+	
 	return 0;
 }
 

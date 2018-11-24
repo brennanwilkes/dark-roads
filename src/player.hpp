@@ -13,6 +13,9 @@ public:
 	bool dead;
 	int dead_shift;
 	
+	
+	int mapx,mapy;
+	
 	bool hint;
 	
 	void tick();
@@ -42,6 +45,7 @@ public:
 	
 	bool place();
 	int move(int,int,int,int,int);
+	int move(int,int);
 	
 };
 #endif
