@@ -70,6 +70,7 @@ void clear_screen(WINDOW*);
 bool draw(WINDOW*);
 bool mapdraw(WINDOW*);
 int light_distance(int,int);
+int ex_light_distance(int,int);
 bool craft(string,string,string);
 void tick(WINDOW*);
 void stage_check();
@@ -118,6 +119,9 @@ int main(int argc, char *argv[]) {
 	test->generate();
 	return 0;
 	*/
+	
+	exmap[{10,10}]="o";
+	
 	
 	for(int i=0;i<YMAX;i++){
 		tree_fire[i].resize(XMAX);
@@ -512,6 +516,40 @@ int light_distance(int y,int x){
 	return dis;
 }
 
+int ex_light_distance(int y,int x){
+	int dis=9;
+	//vector<int> pick={};
+	int ls=0;
+	
+	vector<int> tmp;
+	for(map<vector<int>,string>::iterator it = exmap.begin(); it != exmap.end(); ++it) {
+		tmp = it->first;
+		if(it->second=="o"){
+			int ls=(int)(sqrt((((yMax/-2)+y-tmp[0])*((yMax/-2)+y-tmp[0]))+((((xMax/-2)+x-tmp[1])/2)*(((xMax/-2)+x-tmp[1])/2))));
+			ls=(ls*1)-(5);
+			if(ls<dis){
+				dis=ls;
+			}
+		}
+	}
+	ls++;	//just to remove a warning
+	
+	if(player.dead){
+		dis=dis+player.dead_shift;
+	}
+	
+	
+	if(dis>8){
+		dis=9;
+	}
+	else if(dis<1){
+		dis=1;
+	}
+	
+	
+	return dis;
+}
+
 bool draw(WINDOW* w){
 	
 	int hand_xs,hand_ys,ls,colour_shift=0;
@@ -662,15 +700,21 @@ bool mapdraw(WINDOW* w){
 		}
 	}
 	
-	/*
-	ls=abs(light_distance(i,j));
-	wattron(w,COLOR_PAIR(colour_shift+ls+1));
-	mvwprintw(w,i,j,village[i][j].c_str());	
+	for(unsigned int i=0;i<yMax;i++){
+		for(unsigned int j=0;j<xMax;j++){
+			ls=abs(ex_light_distance(i+player.mapy,j+player.mapx));
+			wattron(w,COLOR_PAIR(colour_shift+ls+1));
+
+
+
+			mvwprintw(w,i,j," ");	
+
+			wattroff(w,A_BOLD);
+			wattroff(w,COLOR_PAIR(colour_shift+ls+1));
+			wattroff(w,A_REVERSE);
+		}
+	}
 	
-	wattroff(w,A_BOLD);
-	wattroff(w,COLOR_PAIR(colour_shift+ls+1));
-	wattroff(w,A_REVERSE);
-	*/
 	wattron(w,COLOR_PAIR(1));
 	mvwprintw(w,yMax/2,xMax/2,"@");	
 	
