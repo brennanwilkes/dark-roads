@@ -114,13 +114,17 @@ int main(int argc, char *argv[]) {
 	
 	srand (time(NULL));
 	
-	/*
+	
+	
+	
 	World* test = new World();
 	test->generate();
-	return 0;
-	*/
-	
-	exmap[{10,10}]="o";
+	for(int i=0;i<test->lights.size();i++){
+		exmap[test->lights[i]] = "o";
+		//cout<<test->lights[i][0]<<" "<<test->lights[i][1]<<endl;
+	}
+	exmap[{0,0}]="H";
+	exmap[{0,5}]="o";
 	
 	
 	for(int i=0;i<YMAX;i++){
@@ -706,9 +710,13 @@ bool mapdraw(WINDOW* w){
 			wattron(w,COLOR_PAIR(colour_shift+ls+1));
 
 
-
-			mvwprintw(w,i,j," ");	
-
+			if(exmap.find({(int)((yMax/-2)+i+player.mapy),(int)((xMax/-2)+j+player.mapx)})==exmap.end()){
+				mvwprintw(w,i,j," ");	
+			}
+			else{
+				mvwprintw(w,i,j,exmap[{(int)((yMax/-2)+i+player.mapy),(int)((xMax/-2)+j+player.mapx)}].c_str());
+			}
+			
 			wattroff(w,A_BOLD);
 			wattroff(w,COLOR_PAIR(colour_shift+ls+1));
 			wattroff(w,A_REVERSE);

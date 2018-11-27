@@ -9,8 +9,8 @@ World::~World(){
 }
 void World::generate(){
 	int a = 0;
-	for(int i=0;i<150;i++){
-		if(rand()%400<(150-i)){
+	for(int i=0;i<300;i++){
+		if(rand()%1000<(300-i)){
 			a = rand()%360;
 			a = a*180.0/3.14159265358979323846;
 			lights.push_back({(int)(i*2*cos(a)),(int)(i*2*sin(a)),rand()%15});
