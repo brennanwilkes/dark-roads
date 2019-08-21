@@ -11,9 +11,18 @@ Terrain::Terrain(){
 }
 
 vector<vector<string> > Terrain::gen_chunk(int y,int x){
+	vector<vector<string> > chunk = {};
+
+
+	for(int i=0;i<chunk_coords.size();i++){
+		if (chunk_coords[i][0]==y&&chunk_coords[i][1]==x){
+			return chunk;
+		}
+	}
+	
 	srand(time(0));
 	
-	vector<vector<string> > chunk = {};
+
 	for (int y=0;y<24;y++){
 		chunk.push_back({});
 		for (int x=0;x<80;x++){

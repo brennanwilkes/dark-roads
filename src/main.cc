@@ -463,7 +463,7 @@ int main(int argc, char *argv[]) {
 					if (ys!=0){
 						player.y=(yMax+(ys*shft))%yMax;
 					}
-					
+					outer_world->gen_chunk(player.chy+ys,player.chx+xs);
 					e_village=&(outer_world->chunks[{player.chy,player.chx}]);
 				}
 			}
