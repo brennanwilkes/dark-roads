@@ -135,16 +135,16 @@ bool Player::place(){
 		hand_ys=1;		//hand down
 	}
 	if(hand[handid]=="#"||hand[handid]=="^"){
-		village[y+hand_ys][x+hand_xs]=hand[handid];
+		(*e_village)[y+hand_ys][x+hand_xs]=hand[handid];
 		remove(hand[handid]);
 	}
 	if(hand[handid]=="$"){
-		village[y+hand_ys][x+hand_xs]="$";
+		(*e_village)[y+hand_ys][x+hand_xs]="$";
 		remove("$");
 		trap[{y+hand_ys,x+hand_xs}]=1;
 	}
 	else if(hand[handid]=="o"){
-		village[y+hand_ys][x+hand_xs]="o";
+		(*e_village)[y+hand_ys][x+hand_xs]="o";
 		fire[{y+hand_ys,x+hand_xs}]=16;
 		if(stage<3){
 			stage=3;
@@ -153,7 +153,7 @@ bool Player::place(){
 		return true;
 	}
 	else if(hand[handid]=="O"){
-		village[y+hand_ys][x+hand_xs]="O";
+		(*e_village)[y+hand_ys][x+hand_xs]="O";
 		fire[{y+hand_ys,x+hand_xs}]=4;
 		if(stage<3){
 			stage=3;
@@ -170,7 +170,7 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 		player.dead=true;
 		return -1;
 	}
-	if(village[y+ys][x+xs]=="_"){
+	if((*e_village)[y+ys][x+xs]=="_"){
 		y=y+ys;
 		x=x+xs;
 		water=true;
@@ -182,7 +182,7 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 	if(hand[handid]!=" "){
 		last_dir=ts;
 		
-		if(village[y+ys][x+xs]==" "){
+		if((*e_village)[y+ys][x+xs]==" "){
 			xs=xs*2;
 			ys=ys*2;
 		}
@@ -197,7 +197,7 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 	}
 	
 	if(scene==0){
-		if(village[y+ys][x+xs]==" "){					//move
+		if((*e_village)[y+ys][x+xs]==" "){					//move
 			if(xs>1||xs<-1||ys>1||ys<-1){
 				xs=xs/2;
 				ys=ys/2;
@@ -207,16 +207,16 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 			water=false;
 		}
 		else if(y+ys==9&&x+xs==20){
-			if(add(village[y+ys][x+xs])){
-				village[y+ys][x+xs]=" ";				//pickup
+			if(add((*e_village)[y+ys][x+xs])){
+				(*e_village)[y+ys][x+xs]=" ";				//pickup
 			}
 		}
-		else if(village[y+ys][x+xs]=="/"||village[y+ys][x+xs]=="."||village[y+ys][x+xs]=="S"||village[y+ys][x+xs]=="A"||village[y+ys][x+xs]=="?"){
-			if(add(village[y+ys][x+xs])){
-				village[y+ys][x+xs]=" ";				//pickup
+		else if((*e_village)[y+ys][x+xs]=="/"||(*e_village)[y+ys][x+xs]=="."||(*e_village)[y+ys][x+xs]=="S"||(*e_village)[y+ys][x+xs]=="A"||(*e_village)[y+ys][x+xs]=="?"){
+			if(add((*e_village)[y+ys][x+xs])){
+				(*e_village)[y+ys][x+xs]=" ";				//pickup
 			}
 		}
-		else if(village[y+ys][x+xs]==">"){
+		else if((*e_village)[y+ys][x+xs]==">"){
 			if(craft[0]==""&&hand[handid]!=" "){	//craft1
 				craft[0]=hand[handid];
 				remove(hand[handid]);
@@ -228,7 +228,7 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 				craft[0]="";
 			}
 		}
-		else if(village[y+ys][x+xs]=="<"){				//craft2
+		else if((*e_village)[y+ys][x+xs]=="<"){				//craft2
 			if(craft[1]==""&&hand[handid]!=" "){
 				craft[1]=hand[handid];
 				remove(hand[handid]);
@@ -240,7 +240,7 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 				craft[1]="";
 			}
 		}
-		else if(village[y+ys][x+xs]=="o"){			//fire
+		else if((*e_village)[y+ys][x+xs]=="o"){			//fire
 			if(hand[handid]=="/"){
 				fire[{y+ys,x+xs}]++;
 				remove("/");
@@ -254,20 +254,20 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 				remove("S");
 			}
 		}
-		else if(village[y+ys][x+xs]=="O"){			//fire
+		else if((*e_village)[y+ys][x+xs]=="O"){			//fire
 			if(hand[handid]=="S"){					
 				fire[{y+ys,x+xs}]=fire[{y+ys,x+xs}]+2;
 				remove("S");
 			}
 		}
-		else if(village[y+ys][x+xs]=="$"){			//fire
+		else if((*e_village)[y+ys][x+xs]=="$"){			//fire
 			if(hand[handid]=="S"){					
 				trap[{y+ys,x+xs}]=trap[{y+ys,x+xs}]+1;
 				remove("S");
 			}
 		}
-		else if(village[y+ys][x+xs]=="^"&&hand[handid]=="A"){	//tree chop
-			village[y+ys][x+xs]=" ";
+		else if((*e_village)[y+ys][x+xs]=="^"&&hand[handid]=="A"){	//tree chop
+			(*e_village)[y+ys][x+xs]=" ";
 			if(add("=")){
 				if(add("/")){
 					add("/");
@@ -277,11 +277,11 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 			return 1;			//tree sound
 		
 		}
-		else if(village[y+ys][x+xs]=="#"&&hand[handid]=="A"){	//wall chop
-			village[y+ys][x+xs]=" ";
+		else if((*e_village)[y+ys][x+xs]=="#"&&hand[handid]=="A"){	//wall chop
+			(*e_village)[y+ys][x+xs]=" ";
 			add("#");
 		}
-		if(village[y+ys][x+xs]==" "&&hand[handid]=="C"&&(y+ys==0||y+ys==yMax-1||x+xs==0||x+xs==xMax-1)){	//leave to region
+		if((*e_village)[y+ys][x+xs]==" "&&hand[handid]=="C"&&(y+ys==0||y+ys==yMax-1||x+xs==0||x+xs==xMax-1)){	//leave to region
 			return 2;
 		}
 	}

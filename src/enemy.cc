@@ -15,7 +15,7 @@ void Enemy::set_up(int xx,int yy,std::string chr){
 	
 	
 	
-	path = calc_path(y,x,village);
+	path = calc_path(y,x,*e_village);
 	
 	path_tick=0;
 	if(stage<4){
@@ -30,7 +30,7 @@ void Enemy::tick(){
 	
 	if(path_tick>2){
 		path_tick=0;
-		path=calc_path(y,x,village);
+		path=calc_path(y,x,*e_village);
 	}
 	
 	

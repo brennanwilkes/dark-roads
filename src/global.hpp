@@ -22,6 +22,7 @@ extern inline float getDis(GameObject* src);
 extern inline float getDis(GameObject* src,int x2,int y2);
 extern inline float getDis(int x1,int y1,int x2,int y2);
 extern std::vector<std::vector<std::string> > village;
+extern std::vector<std::vector<std::string> >* e_village;
 extern std::vector<std::vector<int> > tree_fire;
 extern std::vector<int> hint_staging;
 extern std::map<std::vector<int>,std::string> exmap;

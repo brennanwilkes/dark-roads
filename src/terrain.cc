@@ -18,7 +18,7 @@ vector<vector<string> > Terrain::gen_chunk(int y,int x){
 		chunk.push_back({});
 		for (int x=0;x<80;x++){
 			
-			if(rand()%100>98){
+			if(rand()%1000>995){
 				chunk[y].push_back("o");
 			}
 			chunk[y].push_back(" ");
