@@ -137,8 +137,16 @@ int main(int argc, char *argv[]) {
 	
 	
 	Terrain* outer_world = new Terrain();
-	outer_world->gen_chunk(0,0);
+	outer_world->gen_chunk(1,1);
+	outer_world->gen_chunk(1,0);
+	outer_world->gen_chunk(1,-1);
 	
+	outer_world->gen_chunk(0,1);
+	outer_world->gen_chunk(0,-1);
+	
+	outer_world->gen_chunk(-1,1);
+	outer_world->gen_chunk(-1,0);
+	outer_world->gen_chunk(-1,-1);
 	
 	
 	for(int i=0;i<YMAX;i++){
@@ -184,6 +192,8 @@ int main(int argc, char *argv[]) {
 	}
 	village_file.close();
 	
+	
+	outer_world->chunks[{0,0}] = village;
 	
 	
 	ifstream lore_file("Assets/lore.txt");
@@ -438,7 +448,22 @@ int main(int argc, char *argv[]) {
 				else if(mv==2){	//leave to region
 					leave_sound.play();
 					//stage = 6;
-					e_village=&(outer_world->chunks[{0,0}]);
+					player.chx=player.chx+xs;
+					player.chy=player.chy+ys;
+					
+					int shft=1;
+					if(player.hand[player.handid]!=" "){
+						shft=2;
+					}
+					
+					if(xs!=0){
+						player.x=(xMax+(xs*shft))%xMax;
+					}
+					if (ys!=0){
+						player.y=(yMax+(ys*shft))%yMax;
+					}
+					
+					e_village=&(outer_world->chunks[{player.chy,player.chx}]);
 				}
 			}
 			else if(stage==6){
@@ -799,7 +824,7 @@ void tick(WINDOW* w){
 	
 	
 	
-	if(stage==4&&player.kills>=3){
+	if(stage==4&&player.kills>=3&&player.chy==0&&player.chx==0){
 		vector<vector<string> > ast = {
 		{"?","?",".",".","?"}, //	??..?
 		{"?","?","O","?","?"}, //	?O??.

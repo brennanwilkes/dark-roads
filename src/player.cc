@@ -281,7 +281,7 @@ int Player::move(int xs,int ys,int xMax,int yMax,int ts){
 			(*e_village)[y+ys][x+xs]=" ";
 			add("#");
 		}
-		if((*e_village)[y+ys][x+xs]==" "&&hand[handid]=="C"&&(y+ys==0||y+ys==yMax-1||x+xs==0||x+xs==xMax-1)){	//leave to region
+		if((*e_village)[y+ys][x+xs]==" "&&(y+ys==0||y+ys==yMax-1||x+xs==0||x+xs==xMax-1)){//&&hand[handid]=="C"){	//leave to region
 			return 2;
 		}
 	}
