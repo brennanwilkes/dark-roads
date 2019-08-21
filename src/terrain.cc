@@ -1,13 +1,31 @@
 #include <iostream>
 #include "terrain.hpp"
 #include "global.hpp"
+#include <random>
+using namespace std;
 
-//TODO: switch to float-based coordinate system (allows for 'infinite' precision)
-Terrain::Terrain(int w, int l, int s,int sx,int sy){	
+Terrain::Terrain(){	
 	
 	
 	
 }
 
-
-
+vector<vector<string> > Terrain::gen_chunk(int y,int x){
+	srand(time(0));
+	
+	vector<vector<string> > chunk = {};
+	for (int y=0;y<24;y++){
+		chunk.push_back({});
+		for (int x=0;x<80;x++){
+			
+			if(rand()%100>98){
+				chunk[y].push_back("o");
+			}
+			chunk[y].push_back(" ");
+		}
+	}
+	
+	
+	chunks[{y,x}]=chunk;
+	return chunk;
+}

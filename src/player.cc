@@ -13,7 +13,10 @@ void Player::set_up(){
 	
 	mapx=0;
 	mapy=0;
+	chx=0;
+	chy=0;
 	
+		
 	id=0;
 	
 	health=100;

@@ -57,6 +57,8 @@ int sound_mult=1;
 
 Enemy path_finder;
 
+Terrain* outer_world;
+
 sf::Music rain_sound,fire_sound;
 sf::Sound enem_spawn_sound,enem_death_sound,craft_sound,tree_sound,meteor_sound,leave_sound;
 sf::SoundBuffer enem_spawn_buffer,enem_death_buffer,craft_buffer,tree_buffer,meteor_buffer,leave_buffer;
@@ -69,6 +71,9 @@ inline float getDis(int x1,int y1,int x2,int y2);
 void clear_screen(WINDOW*);
 bool draw(WINDOW*);
 bool mapdraw(WINDOW*);
+
+bool newmapdraw(WINDOW*);
+
 int light_distance(int,int);
 int ex_light_distance(int,int);
 bool craft(string,string,string);
@@ -81,6 +86,7 @@ unsigned int enem_tick=0;
 unsigned int lore_tick=0;
 
 vector<vector<string> > village(YMAX);
+vector<vector<string> >* e_village;
 vector<vector<string> > lore = {{},{},{},{},{},{},{},{},{},{},{}};
 map<vector<int>,string> exmap;
 
@@ -115,8 +121,10 @@ int main(int argc, char *argv[]) {
 	srand (time(NULL));
 	
 	
+	e_village=&village;
 	
 	
+	/*
 	World* test = new World();
 	test->generate();
 	for(int i=0;i<test->lights.size();i++){
@@ -125,6 +133,12 @@ int main(int argc, char *argv[]) {
 	}
 	exmap[{0,0}]="H";
 	exmap[{0,5}]="o";
+	*/					//old map
+	
+	
+	Terrain* outer_world = new Terrain();
+	outer_world->gen_chunk(0,0);
+	
 	
 	
 	for(int i=0;i<YMAX;i++){
@@ -163,7 +177,7 @@ int main(int argc, char *argv[]) {
 			if (village_line == "\n") continue; // Skip empty lines
 			
 			for (int i = 0; i < village_line.length(); i++) {
-				village[village_x][i] = (village_line.at(i) == 'S') ? " " : village_line.substr(i, 1);
+				(*e_village)[village_x][i] = (village_line.at(i) == 'S') ? " " : village_line.substr(i, 1);
 			}
 			village_x++;
 		}
@@ -423,7 +437,8 @@ int main(int argc, char *argv[]) {
 				}
 				else if(mv==2){	//leave to region
 					leave_sound.play();
-					stage = 6;
+					//stage = 6;
+					e_village=&(outer_world->chunks[{0,0}]);
 				}
 			}
 			else if(stage==6){
@@ -483,12 +498,12 @@ int light_distance(int y,int x){
 	string chr = "";
 	for(int yy=0;yy<YMAX;yy++){
 		for(int xx=0;xx<XMAX;xx++){
-			if((village[yy][xx]=="o")||(village[yy][xx]=="O")){
+			if(((*e_village)[yy][xx]=="o")||((*e_village)[yy][xx]=="O")){
 				int ls=(int)(sqrt(((y-yy)*(y-yy))+(((x-xx)/2)*((x-xx)/2))));
 				ls=(ls*1)-(player.fire[{yy,xx}]/3);
 				if(ls<dis){
 					dis=ls;
-					chr=village[yy][xx];
+					chr=(*e_village)[yy][xx];
 				}
 				
 			}
@@ -560,11 +575,11 @@ bool draw(WINDOW* w){
 	wattroff(w,COLOR_PAIR(1));
 	clear_screen(w);
 	
-	for(unsigned int i=0;i<village.size();i++){
-		for(unsigned int j=0;j<village[i].size();j++){
+	for(unsigned int i=0;i<e_village->size();i++){
+		for(unsigned int j=0;j<(*e_village)[i].size();j++){
 			ls=abs(light_distance(i,j));
 			
-			if((village[i][j]=="^")&&(ls<2)&&(stage>=3)){
+			if(((*e_village)[i][j]=="^")&&(ls<2)&&(stage>=3)){
 				if(tree_fire[i][j] == -1){				//light trees on fire
 					tree_fire[i][j] = 1;
 				}
@@ -573,27 +588,27 @@ bool draw(WINDOW* w){
 			if(tree_fire[i][j]>0){
 				colour_shift=30;
 			}
-			else if((village[i][j]==">"||village[i][j]=="<")&&player.hand[player.handid]!=" "&&stage<3){
+			else if(((*e_village)[i][j]==">"||(*e_village)[i][j]=="<")&&player.hand[player.handid]!=" "&&stage<3){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
-			else if(village[i][j]=="o"&&(player.hand[player.handid]=="/"||player.hand[player.handid]=="="||player.hand[player.handid]=="S")){
+			else if((*e_village)[i][j]=="o"&&(player.hand[player.handid]=="/"||player.hand[player.handid]=="="||player.hand[player.handid]=="S")){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
-			else if(village[i][j]=="O"&&(player.hand[player.handid]=="S")){
+			else if((*e_village)[i][j]=="O"&&(player.hand[player.handid]=="S")){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
-			else if(village[i][j]=="$"&&(player.hand[player.handid]=="S")){
+			else if((*e_village)[i][j]=="$"&&(player.hand[player.handid]=="S")){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
-			else if(village[i][j]=="^"&&(player.hand[player.handid]=="A")&&player.inventory["="]<player.max_inv["="]){
+			else if((*e_village)[i][j]=="^"&&(player.hand[player.handid]=="A")&&player.inventory["="]<player.max_inv["="]){
 				colour_shift=10;
 				//wattron(w,A_BOLD);
 			}
-			else if(village[i][j]==" "&&player.hand[player.handid]=="C"&&(i==0||i==yMax-1||j==0||j==xMax-1)){
+			else if((*e_village)[i][j]==" "&&player.hand[player.handid]=="C"&&(i==0||i==yMax-1||j==0||j==xMax-1)){
 				colour_shift=40;
 				ls=0;
 			}
@@ -604,9 +619,9 @@ bool draw(WINDOW* w){
 			
 			for(map<string,int>::iterator it = player.inventory.begin(); it != player.inventory.end(); ++it) {
 				tmp_str=it->first;
-				if(village[i][j]==tmp_str){
-					if(player.inventory[village[i][j]]<player.max_inv[village[i][j]]){
-						if(stage<2||(village[i][j]=="?"&&stage==5&&colour_shift!=30)){
+				if((*e_village)[i][j]==tmp_str){
+					if(player.inventory[(*e_village)[i][j]]<player.max_inv[(*e_village)[i][j]]){
+						if(stage<2||((*e_village)[i][j]=="?"&&stage==5&&colour_shift!=30)){
 							colour_shift=10;
 						}
 					}
@@ -615,12 +630,12 @@ bool draw(WINDOW* w){
 			
 			
 						
-			if((village[i][j]==">"&&player.craft[0]!="")||(village[i][j]=="<"&&player.craft[1]!="")){
+			if(((*e_village)[i][j]==">"&&player.craft[0]!="")||((*e_village)[i][j]=="<"&&player.craft[1]!="")){
 				wattron(w,A_REVERSE);
 			}
 			
 			wattron(w,COLOR_PAIR(colour_shift+ls+1));
-			mvwprintw(w,i,j,village[i][j].c_str());	
+			mvwprintw(w,i,j,(*e_village)[i][j].c_str());	
 			
 			wattroff(w,A_BOLD);
 			wattroff(w,COLOR_PAIR(colour_shift+ls+1));
@@ -730,11 +745,17 @@ bool mapdraw(WINDOW* w){
 	return true;
 }
 
+bool newmapdraw(WINDOW* w){
+	
+	
+	return true;
+}
+
 bool craft(string s1,string s2,string r){
 	if((player.craft[0]==s1&&player.craft[1]==s2)||(player.craft[1]==s1&&player.craft[0]==s2)){
 		player.craft[0]="";
 		player.craft[1]="";
-		village[9][20]=r;
+		(*e_village)[9][20]=r;
 		craft_sound.play();
 		return true;
 	}
@@ -778,7 +799,7 @@ void tick(WINDOW* w){
 	
 	
 	
-	if(stage==4&&player.kills>=10){
+	if(stage==4&&player.kills>=3){
 		vector<vector<string> > ast = {
 		{"?","?",".",".","?"}, //	??..?
 		{"?","?","O","?","?"}, //	?O??.
@@ -786,12 +807,12 @@ void tick(WINDOW* w){
 		};
 		stage=5;
 		bool space = true;
-		for(int y=5;y<village.size()-7;y++){
-			for(int x=0;x<village[y].size()-20;x++){
+		for(int y=5;y<e_village->size()-7;y++){
+			for(int x=0;x<(*e_village)[y].size()-20;x++){
 				space = true;
 				for(int i=0;i<7;i++){
 					for(int j=0;j<9;j++){
-						if(village[y+i][x+j]!=" "){
+						if((*e_village)[y+i][x+j]!=" "){
 							space = false;
 							break;
 						}
@@ -802,7 +823,7 @@ void tick(WINDOW* w){
 					else{
 						for(int ii=0;ii<ast.size();ii++){
 							for(int jj=0;jj<ast[ii].size();jj++){
-								village[y+ii+3][x+jj+3]=ast[ii][jj];
+								(*e_village)[y+ii+3][x+jj+3]=ast[ii][jj];
 								tree_fire[y+ii+3][x+jj+3]=3;
 							}
 						}
@@ -826,7 +847,7 @@ void tick(WINDOW* w){
 		if(fire_tick>3){
 			
 			for(map<vector<int>,int>::iterator it = player.fire.begin(); it != player.fire.end(); ++it) {
-				if(village[it->first[0]][it->first[1]]=="o"){
+				if((*e_village)[it->first[0]][it->first[1]]=="o"){
 					player.fire[it->first]--;
 					if(player.fire[it->first]<0){
 						player.fire[it->first]=0;
@@ -838,8 +859,8 @@ void tick(WINDOW* w){
 				for(int j=0;j<tree_fire[i].size();j++){
 					if(tree_fire[i][j]>5){
 						tree_fire[i][j]=-1;
-						if(village[i][j]=="^"){
-							village[i][j]=" ";
+						if((*e_village)[i][j]=="^"){
+							(*e_village)[i][j]=" ";
 						}
 					}
 					else if(tree_fire[i][j]>-1){
@@ -855,16 +876,16 @@ void tick(WINDOW* w){
 	vector<vector<int> > sur={};
 	
 	if(stage>=2){
-		for(int i=0;i<village.size();i++){
-			for(int j=0;j<village[i].size();j++){
+		for(int i=0;i<e_village->size();i++){
+			for(int j=0;j<(*e_village)[i].size();j++){
 				
-				if(village[i][j]=="^"){
+				if((*e_village)[i][j]=="^"){
 					if((int)(rand()%1000)==0){
 						sur.clear();
 						for(int y=0;y<3;y++){
 							for(int x=0;x<3;x++){
 								if(i+y<23&&i+y>0&&j+x<79&&j+x>0){
-									if(village[i+y][j+x]==" "){
+									if((*e_village)[i+y][j+x]==" "){
 										sur.push_back({i+y,j+x});
 									}
 								}
@@ -872,7 +893,7 @@ void tick(WINDOW* w){
 						}
 						if(sur.size()>0){
 							int tmp=(int)(rand()%sur.size());
-							village[sur[tmp][0]][sur[tmp][1]]="^";
+							(*e_village)[sur[tmp][0]][sur[tmp][1]]="^";
 						}
 					}
 				}
@@ -891,7 +912,7 @@ void tick(WINDOW* w){
 				int tv=it->second;
 				if(abs(tc[0]-dudes[i]->y)<=tv&&abs(tc[1]-dudes[i]->x)<=tv){
 					if((abs(player.y-dudes[i]->y)<=3&&abs(player.x-dudes[i]->x)<=3)&&player.dead==false){
-						village[dudes[i]->y][dudes[i]->x]="S";
+						(*e_village)[dudes[i]->y][dudes[i]->x]="S";
 						player.kills++;
 					}
 					GameObject* tmp = dudes[i];
@@ -906,7 +927,7 @@ void tick(WINDOW* w){
 			
 			if(light_distance(dudes[i]->y,dudes[i]->x)==1){
 				if((abs(player.y-dudes[i]->y)<=4&&abs(player.x-dudes[i]->x)<=4)&&player.dead==false){
-					village[dudes[i]->y][dudes[i]->x]="S";
+					(*e_village)[dudes[i]->y][dudes[i]->x]="S";
 					player.kills++;
 				}
 				GameObject* tmp = dudes[i];
@@ -927,13 +948,13 @@ void tick(WINDOW* w){
 		if(stage>=3){
 			vector<vector<int> > spawns={};
 			for(int i=0;i<65;i++){
-				if(i<18&&village[i][0]==" "&&village[i][1]==" "){
+				if(i<18&&(*e_village)[i][0]==" "&&(*e_village)[i][1]==" "){
 					spawns.push_back({0,i});
 				}
-				if(i<45&&village[0][i]==" "&&village[1][i]==" "){
+				if(i<45&&(*e_village)[0][i]==" "&&(*e_village)[1][i]==" "){
 					spawns.push_back({i,0});
 				}
-				if(i>15&&village[23][i]==" "&&village[22][i]==" "){
+				if(i>15&&(*e_village)[23][i]==" "&&(*e_village)[22][i]==" "){
 					spawns.push_back({i,23});
 				}
 			}

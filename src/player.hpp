@@ -14,7 +14,7 @@ public:
 	int dead_shift;
 	
 	
-	int mapx,mapy;
+	int mapx,mapy,chx,chy;
 	
 	bool hint;
 	
