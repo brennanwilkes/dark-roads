@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
 	srand (time(NULL));
 	
 	
-	e_village=&village;
+
 	
 	
 	/*
@@ -185,7 +185,7 @@ int main(int argc, char *argv[]) {
 			if (village_line == "\n") continue; // Skip empty lines
 			
 			for (int i = 0; i < village_line.length(); i++) {
-				(*e_village)[village_x][i] = (village_line.at(i) == 'S') ? " " : village_line.substr(i, 1);
+				village[village_x][i] = (village_line.at(i) == 'S') ? " " : village_line.substr(i, 1);
 			}
 			village_x++;
 		}
@@ -194,6 +194,7 @@ int main(int argc, char *argv[]) {
 	
 	
 	outer_world->chunks[{0,0}] = village;
+	e_village=&outer_world->chunks[{0,0}];
 	
 	
 	ifstream lore_file("Assets/lore.txt");
