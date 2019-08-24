@@ -361,7 +361,7 @@ int main(int argc, char *argv[]) {
 	wattroff(worldwin,COLOR_PAIR(1));
 	refresh();
 	wrefresh(worldwin);
-	int startinput = wgetch(worldwin);
+	wgetch(worldwin);
 	
 	
 	
@@ -469,6 +469,8 @@ int main(int argc, char *argv[]) {
 					//stage = 6;
 					player.chx=player.chx+xs;
 					player.chy=player.chy+ys;
+					
+					player.switch_stage = true;
 					
 					int shft=1;
 					if(player.hand[player.handid]!=" "){
@@ -945,16 +947,21 @@ void tick(WINDOW* w){
 		}
 	}
 	
-	
 	for(int i=0;i<dudes.size();i++){
 		dudes[i]->tick();
 		if(dudes[i]->img=="&"){
 			
-			
+			if(player.switch_stage==true){
+				GameObject* tmp = dudes[i];
+				dudes.erase(dudes.begin()+i);
+				delete tmp;
+				continue;
+			}
 			for(map<vector<int>,int>::iterator it = player.trap.begin(); it != player.trap.end(); ++it) {
 				vector<int> tc=it->first;
 				int tv=it->second;
-				if(abs(tc[0]-dudes[i]->y)<=tv&&abs(tc[1]-dudes[i]->x)<=tv){
+				if((abs(tc[0]-dudes[i]->y)<=tv&&abs(tc[1]-dudes[i]->x)<=tv)){
+
 					if((abs(player.y-dudes[i]->y)<=3&&abs(player.x-dudes[i]->x)<=3)&&player.dead==false){
 						(*e_village)[dudes[i]->y][dudes[i]->x]="S";
 						player.kills++;
@@ -986,6 +993,8 @@ void tick(WINDOW* w){
 			}
 		}
 	}
+
+	player.switch_stage=false;
 	
 	if(enem_tick>20){
 		enem_tick=0;

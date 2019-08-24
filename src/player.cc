@@ -26,6 +26,8 @@ void Player::set_up(){
 	
 	dead=false;
 	hint=false;
+	
+	switch_stage=false;
 
 	lore="";
 	

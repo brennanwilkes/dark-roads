@@ -23,7 +23,7 @@ vector<vector<string> > Terrain::gen_chunk(int y,int x){
 	srand(time(0));
 	
 
-	for (int y2;y2<24;y2++){
+	for (int y2=0;y2<24;y2++){
 		chunk.push_back({});
 		for (int x2=0;x2<80;x2++){
 			

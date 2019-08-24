@@ -17,6 +17,8 @@ public:
 	int mapx,mapy,chx,chy;
 	
 	bool hint;
+	bool switch_stage;
+	
 	
 	void tick();
 	int cx;
