@@ -27,6 +27,10 @@ Michael Liu - Ryan Carrusca - soundbible.com
 //sound includes
 #include <SFML/Audio.hpp>
 
+//noise includes
+#include "noise/noise.h"
+
+
 
 
 //User Includes
