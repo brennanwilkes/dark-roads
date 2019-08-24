@@ -342,8 +342,8 @@ int main(int argc, char *argv[]) {
 	if(argc==1){
 		wattron(worldwin,COLOR_PAIR(1));
 		clear_screen(worldwin);
-		mvwprintw(worldwin,11,30,"WELCOME TO DARK ROADS");
-		mvwprintw(worldwin,13,22,"USE [WASD] [SPACE] and [TAB] to play");
+		mvwprintw(worldwin,(YMAX/2)-1,(XMAX/2)-10,"WELCOME TO DARK ROADS");
+		mvwprintw(worldwin,(YMAX/2)+1,(XMAX/2)-18,"USE [WASD] [SPACE] and [TAB] to play");
 		wattroff(worldwin,COLOR_PAIR(1));
 		refresh();
 		wrefresh(worldwin);
