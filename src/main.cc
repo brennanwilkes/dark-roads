@@ -353,16 +353,16 @@ int main(int argc, char *argv[]) {
 	craft_sound.setVolume(50*sound_mult);
 	
 	
-	
-	wattron(worldwin,COLOR_PAIR(1));
-	clear_screen(worldwin);
-	mvwprintw(worldwin,11,30,"WELCOME TO DARK ROADS");
-	mvwprintw(worldwin,13,22,"USE [WASD] [SPACE] and [TAB] to play");
-	wattroff(worldwin,COLOR_PAIR(1));
-	refresh();
-	wrefresh(worldwin);
-	wgetch(worldwin);
-	
+	if(argc==1){
+		wattron(worldwin,COLOR_PAIR(1));
+		clear_screen(worldwin);
+		mvwprintw(worldwin,11,30,"WELCOME TO DARK ROADS");
+		mvwprintw(worldwin,13,22,"USE [WASD] [SPACE] and [TAB] to play");
+		wattroff(worldwin,COLOR_PAIR(1));
+		refresh();
+		wrefresh(worldwin);
+		wgetch(worldwin);
+	}
 	
 	
 	
