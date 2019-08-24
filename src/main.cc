@@ -748,16 +748,20 @@ void tick(WINDOW* w){
 	
 	
 	
-	if((stage==4&&player.kills>=3&&player.chy==0&&player.chx==0)||((player.chy!=0||player.chx!=0)&&(rand()%70==10))){
+	if((stage==4&&player.kills>=3&&player.chy==0&&player.chx==0)||((player.chy!=0||player.chx!=0)&&(rand()%150==10))){
 		vector<vector<string> > ast = {
 		{"?","?",".",".","?"}, //	??..?
 		{"?","?","O","?","?"}, //	?O??.
 		{".","?",".",".","?"}, //	.?..?	
 		};
-		stage=5;
+		
+		if(light_cheats==false){
+			stage=5;
+		}
+		
 		bool space = true;
-		for(int y=5;y<e_village->size()-7;y++){
-			for(int x=0;x<(*e_village)[y].size()-20;x++){
+		for(int y=3;y<e_village->size()-7;y++){
+			for(int x=3;x<(*e_village)[y].size()-20;x++){
 				space = true;
 				for(int i=0;i<7;i++){
 					for(int j=0;j<9;j++){
