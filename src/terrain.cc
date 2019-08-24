@@ -55,13 +55,18 @@ void Terrain::pro_chunk(int y,int x){
 	noise::module::Perlin myModule;
 	
 	double value;
+	double highest=-1;
+	vector<int> high_coord;
 	
 	for (int y2=0;y2<24;y2++){
 		chunk.push_back({});
 		for (int x2=0;x2<80;x2++){
 			value = myModule.GetValue ((y*24*0.01)+(y2*0.01), (x*80*0.01)+(x2*0.01), 0.01);
-			//std::cout<<value<<std::endl;
-			if(value>0){
+			if(value>-0.1){
+				if(value>highest&&y2>3&&y2<21&&x2>3&&x2<77){
+					highest=value;
+					high_coord = {y2,x2};
+				}
 				chunk[y2].push_back(" ");
 			}
 			else{
@@ -69,6 +74,8 @@ void Terrain::pro_chunk(int y,int x){
 			}
 		}
 	}
+	
+	chunk[high_coord[0]][high_coord[1]] = "o";
 	
 	
 	chunks[{y,x}]=chunk;
