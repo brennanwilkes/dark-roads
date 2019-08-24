@@ -352,6 +352,20 @@ int main(int argc, char *argv[]) {
 	craft_sound.setBuffer(craft_buffer);
 	craft_sound.setVolume(50*sound_mult);
 	
+	
+	
+	wattron(worldwin,COLOR_PAIR(1));
+	clear_screen(worldwin);
+	mvwprintw(worldwin,11,30,"WELCOME TO DARK ROADS");
+	mvwprintw(worldwin,13,22,"USE [WASD] [SPACE] and [TAB] to play");
+	wattroff(worldwin,COLOR_PAIR(1));
+	refresh();
+	wrefresh(worldwin);
+	int startinput = wgetch(worldwin);
+	
+	
+	
+	
 	while (true){
 		
 		if(stage==6){
@@ -651,7 +665,7 @@ bool draw(WINDOW* w){
 				tmp_str=it->first;
 				if((*e_village)[i][j]==tmp_str){
 					if(player.inventory[(*e_village)[i][j]]<player.max_inv[(*e_village)[i][j]]){
-						if(stage<2||((*e_village)[i][j]=="?"&&stage==5&&colour_shift!=30)){
+						if((stage<2&&tmp_str!="^")||((*e_village)[i][j]=="?"&&stage==5&&colour_shift!=30)){
 							colour_shift=10;
 						}
 					}
