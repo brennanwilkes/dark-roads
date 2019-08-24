@@ -74,12 +74,8 @@ inline float getDis(GameObject* src,int x2,int y2);
 inline float getDis(int x1,int y1,int x2,int y2);
 void clear_screen(WINDOW*);
 bool draw(WINDOW*);
-bool mapdraw(WINDOW*);
-
-bool newmapdraw(WINDOW*);
 
 int light_distance(int,int);
-int ex_light_distance(int,int);
 bool craft(string,string,string);
 void tick(WINDOW*);
 void stage_check();
@@ -128,16 +124,6 @@ int main(int argc, char *argv[]) {
 
 	
 	
-	/*
-	World* test = new World();
-	test->generate();
-	for(int i=0;i<test->lights.size();i++){
-		exmap[test->lights[i]] = "o";
-		//cout<<test->lights[i][0]<<" "<<test->lights[i][1]<<endl;
-	}
-	exmap[{0,0}]="H";
-	exmap[{0,5}]="o";
-	*/					//old map
 	
 	
 	Terrain* outer_world = new Terrain();
@@ -367,13 +353,9 @@ int main(int argc, char *argv[]) {
 	
 	
 	while (true){
+	
+		tick(worldwin);
 		
-		if(stage==6){
-			mapdraw(worldwin);
-		}
-		else{
-			tick(worldwin);
-		}
 		if(player.dead){
 			if(player.dead_shift>=30){
 				wattron(worldwin,COLOR_PAIR(1));
@@ -487,12 +469,6 @@ int main(int argc, char *argv[]) {
 					e_village=&(outer_world->chunks[{player.chy,player.chx}]);
 				}
 			}
-			else if(stage==6){
-				int mv = player.move(xs,ys);
-				if(mv==1){
-					stage=7;
-				}
-			}
 		}
 	
 		
@@ -575,40 +551,6 @@ int light_distance(int y,int x){
 	
 	if(chr=="O"){
 		dis=dis*-1;
-	}
-	
-	
-	return dis;
-}
-
-int ex_light_distance(int y,int x){
-	int dis=9;
-	//vector<int> pick={};
-	int ls=0;
-	
-	vector<int> tmp;
-	for(map<vector<int>,string>::iterator it = exmap.begin(); it != exmap.end(); ++it) {
-		tmp = it->first;
-		if(it->second=="o"){
-			int ls=(int)(sqrt((((yMax/-2)+y-tmp[0])*((yMax/-2)+y-tmp[0]))+((((xMax/-2)+x-tmp[1])/2)*(((xMax/-2)+x-tmp[1])/2))));
-			ls=(ls*1)-(5);
-			if(ls<dis){
-				dis=ls;
-			}
-		}
-	}
-	ls++;	//just to remove a warning
-	
-	if(player.dead){
-		dis=dis+player.dead_shift;
-	}
-	
-	
-	if(dis>8){
-		dis=9;
-	}
-	else if(dis<1){
-		dis=1;
 	}
 	
 	
@@ -750,52 +692,6 @@ bool draw(WINDOW* w){
 	return true;
 }
 
-bool mapdraw(WINDOW* w){
-	
-	int ls,colour_shift=0;
-	wattroff(w,COLOR_PAIR(1));
-	clear_screen(w);
-	
-	
-	vector<int> tmp;
-	for(map<vector<int>,string>::iterator it = exmap.begin(); it != exmap.end(); ++it) {
-		tmp = it->first;
-		if((tmp[0]-player.mapy<yMax/2)&&(tmp[0]-player.mapy>(yMax/-2))&&(tmp[1]-player.mapx<xMax/2)&&(tmp[1]-player.mapx>(xMax/-2))){
-			mvwprintw(w,yMax/2+tmp[0]-player.mapy,xMax/2+tmp[1]-player.mapx,exmap[tmp].c_str());	
-		}
-	}
-	
-	for(unsigned int i=0;i<yMax;i++){
-		for(unsigned int j=0;j<xMax;j++){
-			ls=abs(ex_light_distance(i+player.mapy,j+player.mapx));
-			wattron(w,COLOR_PAIR(colour_shift+ls+1));
-
-
-			if(exmap.find({(int)((yMax/-2)+i+player.mapy),(int)((xMax/-2)+j+player.mapx)})==exmap.end()){
-				mvwprintw(w,i,j," ");	
-			}
-			else{
-				mvwprintw(w,i,j,exmap[{(int)((yMax/-2)+i+player.mapy),(int)((xMax/-2)+j+player.mapx)}].c_str());
-			}
-			
-			wattroff(w,A_BOLD);
-			wattroff(w,COLOR_PAIR(colour_shift+ls+1));
-			wattroff(w,A_REVERSE);
-		}
-	}
-	
-	wattron(w,COLOR_PAIR(1));
-	mvwprintw(w,yMax/2,xMax/2,"@");	
-	
-	
-	return true;
-}
-
-bool newmapdraw(WINDOW* w){
-	
-	
-	return true;
-}
 
 bool craft(string s1,string s2,string r){
 	if((player.craft[0]==s1&&player.craft[1]==s2)||(player.craft[1]==s1&&player.craft[0]==s2)){
