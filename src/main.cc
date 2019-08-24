@@ -79,6 +79,7 @@ int light_distance(int,int);
 bool craft(string,string,string);
 void tick(WINDOW*);
 void stage_check();
+bool light_cheats;
 
 unsigned int fire_tick=0;
 unsigned int tree_tick=0;
@@ -122,7 +123,7 @@ int main(int argc, char *argv[]) {
 	
 	
 
-	
+	light_cheats = false;
 	
 	
 	
@@ -243,6 +244,9 @@ int main(int argc, char *argv[]) {
 		}
 		else if(tmp_in=="-c"){
 			player.add("C");
+		}
+		else if (tmp_in=="-l"){
+			light_cheats = true;
 		}
 		
 	}
@@ -448,7 +452,7 @@ int main(int argc, char *argv[]) {
 				}
 				else if(mv==2){	//leave to region
 					leave_sound.play();
-					if(stage<3){
+					if(stage<3&&light_cheats==false){
 						stage=3;
 					}
 					//stage = 6;
@@ -744,7 +748,7 @@ void tick(WINDOW* w){
 	
 	
 	
-	if(stage==4&&player.kills>=3&&player.chy==0&&player.chx==0){
+	if((stage==4&&player.kills>=3&&player.chy==0&&player.chx==0)||((player.chy!=0||player.chx!=0)&&(rand()%70==10))){
 		vector<vector<string> > ast = {
 		{"?","?",".",".","?"}, //	??..?
 		{"?","?","O","?","?"}, //	?O??.
