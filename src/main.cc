@@ -448,6 +448,9 @@ int main(int argc, char *argv[]) {
 				}
 				else if(mv==2){	//leave to region
 					leave_sound.play();
+					if(stage<3){
+						stage=3;
+					}
 					//stage = 6;
 					player.chx=player.chx+xs;
 					player.chy=player.chy+ys;
