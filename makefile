@@ -1,7 +1,7 @@
 #Thank you Michael Liu for blessing me with the daddy to this beautiful makefile. All credit dude.
 
 LDFLAGS=
-LDLIBS=-lncurses -lmenu -lsfml-audio
+LDLIBS=-lncurses -lmenu -lsfml-audio -lnoise
 CFLAGS=-Wall -g -std=c++11 -lglut -Wno-reorder -Wno-sign-compare -Wno-unused-local-typedefs $(INCLUDES) -O2
 
 SOURCES=$(wildcard src/*.cc)
